@@ -1,0 +1,13 @@
+import Head from "next/head"
+
+export const headAdmin = () => {
+        return (
+            <Head>
+                <title>Admin - Konek</title>
+                <meta name="admin page" content="admin page for konek app" />
+                <meta name="viewport" content="width=device-width, initial-scale=1" />
+                <link rel="icon" href="/favicon.ico" />
+            </Head>
+        )
+    
+}

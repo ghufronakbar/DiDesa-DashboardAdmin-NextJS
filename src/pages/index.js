@@ -1,11 +1,48 @@
 import Head from "next/head";
-import Image from "next/image";
-import { Inter } from "next/font/google";
-import styles from "@/styles/Home.module.css";
+import { Container, Heading, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
+import axios from "axios";
+import { useEffect, useState } from "react";
+import {axiosInstance} from "../lib/axios"
 
-const inter = Inter({ subsets: ["latin"] });
+//Chakra UI
+//Formik
+//Yup
+//Axios
+//react-query
+
 
 export default function Home() {
+  const [berita, setBerita] = useState([]); //menyimpan data response GET/berita
+
+  const fetchBerita = async () => {  
+    try{
+      const beritaResponse = await axiosInstance.get("/api/berita")      
+      setBerita(beritaResponse.data.values)      
+    }catch(error){
+      console.log(error)
+    }       
+  }
+
+  const renderBerita =()=>{
+    return berita.map((berita)=>{
+      return (
+        <Tr key={berita.berita_id}>
+          <Td>{berita.berita_id}</Td>
+          <Td>{berita.judul}</Td>
+          <Td>{berita.tanggal}</Td>
+          <Td>{berita.publikasi}</Td>
+          <Td>{berita.prioritas}</Td>
+          <Td></Td>
+        </Tr>
+      )
+    })
+  }
+
+  useEffect(() => {
+    fetchBerita()
+  }, [])
+
+
   return (
     <>
       <Head>
@@ -14,100 +51,25 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className={`${styles.main} ${inter.className}`}>
-        <div className={styles.description}>
-          <p>
-            Get started by editing&nbsp;
-            <code className={styles.code}>src/pages/index.js</code>
-          </p>
-          <div>
-            <a
-              href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              By{" "}
-              <Image
-                src="/vercel.svg"
-                alt="Vercel Logo"
-                className={styles.vercelLogo}
-                width={100}
-                height={24}
-                priority
-              />
-            </a>
-          </div>
-        </div>
-
-        <div className={styles.center}>
-          <Image
-            className={styles.logo}
-            src="/next.svg"
-            alt="Next.js Logo"
-            width={180}
-            height={37}
-            priority
-          />
-        </div>
-
-        <div className={styles.grid}>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2>
-              Docs <span>-&gt;</span>
-            </h2>
-            <p>
-              Find in-depth information about Next.js features and&nbsp;API.
-            </p>
-          </a>
-
-          <a
-            href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2>
-              Learn <span>-&gt;</span>
-            </h2>
-            <p>
-              Learn about Next.js in an interactive course with&nbsp;quizzes!
-            </p>
-          </a>
-
-          <a
-            href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2>
-              Templates <span>-&gt;</span>
-            </h2>
-            <p>
-              Discover and deploy boilerplate example Next.js&nbsp;projects.
-            </p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2>
-              Deploy <span>-&gt;</span>
-            </h2>
-            <p>
-              Instantly deploy your Next.js site to a shareable URL
-              with&nbsp;Vercel.
-            </p>
-          </a>
-        </div>
+      <main>
+        <Container>
+          <Heading>Hello World</Heading>
+          <Table>
+            <Thead>
+              <Tr>
+                <Th>ID</Th>
+                <Th>Judul</Th>
+                <Th>Tanggal</Th>
+                <Th>Publikasi</Th>
+                <Th>Prioritas</Th>
+                <Th>Aksi</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {renderBerita()}
+            </Tbody>
+          </Table>
+        </Container>
       </main>
     </>
   );
