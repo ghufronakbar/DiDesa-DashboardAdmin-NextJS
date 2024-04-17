@@ -18,6 +18,7 @@ import {
   import { useMutation, useQuery } from "@tanstack/react-query";
   import { headAdmin } from "@/component/headAdmin";
   import { useFormik } from "formik";
+import NavbarAdmin from "@/component/navbarAdmin";
   
   export default function Warga() {
     const toast = useToast();
@@ -38,7 +39,7 @@ import {
           editWarga({ warga_id, nik, kk, nama_lengkap, tanggal_lahir });
   
           toast({
-            title: "Data warga berhasil diupdate",
+            title: "Update Data Berhasil",
             status: "success",
           });
         } else {
@@ -46,7 +47,7 @@ import {
           mutate({ nik, kk, nama_lengkap, tanggal_lahir });
   
           toast({
-            title: "Data warga berhasil ditambahkan",
+            title: "Update Data Berhasil",
             status: "success",
           });
         }
@@ -109,8 +110,8 @@ import {
       if (shouldDelete) {
         deleteWarga(warga_id);
         toast({
-          title: "Berhasil menghapus data warga ini",
-          status: "info",
+          title: "Delete Data Berhasil",
+          status: "warning",
         });
       }
     };
@@ -153,8 +154,10 @@ import {
     return (
       <>
         {headAdmin()}
+        {NavbarAdmin()}
+      <br /><br />
         <main>
-          <Container>
+          <Container maxW='1500px'r>
             <Heading>Data Warga</Heading>
   
             <form onSubmit={formik.handleSubmit}>

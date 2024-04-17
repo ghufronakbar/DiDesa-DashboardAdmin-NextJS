@@ -19,6 +19,7 @@ import {
   import { useMutation, useQuery } from "@tanstack/react-query";
   import { headAdmin } from "@/component/headAdmin";
   import { useFormik } from "formik";
+  import NavbarAdmin from "@/component/navbarAdmin";
   
   export default function JenisUMKM() {
     const toast = useToast();
@@ -36,7 +37,7 @@ import {
           editJenisUMKM({ jenis_umkm_id, nama_jenis_umkm });
   
           toast({
-            title: "Jenis UMKM berhasil diupdate",
+            title: "Update Data Berhasil",
             status: "success",
           });
         } else {
@@ -44,8 +45,8 @@ import {
           mutate({ nama_jenis_umkm });
   
           toast({
-            title: "Jenis UMKM berhasil ditambahkan",
-            status: "success",            
+            title: "Insert Data Berhasil",
+            status: "success",
           });
         }
         formik.setFieldValue("jenis_umkm_id", "");
@@ -104,8 +105,8 @@ import {
       if (shouldDelete) {
         deleteJenisUMKM(jenis_umkm_id);
         toast({
-          title: "Berhasil menghapus jenis UMKM ini",
-          status: "info",
+          title: "Delete Data Berhasil",
+          status: "warning",
         });
       }
     };
@@ -143,7 +144,9 @@ import {
       <>
         {headAdmin()}
         <main>
-          <Container>
+        {NavbarAdmin()}
+      <br /><br />
+          <Container maxW='1500px'>
             <Heading>Data Jenis UMKM</Heading>            
             <form onSubmit={formik.handleSubmit}>
               <VStack spacing="3">

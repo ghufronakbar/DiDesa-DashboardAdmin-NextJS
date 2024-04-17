@@ -15,22 +15,25 @@ import {
 } from "@chakra-ui/react";
 import { axiosInstance } from "@/lib/axios";
 import { headAdmin } from "@/component/headAdmin";
+import NavbarAdmin from "@/component/navbarAdmin";
 
 export default function PemilihanKetuaDesa() {
   const router = useRouter();
   const [pemilihanData, setPemilihanData] = useState(null);
+  
 
-  useEffect(() => {
-    axiosInstance
-      .get("/api/pemilihanketuadesa")
-      .then((response) => {
-        console.log("Data Pemilihan Ketua Desa:", response.data);
-        setPemilihanData(response.data.values.values); // Perubahan disini
-      })
-      .catch((error) => {
-        console.error("Error fetching pemilihan data:", error);
-      });
-  }, []);
+useEffect(() => {
+  axiosInstance
+    .get("/api/pemilihanketua")
+    .then((response) => {
+      console.log("Data Pemilihan Ketua Desa:", response.data);
+      setPemilihanData(response.data.values);
+    })
+    .catch((error) => {
+      console.error("Error fetching pemilihan data:", error);
+    });
+}, []);
+
 
   const handleDetailClick = (pemilihan_ketua_id) => {
     router.push(`/admin/pemilihanketua/${pemilihan_ketua_id}`);
@@ -43,8 +46,10 @@ export default function PemilihanKetuaDesa() {
   return (
     <>
       {headAdmin()}
+      {NavbarAdmin()}
+      <br /><br />
       <main>
-        <Container>
+        <Container maxW='1500px'>
           <Heading>Data Pemilihan Ketua Desa</Heading>
 
           <Button

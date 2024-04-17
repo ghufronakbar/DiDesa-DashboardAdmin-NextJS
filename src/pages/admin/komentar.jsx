@@ -13,6 +13,7 @@ import {
   import { axiosInstance } from "@/lib/axios";
   import { useMutation, useQuery } from "@tanstack/react-query";
   import { headAdmin } from "@/component/headAdmin";
+  import NavbarAdmin from "@/component/navbarAdmin";
   
   export default function Komentar() {
     const toast = useToast();
@@ -34,8 +35,8 @@ import {
       onSuccess: () => {
         refetchData();
         toast({
-          title: "Berhasil menghapus komentar",
-          status: "info",
+          title: "Delete Data Berhasil",
+          status: "warning",
         });
       },
     });
@@ -73,7 +74,9 @@ import {
       <>
         {headAdmin()}
         <main>
-          <Container>
+        {NavbarAdmin()}
+      <br /><br />
+          <Container maxW='1500px'>
             <Heading>Data Komentar</Heading>
   
             <Table>

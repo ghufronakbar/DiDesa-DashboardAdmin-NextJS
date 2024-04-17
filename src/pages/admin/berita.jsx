@@ -18,6 +18,7 @@ import { axiosInstance } from "@/lib/axios";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { headAdmin } from "@/component/headAdmin";
 import { useFormik } from "formik";
+import NavbarAdmin from "@/component/navbarAdmin";
 
 export default function Berita() {
   const toast = useToast();
@@ -59,7 +60,7 @@ export default function Berita() {
         });
 
         toast({
-          title: "Berita berhasil diedit",
+          title: "Update Data Berhasil",
           status: "success",
         });
       } else {
@@ -75,9 +76,9 @@ export default function Berita() {
         });
 
         toast({
-          title: "Berita berhasil ditambahkan",
+          title: "Insert Data Berhasil",
           status: "success",
-        });refetchData();
+        });;refetchData();
       }
       formik.setFieldValue("judul", "");
       formik.setFieldValue("subjudul", "");
@@ -140,8 +141,8 @@ export default function Berita() {
     if (shouldDelete) {
       deleteBerita(beritaId);
       toast({
-        title: "Berhasil menghapus berita ini",
-        status: "info",
+        title: "Delete Data Berhasil",
+        status: "warning",
       });
     }
   };
@@ -189,9 +190,12 @@ export default function Berita() {
 
   return (
     <>
-      {headAdmin()}
+      {headAdmin()}      
       <main>
-        <Container>
+      {NavbarAdmin()}
+      <br /><br />
+        <Container maxW='1500px'>
+          
           <Heading>Data Berita</Heading>
 
           <form onSubmit={formik.handleSubmit}>

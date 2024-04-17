@@ -13,19 +13,21 @@ import {
   Tr,
   Button,
   Textarea,
+  useToast,
 } from '@chakra-ui/react';
 import { axiosInstance } from '@/lib/axios';
 import { headAdmin } from '@/component/headAdmin';
 import { useRouter } from 'next/router';
+import NavbarAdmin from '@/component/navbarAdmin';
 
 export default function DetailPemilihanKetuaDesa() {
+  const toast = useToast()
   const router = useRouter();
   const { id } = router.query;
 
   const [pemilihanDetail, setPemilihanDetail] = useState(null);
   const [wargaOptions, setWargaOptions] = useState([]);
   const [formValues, setFormValues] = useState({
-    pemilihan_ketua_id: '',
     warga_id: '',
     deskripsi: '',
   });
@@ -71,46 +73,66 @@ export default function DetailPemilihanKetuaDesa() {
     e.preventDefault();
     try {
       console.log('Submitting Form with values:', formValues);
-      
+  
+      let pemilihanKetuaId = '';
+      if (pemilihanDetail) {
+        pemilihanKetuaId = pemilihanDetail.pemilihan_ketua_id;
+      } else if (id) {
+        pemilihanKetuaId = id;
+      } else {
+        console.error('Error: pemilihan_ketua_id tidak ditemukan');
+        return;
+      }
+  
       const formData = {
         ...formValues,
-        pemilihan_ketua_id: pemilihanDetail.pemilihan_ketua_id // Gunakan nilai dari pemilihanDetail
+        pemilihan_ketua_id: pemilihanKetuaId
       };
   
       const response = await axiosInstance.post('/api/calonketua/add', formData);
-      console.log('Response from server:', response.data);
       
+      console.log('Response from server:', response.data);
+      toast({
+        title: "Insert Data Berhasil",
+        status: "success",
+      });
       // Reset form after successful submission
       setFormValues({
-        ...formValues, // Biarkan nilai warga_id dan deskripsi yang sama
-        pemilihan_ketua_id: pemilihanDetail.pemilihan_ketua_id // Kembalikan ke nilai pemilihanDetail
+        warga_id: '',
+        deskripsi: '',
       });
   
-      // Optionally, you can show a success message or redirect to another page
+      // Redirect to index page
+      router.push('/admin/pemilihanketua');
     } catch (error) {
       console.error('Error adding calon ketua:', error);
       // Optionally, you can show an error message to the user
     }
   };
   
+  
 
   return (
     <>
       {headAdmin()}
       <main>
-        <Container>
+      {NavbarAdmin()}
+      <br /><br />
+        <Container maxW='1500px'>
           <Heading>Detail Pemilihan Ketua Desa</Heading>
 
           <form onSubmit={handleSubmit}>
-            <FormControl mt={4}>
-              <FormLabel>Pemilihan Ketua ID</FormLabel>
-              <input
-                type="text"
-                name="pemilihan_ketua_id"
-                value={pemilihanDetail?.pemilihan_ketua_id || ''}
-                readOnly
-              />
-            </FormControl>
+            {pemilihanDetail && (
+              <FormControl mt={4}>
+                <FormLabel>Pemilihan Ketua ID</FormLabel>
+                <input
+                  type="text"
+                  name="pemilihan_ketua_id"
+                  value={pemilihanDetail.pemilihan_ketua_id || ''}
+                  readOnly
+                />
+              </FormControl>
+            )}
 
             <FormControl mt={4}>
               <FormLabel>Warga</FormLabel>

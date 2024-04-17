@@ -10,11 +10,14 @@ import {
   Button,
   Alert,
   AlertIcon,
+  useToast,
 } from "@chakra-ui/react";
 import { axiosInstance } from "@/lib/axios";
 import { headAdmin } from "@/component/headAdmin";
+import NavbarAdmin from "@/component/navbarAdmin";
 
 export default function AddPemilihanKetuaDesa() {
+  const toast = useToast()
   const router = useRouter();
   const [formData, setFormData] = useState({
     tanggal_mulai: "",
@@ -45,6 +48,10 @@ export default function AddPemilihanKetuaDesa() {
       const response = await axiosInstance.post("/api/pemilihanketua/add", formData);
       console.log("Response from server:", response.data);
       router.push("/admin/pemilihanketua");
+      toast({
+        title: "Insert Data Berhasil",
+        status: "success",
+      });
     } catch (error) {
       console.error("Error adding pemilihan ketua desa:", error);
       setError("Terjadi kesalahan saat menambahkan pemilihan ketua desa");
@@ -54,8 +61,10 @@ export default function AddPemilihanKetuaDesa() {
   return (
     <>
       {headAdmin()}
+      {NavbarAdmin()}
+      <br /><br />
       <main>
-        <Container>
+        <Container maxW='1500px'>
           <Heading>Tambah Pemilihan Ketua Desa</Heading>
 
           <form onSubmit={handleSubmit}>
