@@ -19,7 +19,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { headAdmin } from "@/component/headAdmin";
 import { useFormik } from "formik";
 
-export default function Home() {
+export default function Berita() {
   const toast = useToast();
 
   const formik = useFormik({
@@ -62,7 +62,6 @@ export default function Home() {
           title: "Berita berhasil diedit",
           status: "success",
         });
-        
       } else {
         //MELAKUKAN POST BERITA /api/berita/add
         mutate({
@@ -78,8 +77,7 @@ export default function Home() {
         toast({
           title: "Berita berhasil ditambahkan",
           status: "success",
-        });
-        
+        });refetchData();
       }
       formik.setFieldValue("judul", "");
       formik.setFieldValue("subjudul", "");
@@ -89,8 +87,10 @@ export default function Home() {
       formik.setFieldValue("publikasi", "");
       formik.setFieldValue("prioritas", "");
       formik.setFieldValue("berita_id", "");
-      
-    },onSuccess: () => {refetchData();}
+    },
+    onSuccess: () => {
+      refetchData();
+    },
   });
 
   const { mutate: editBerita } = useMutation({
@@ -101,7 +101,9 @@ export default function Home() {
       );
       return productResponse;
     },
-    onSuccess: () => {refetchData();},
+    onSuccess: () => {
+      refetchData();
+    },
   });
 
   const { mutate } = useMutation({
@@ -114,7 +116,7 @@ export default function Home() {
   const handleFormInput = (event) => {
     formik.setFieldValue(event.target.name, event.target.value);
   };
-  const { data, refetch:refetchData } = useQuery({
+  const { data, refetch: refetchData } = useQuery({
     queryFn: async () => {
       const beritaResponse = await axiosInstance.get("/api/berita");
       return beritaResponse;
@@ -128,7 +130,9 @@ export default function Home() {
       );
       return beritaResponse;
     },
-    onSuccess:()=>{refetchData()}
+    onSuccess: () => {
+      refetchData();
+    },
   });
 
   const confirmationDelete = (beritaId) => {
@@ -139,7 +143,6 @@ export default function Home() {
         title: "Berhasil menghapus berita ini",
         status: "info",
       });
-      
     }
   };
 
@@ -190,7 +193,7 @@ export default function Home() {
       <main>
         <Container>
           <Heading>Data Berita</Heading>
-          
+
           <form onSubmit={formik.handleSubmit}>
             <VStack spacing="3">
               <FormControl>
@@ -199,7 +202,6 @@ export default function Home() {
                   onChange={handleFormInput}
                   name="berita_id"
                   value={formik.values.berita_id}
-                  
                 ></Input>
               </FormControl>
               <FormControl>
@@ -266,7 +268,7 @@ export default function Home() {
                   <option value="1">Prioritas</option>
                 </select>
               </FormControl>
-              
+
               <Button type="submit">Submit</Button>
             </VStack>
           </form>
