@@ -33,17 +33,17 @@ export function TableWarga() {
   let i = 1;
   const { data, refetch: refetchData } = useQuery({
     queryFn: async () => {
-      const dataResponse = await axiosInstance.get("/berita");
+      const dataResponse = await axiosInstance.get("/warga");
       return dataResponse;
     },
   });
 
   const handleDelete = async (id) => {
     try {
-      await axiosInstance.delete(`/berita/delete/${id}`);
+      await axiosInstance.delete(`/warga/delete/${id}`);
 
       toast({
-        title: "Berita has been deleted",
+        title: "Warga has been deleted",
         status: "warning",
       });
       refetchData();
@@ -53,7 +53,7 @@ export function TableWarga() {
   };
 
   const handleDetail = (id) => {
-    router.push(`/admin/berita/${id}`);
+    router.push(`/admin/warga/${id}`);
   };
 
   return (
@@ -63,10 +63,9 @@ export function TableWarga() {
           <Tr>
             <Th>No</Th>
             <Th></Th>
-            <Th>Judul</Th>
-            <Th>Publikasi</Th>
-            <Th>Prioritas</Th>
-            <Th>Tanggal</Th>
+            <Th>Nama Lengkap</Th>
+            <Th>NIK/KK</Th>
+            <Th>Tanggal Lahir</Th>
             <Th></Th>
           </Tr>
         </Thead>
@@ -79,79 +78,27 @@ export function TableWarga() {
                   borderRadius="18"
                   boxSize="60px"
                   objectFit="cover"
-                  src={data.gambar}
-                  alt={data.gambar}
+                  src={data.foto}
+                  alt={data.foto}
                 />
               </Td>
               <Td>
-                <Text as="b">{data.judul}</Text>
-                <Text>{data.subjudul}</Text>
+                <Text as="b">{data.nama_lengkap}</Text>
               </Td>
               <Td>
-                <Center>
-                  {data.publikasi == 0 && (
-                    <Box
-                      as="button"
-                      borderRadius="md"
-                      bg="#E53E3E"
-                      color="white"
-                      px={4}
-                      h={8}
-                    >
-                      Not Public
-                    </Box>
-                  )}
-                  {data.publikasi == 1 && (
-                    <Box
-                      as="button"
-                      borderRadius="md"
-                      bg="#48BB78"
-                      color="white"
-                      px={4}
-                      h={8}
-                    >
-                      Public
-                    </Box>
-                  )}
-                </Center>
+                <Text as="b">{data.nik}</Text>
+                <Text>{data.kk}</Text>
               </Td>
+
               <Td>
-              <Center>
-                  {data.prioritas == 0 && (
-                    <Box
-                      as="button"
-                      borderRadius="md"
-                      bg="#E53E3E"
-                      color="white"
-                      px={4}
-                      h={8}
-                    >
-                      Tidak Prioritas
-                    </Box>
-                  )}
-                  {data.prioritas == 1 && (
-                    <Box
-                      as="button"
-                      borderRadius="md"
-                      bg="#48BB78"
-                      color="white"
-                      px={4}
-                      h={8}
-                    >
-                      Prioritas
-                    </Box>
-                  )}
-                </Center>
-              </Td>
-              <Td>
-                <Text as="b">{formatDate(data.tanggal)}</Text>
+                <Text as="b">{formatDate(data.tanggal_lahir)}</Text>
               </Td>
               <Td>
                 <Center>
                   <Button
                     variant="outline"
                     colorScheme="grey"
-                    onClick={() => handleDetail(data.berita_id)}
+                    onClick={() => handleDetail(data.warga_id)}
                   >
                     <Text as="b">Detail</Text>
                   </Button>
@@ -159,7 +106,7 @@ export function TableWarga() {
                 <Center marginTop={1}>
                   <Button
                     colorScheme="red"
-                    onClick={() => handleDelete(data.berita_id)}
+                    onClick={() => handleDelete(data.warga_id)}
                   >
                     Delete
                   </Button>
