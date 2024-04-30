@@ -4,7 +4,7 @@ import {
   Heading,
 } from "@chakra-ui/react";
 import { Navbar } from "@/component/NavbarAdmin";
-import { TableBerita } from "@/component/table/TableBerita";
+import { TableKomentar } from "../../../component/table/TableKomentar";
 
 
 export default function Berita() {
@@ -15,9 +15,9 @@ export default function Berita() {
       {Navbar()}
         <Container maxW="80%">
           <Heading marginBottom="8" marginTop="8">
-            Berita
+            Komentar
           </Heading>
-          {TableBerita()}
+          {TableKomentar()}
         </Container>
       </main>
     </>
