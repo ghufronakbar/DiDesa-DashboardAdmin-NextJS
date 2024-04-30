@@ -1,10 +1,12 @@
-import { HeadAdmin} from "@/component/HeadAdmin";
+
 import {
   Container,
   Heading,
 } from "@chakra-ui/react";
-import { Navbar } from "@/component/NavbarAdmin";
-import { TableWarga } from "@/component/table/TableWarga";
+import { HeadAdmin } from "../../../component/headAdmin";
+import { Navbar } from "../../../component/NavbarAdmin";
+import { TableWarga } from "../../../component/table/TableWarga";
+
 
 
 export default function Warga() {

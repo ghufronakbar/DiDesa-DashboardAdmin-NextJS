@@ -1,10 +1,10 @@
-import { HeadAdmin} from "@/component/HeadAdmin";
+import { HeadAdmin} from "../../../../component/HeadAdmin";
 import {
   Container,
   Heading,
 } from "@chakra-ui/react";
-import { Navbar } from "@/component/NavbarAdmin";
-import { TableJenisUMKM } from "@/component/table/TableJenisUMKM";
+import { Navbar } from "../../../../component/NavbarAdmin";
+import { TableJenisUMKM } from "../../../../component/table/TableJenisUMKM";
 
 
 

@@ -25,7 +25,7 @@ import {
   Spacer,
   HStack,
 } from "@chakra-ui/react";
-import { axiosInstance } from "@/lib/axios";
+import { axiosInstance } from "../../lib/axios";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { useState } from "react";

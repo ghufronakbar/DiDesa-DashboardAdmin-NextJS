@@ -1,18 +1,14 @@
-import { HeadAdmin} from "@/component/HeadAdmin";
-import {
-  Container,
-  Heading,
-} from "@chakra-ui/react";
-import { Navbar } from "@/component/NavbarAdmin";
-import { TableBerita } from "@/component/table/TableBerita";
-
+import { Container, Heading } from "@chakra-ui/react";
+import { Navbar } from "../../../component/NavbarAdmin";
+import { TableBerita } from "../../../component/table/TableBerita";
+import { HeadAdmin } from "../../../component/headAdmin";
 
 export default function Berita() {
   return (
     <>
-      {HeadAdmin()}
+      {HeadAdmin}
       <main>
-      {Navbar()}
+        {Navbar()}
         <Container maxW="80%">
           <Heading marginBottom="8" marginTop="8">
             Berita
@@ -23,4 +19,3 @@ export default function Berita() {
     </>
   );
 }
-
