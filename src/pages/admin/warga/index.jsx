@@ -4,11 +4,10 @@ import {
   Heading,
 } from "@chakra-ui/react";
 import { Navbar } from "@/component/NavbarAdmin";
-import { TableJenisUMKM } from "@/component/table/TableJenisUMKM";
+import { TableWarga } from "@/component/table/TableWarga";
 
 
-
-export default function JenisUMKM() {
+export default function Warga() {
   return (
     <>
       {HeadAdmin()}
@@ -16,9 +15,9 @@ export default function JenisUMKM() {
       {Navbar()}
         <Container maxW="80%">
           <Heading marginBottom="8" marginTop="8">
-            Jenis UMKM
+            Warga
           </Heading>
-          {TableJenisUMKM()}
+          {TableWarga()}
         </Container>
       </main>
     </>
