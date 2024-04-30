@@ -56,6 +56,60 @@ export function TableBerita() {
     router.push(`/admin/berita/${id}`);
   };
 
+  const handleNonPublic = async (id) => {
+    try {
+      await axiosInstance.put(`/berita/publikasi/${id}`, { publikasi: 1,id });
+      toast({
+        title: "Berita has been published",
+        status: "success",
+      });
+      refetchData()
+    } catch (error) {
+      console.error("Error rejecting request:", error);
+    }
+  };
+
+  const handlePublic = async (id) => {
+    try {
+      await axiosInstance.put(`/berita/publikasi/${id}`, { publikasi: 0,id });
+      toast({
+        title: "Berita has not been published",
+        status: "warning",
+      });
+      refetchData()
+    } catch (error) {
+      console.error("Error rejecting request:", error);
+    }
+  };
+
+  const handleNonPriority = async (id) => {
+    try {
+      await axiosInstance.put(`/berita/prioritas/${id}`, { prioritas: 1,id });
+      toast({
+        title: "Berita has been prioritized",
+        status: "success",
+      });
+      refetchData()
+    } catch (error) {
+      console.error("Error rejecting request:", error);
+    }
+  };
+
+  const handlePriority = async (id) => {
+    try {
+      await axiosInstance.put(`/berita/prioritas/${id}`, { prioritas: 0,id });
+      toast({
+        title: "Berita has not been prioritized",
+        status: "warning",
+      });
+      refetchData()
+    } catch (error) {
+      console.error("Error rejecting request:", error);
+    }
+  };
+
+
+
   return (
     <TableContainer>
       <Table>
@@ -97,8 +151,9 @@ export function TableBerita() {
                       color="white"
                       px={4}
                       h={8}
+                      onClick={()=>{handleNonPublic(data.berita_id)}}
                     >
-                      Not Public
+                      Not Published
                     </Box>
                   )}
                   {data.publikasi == 1 && (
@@ -109,8 +164,9 @@ export function TableBerita() {
                       color="white"
                       px={4}
                       h={8}
+                      onClick={()=>{handlePublic(data.berita_id)}}
                     >
-                      Public
+                      Published
                     </Box>
                   )}
                 </Center>
@@ -125,8 +181,9 @@ export function TableBerita() {
                       color="white"
                       px={4}
                       h={8}
+                      onClick={()=>{handleNonPriority(data.berita_id)}}
                     >
-                      Tidak Prioritas
+                      Not Priority
                     </Box>
                   )}
                   {data.prioritas == 1 && (
@@ -137,8 +194,9 @@ export function TableBerita() {
                       color="white"
                       px={4}
                       h={8}
+                      onClick={()=>{handlePriority(data.berita_id)}}
                     >
-                      Prioritas
+                      Priority
                     </Box>
                   )}
                 </Center>

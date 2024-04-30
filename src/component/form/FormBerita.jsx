@@ -60,15 +60,13 @@ export function FormBerita() {
         tanggal: tanggalRef.current.value,
         isi: isiRef.current.value,
       };
-  
-      // Periksa apakah ada file gambar yang diunggah
+
       if (gambarRef.current.files.length > 0) {
-        // Jika ada, tambahkan properti gambar ke formData
         formData.gambar = gambarRef.current.value;
       }
-  
+
       await axiosInstance.put(`/berita/edit/${id}`, formData);
-  
+
       toast({
         title: "Berita has been updated",
         status: "success",
@@ -78,7 +76,6 @@ export function FormBerita() {
       console.error("Error approving request:", error);
     }
   };
-  
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error fetching data</div>;
@@ -129,11 +126,11 @@ export function FormBerita() {
                           name="tanggal"
                           type="date"
                           defaultValue={
-                            data.tanggal == '0000-00-00'
-                              ?'': new Date(data.tanggal)
+                            data.tanggal == "0000-00-00"
+                              ? ""
+                              : new Date(data.tanggal)
                                   .toISOString()
                                   .split("T")[0]
-                              
                           }
                           ref={tanggalRef}
                         />
