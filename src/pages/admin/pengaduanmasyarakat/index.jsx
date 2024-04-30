@@ -4,10 +4,10 @@ import {
   Heading,
 } from "@chakra-ui/react";
 import { Navbar } from "../../../component/NavbarAdmin";
-import { TableKomentar } from "../../../component/table/TableKomentar";
+import { TablePengaduanMasyarakat } from "../../../component/table/TablePengaduanMasyarakat";
 
 
-export default function Komentar() {
+export default function PengaduanMasyarakat() {
   return (
     <>
       {HeadAdmin()}
@@ -15,9 +15,9 @@ export default function Komentar() {
       {Navbar()}
         <Container maxW="80%">
           <Heading marginBottom="8" marginTop="8">
-            Komentar
+            Pengaduan Masyarakat
           </Heading>
-          {TableKomentar()}
+          {TablePengaduanMasyarakat()}
         </Container>
       </main>
     </>

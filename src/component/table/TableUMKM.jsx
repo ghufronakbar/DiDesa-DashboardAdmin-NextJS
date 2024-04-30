@@ -63,9 +63,6 @@ export function TableUMKM() {
     }
   };
 
- 
-
-  
   const handleApprove = async (id) => {
     try {
       await axiosInstance.put(`/umkm/approve/${id}`, {
@@ -147,7 +144,7 @@ export function TableUMKM() {
                       color="white"
                       px={4}
                       h={8}
-                      onClick={()=>{
+                      onClick={() => {
                         setIsModalOpen(true);
                         setSelectedUmkmId(data.umkm_id);
                       }}
@@ -164,8 +161,8 @@ export function TableUMKM() {
                       color="white"
                       px={4}
                       h={8}
-                      onClick={()=>{
-                        handleApprove(data.umkm_id)
+                      onClick={() => {
+                        handleApprove(data.umkm_id);
                       }}
                     >
                       Not Approved
@@ -180,8 +177,8 @@ export function TableUMKM() {
                       color="white"
                       px={4}
                       h={8}
-                      onClick={()=>{
-                        handleNotApprove(data.umkm_id)
+                      onClick={() => {
+                        handleNotApprove(data.umkm_id);
                       }}
                     >
                       Not Activated
@@ -195,8 +192,8 @@ export function TableUMKM() {
                       color="white"
                       px={4}
                       h={8}
-                      onClick={()=>{
-                        handleNotApprove(data.umkm_id)
+                      onClick={() => {
+                        handleNotApprove(data.umkm_id);
                       }}
                     >
                       Activated
@@ -206,8 +203,7 @@ export function TableUMKM() {
               </Td>
 
               <Td>
-               
-                <Center >
+                <Center>
                   <Button
                     colorScheme="red"
                     onClick={() => handleDelete(data.umkm_id)}
@@ -235,7 +231,6 @@ export function TableUMKM() {
                   px={4}
                   h={8}
                   onClick={() => handleNotApprove(selectedUmkmId)}
-
                 >
                   Don't Approve
                 </Button>
@@ -248,7 +243,6 @@ export function TableUMKM() {
                   px={4}
                   h={8}
                   onClick={() => handleApprove(selectedUmkmId)}
-
                 >
                   Approve
                 </Button>

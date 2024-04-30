@@ -64,6 +64,13 @@ export function Navbar() {
               </ChakraLink>
             </List>
             <List>
+              <ChakraLink href="/admin/pengaduanmasyarakat">
+                <Button colorScheme="white" variant="ghost">
+                Pengaduan Masyarakat
+                </Button>
+              </ChakraLink>
+            </List>   
+            <List>
               <ChakraLink href="/admin/pemilihanketua">
                 <Button colorScheme="white" variant="ghost">
                 Pemilihan Ketua
