@@ -58,12 +58,15 @@ export function TablePengurusDesa() {
 
   const handleNonAdmin = async (id) => {
     try {
-      await axiosInstance.put(`/pengurusdesa/akses/${id}`, { akses_admin: 1,id });
+      await axiosInstance.put(`/pengurusdesa/akses/${id}`, {
+        akses_admin: 1,
+        id,
+      });
       toast({
         title: "This user has been admin",
         status: "success",
       });
-      refetchData()
+      refetchData();
     } catch (error) {
       console.error("Error rejecting request:", error);
     }
@@ -71,12 +74,15 @@ export function TablePengurusDesa() {
 
   const handleAdmin = async (id) => {
     try {
-      await axiosInstance.put(`/pengurusdesa/akses/${id}`, { akses_admin: 0,id });
+      await axiosInstance.put(`/pengurusdesa/akses/${id}`, {
+        akses_admin: 0,
+        id,
+      });
       toast({
         title: "This user has not been admin",
         status: "warning",
       });
-      refetchData()
+      refetchData();
     } catch (error) {
       console.error("Error rejecting request:", error);
     }
@@ -92,7 +98,7 @@ export function TablePengurusDesa() {
             <Th>Nama Lengkap</Th>
             <Th>Jabatan</Th>
             <Th>Akses Admin</Th>
-            <Th>Tanggal Lahir</Th>
+
             <Th></Th>
           </Tr>
         </Thead>
@@ -126,7 +132,9 @@ export function TablePengurusDesa() {
                       color="white"
                       px={4}
                       h={8}
-                      onClick={()=>{handleAdmin(data.pengurus_desa_anggota_id)}}
+                      onClick={() => {
+                        handleAdmin(data.pengurus_desa_anggota_id);
+                      }}
                     >
                       Admin
                     </Box>
@@ -138,7 +146,9 @@ export function TablePengurusDesa() {
                       color="white"
                       px={4}
                       h={8}
-                      onClick={()=>{handleNonAdmin(data.pengurus_desa_anggota_id)}}
+                      onClick={() => {
+                        handleNonAdmin(data.pengurus_desa_anggota_id);
+                      }}
                     >
                       Not Admin
                     </Box>
@@ -146,9 +156,6 @@ export function TablePengurusDesa() {
                 </Center>
               </Td>
 
-              <Td>
-                <Text as="b">{formatDate(data.tanggal_lahir)}</Text>
-              </Td>
               <Td>
                 <Center>
                   <Button

@@ -32,7 +32,6 @@ import { useState } from "react";
 import { EditIcon } from "@chakra-ui/icons";
 
 export function TableJenisUMKM() {
-  const router = useRouter();
   const toast = useToast();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [namaJenisUMKM, setNamaJenisUMKM] = useState("");
@@ -144,8 +143,7 @@ export function TableJenisUMKM() {
             <Flex>
               <Center flex={1}>
                 <form onSubmit={handleEdit}>
-                  {" "}
-                  {/* Tambahkan event onSubmit di sini */}
+                 
                   <FormControl>
                     <Input
                       name="nama_jenis_umkm"
