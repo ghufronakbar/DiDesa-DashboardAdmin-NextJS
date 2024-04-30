@@ -2,7 +2,7 @@ import { HeadAdmin } from "../../../component/headAdmin";
 
 import { Container } from "@chakra-ui/react";
 import { Navbar } from "../../../component/NavbarAdmin";
-import { FormBerita } from "../../../component/form/FormBerita";
+import { FormBeritaEdit } from "../../../component/form/FormBeritaEdit";
 
 export default function BeritaID() {
   return (
@@ -10,7 +10,7 @@ export default function BeritaID() {
       {HeadAdmin()}
       <main>
         {Navbar()}
-        <Container maxW="80%">{FormBerita()}</Container>
+        <Container maxW="80%">{FormBeritaEdit()}</Container>
       </main>
     </>
   );

@@ -21,7 +21,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useRef } from "react";
 
-export function FormBerita() {
+export function FormBeritaEdit() {
   const router = useRouter();
   const { id } = router.query;
   const [data, setData] = useState(null);
