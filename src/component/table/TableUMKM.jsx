@@ -2,7 +2,15 @@ import {
   Box,
   Button,
   Center,
+  Flex,
   Image,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
   Table,
   TableContainer,
   Tbody,
@@ -16,10 +24,13 @@ import {
 import { axiosInstance } from "../../lib/axios";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
+import { useState } from "react";
 
 export function TableUMKM() {
+  const [selectedUmkmId, setSelectedUmkmId] = useState(null);
   const router = useRouter();
   const toast = useToast();
+  const [isModalOpen, setIsModalOpen] = useState(false);
   function formatDate(dateString) {
     const options = {
       weekday: "long",
@@ -52,8 +63,41 @@ export function TableUMKM() {
     }
   };
 
-  const handleDetail = (id) => {
-    router.push(`/admin/umkm/${id}`);
+ 
+
+  
+  const handleApprove = async (id) => {
+    try {
+      await axiosInstance.put(`/umkm/approve/${id}`, {
+        approve: 2,
+        id,
+      });
+      setIsModalOpen(false);
+      toast({
+        title: "UMKM has been approved",
+        status: "warning",
+      });
+      refetchData();
+    } catch (error) {
+      console.error("Error rejecting request:", error);
+    }
+  };
+
+  const handleNotApprove = async (id) => {
+    try {
+      await axiosInstance.put(`/umkm/approve/${id}`, {
+        approve: 1,
+        id,
+      });
+      setIsModalOpen(false);
+      toast({
+        title: "UMKM has been approved",
+        status: "warning",
+      });
+      refetchData();
+    } catch (error) {
+      console.error("Error rejecting request:", error);
+    }
   };
 
   return (
@@ -99,27 +143,51 @@ export function TableUMKM() {
                     <Box
                       as="button"
                       borderRadius="md"
-                      bg="#E53E3E"
-                      color="white"
-                      px={4}
-                      h={8}
-                    >
-                      Not Approved
-                    </Box>
-                  )}
-                  {data.approve == 1 && data.status == 0 && (
-                    <Box
-                      as="button"
-                      borderRadius="md"
                       bg="#CBD5E0"
                       color="white"
                       px={4}
                       h={8}
+                      onClick={()=>{
+                        setIsModalOpen(true);
+                        setSelectedUmkmId(data.umkm_id);
+                      }}
                     >
-                      Not Actived
+                      Pending
                     </Box>
                   )}
-                  {data.approve == 1 && data.status == 1 && (
+
+                  {data.approve == 1 && data.status == 0 && (
+                    <Box
+                      as="button"
+                      borderRadius="md"
+                      bg="#E53E3E"
+                      color="white"
+                      px={4}
+                      h={8}
+                      onClick={()=>{
+                        handleApprove(data.umkm_id)
+                      }}
+                    >
+                      Not Approved
+                    </Box>
+                  )}
+
+                  {data.approve == 2 && data.status == 0 && (
+                    <Box
+                      as="button"
+                      borderRadius="md"
+                      bg="#0063d1"
+                      color="white"
+                      px={4}
+                      h={8}
+                      onClick={()=>{
+                        handleNotApprove(data.umkm_id)
+                      }}
+                    >
+                      Not Activated
+                    </Box>
+                  )}
+                  {data.approve == 2 && data.status == 1 && (
                     <Box
                       as="button"
                       borderRadius="md"
@@ -127,6 +195,9 @@ export function TableUMKM() {
                       color="white"
                       px={4}
                       h={8}
+                      onClick={()=>{
+                        handleNotApprove(data.umkm_id)
+                      }}
                     >
                       Activated
                     </Box>
@@ -135,16 +206,8 @@ export function TableUMKM() {
               </Td>
 
               <Td>
-                <Center>
-                  <Button
-                    variant="outline"
-                    colorScheme="grey"
-                    onClick={() => handleDetail(data.umkm_id)}
-                  >
-                    <Text as="b">Detail</Text>
-                  </Button>
-                </Center>
-                <Center marginTop={1}>
+               
+                <Center >
                   <Button
                     colorScheme="red"
                     onClick={() => handleDelete(data.umkm_id)}
@@ -157,6 +220,44 @@ export function TableUMKM() {
           ))}
         </Tbody>
       </Table>
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Confirm Request</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Flex>
+              <Center flex={1}>
+                <Button
+                  borderRadius="md"
+                  bg="#E53E3E"
+                  color="white"
+                  px={4}
+                  h={8}
+                  onClick={() => handleNotApprove(selectedUmkmId)}
+
+                >
+                  Don't Approve
+                </Button>
+              </Center>
+              <Center flex={1}>
+                <Button
+                  borderRadius="md"
+                  bg="#48BB78"
+                  color="white"
+                  px={4}
+                  h={8}
+                  onClick={() => handleApprove(selectedUmkmId)}
+
+                >
+                  Approve
+                </Button>
+              </Center>
+            </Flex>
+          </ModalBody>
+          <ModalFooter></ModalFooter>
+        </ModalContent>
+      </Modal>
     </TableContainer>
   );
 }
