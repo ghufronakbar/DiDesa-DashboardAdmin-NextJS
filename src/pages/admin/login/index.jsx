@@ -65,7 +65,7 @@ function Login() {
             </FormControl>
             
             <FormControl mt={4}>
-              <FormLabel>NIK</FormLabel>
+              <FormLabel>Password</FormLabel>
               <Input
                 type="password"                
                 value={password}

@@ -19,8 +19,9 @@ import { axiosInstance } from '@/lib/axios';
 import { headAdmin } from '@/component/headAdmin';
 import { useRouter } from 'next/router';
 import NavbarAdmin from '@/component/navbarAdmin';
+import { withAuth } from '@/lib/authorizationAdmin';
 
-export default function DetailPemilihanKetuaDesa() {
+function DetailPemilihanKetuaDesa() {
   const toast = useToast()
   const router = useRouter();
   const { id } = router.query;
@@ -192,3 +193,5 @@ export default function DetailPemilihanKetuaDesa() {
     </>
   );
 }
+
+export default withAuth(DetailPemilihanKetuaDesa)

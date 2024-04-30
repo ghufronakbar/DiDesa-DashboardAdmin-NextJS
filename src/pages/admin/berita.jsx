@@ -19,8 +19,9 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { headAdmin } from "@/component/headAdmin";
 import { useFormik } from "formik";
 import NavbarAdmin from "@/component/navbarAdmin";
+import { withAuth } from "@/lib/authorizationAdmin";
 
-export default function Berita() {
+function Berita() {
   const toast = useToast();
 
   const formik = useFormik({
@@ -47,7 +48,6 @@ export default function Berita() {
       } = formik.values;
 
       if (berita_id) {
-        //MELAKUKAN PUT BERITA /api/berita/edit/{id}
         editBerita({
           judul,
           subjudul,
@@ -78,7 +78,8 @@ export default function Berita() {
         toast({
           title: "Insert Data Berhasil",
           status: "success",
-        });;refetchData();
+        });
+        refetchData();
       }
       formik.setFieldValue("judul", "");
       formik.setFieldValue("subjudul", "");
@@ -117,6 +118,7 @@ export default function Berita() {
   const handleFormInput = (event) => {
     formik.setFieldValue(event.target.name, event.target.value);
   };
+  
   const { data, refetch: refetchData } = useQuery({
     queryFn: async () => {
       const beritaResponse = await axiosInstance.get("/api/berita");
@@ -190,12 +192,12 @@ export default function Berita() {
 
   return (
     <>
-      {headAdmin()}      
+      {headAdmin()}
       <main>
-      {NavbarAdmin()}
-      <br /><br />
-        <Container maxW='1500px'>
-          
+        {NavbarAdmin()}
+        <br />
+        <br />
+        <Container maxW="1500px">
           <Heading>Data Berita</Heading>
 
           <form onSubmit={formik.handleSubmit}>
@@ -206,6 +208,7 @@ export default function Berita() {
                   onChange={handleFormInput}
                   name="berita_id"
                   value={formik.values.berita_id}
+                  placeholder="Kosongkan jika ingin menambahkan data"
                 ></Input>
               </FormControl>
               <FormControl>
@@ -297,3 +300,5 @@ export default function Berita() {
     </>
   );
 }
+
+export default withAuth(Berita);

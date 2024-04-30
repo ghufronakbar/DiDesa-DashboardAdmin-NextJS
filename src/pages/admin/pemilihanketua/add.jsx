@@ -15,8 +15,9 @@ import {
 import { axiosInstance } from "@/lib/axios";
 import { headAdmin } from "@/component/headAdmin";
 import NavbarAdmin from "@/component/navbarAdmin";
+import { withAuth } from "@/lib/authorizationAdmin";
 
-export default function AddPemilihanKetuaDesa() {
+function AddPemilihanKetuaDesa() {
   const toast = useToast()
   const router = useRouter();
   const [formData, setFormData] = useState({
@@ -127,3 +128,5 @@ export default function AddPemilihanKetuaDesa() {
     </>
   );
 }
+
+export default withAuth(AddPemilihanKetuaDesa)

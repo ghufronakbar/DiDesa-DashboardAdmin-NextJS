@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import {
   Container,
   Heading,
@@ -8,16 +8,17 @@ import {
   Textarea,
   Button,
   useToast,
-} from '@chakra-ui/react';
-import { axiosInstance } from '@/lib/axios';
-import { headAdmin } from '@/component/headAdmin';
+} from "@chakra-ui/react";
+import { axiosInstance } from "@/lib/axios";
+import { headAdmin } from "@/component/headAdmin";
 import NavbarAdmin from "@/component/navbarAdmin";
+import { withAuth } from "@/lib/authorizationAdmin";
 
-export default function InformasiDesaIndex() {
-  const toast = useToast()
+function InformasiDesaIndex() {
+  const toast = useToast();
   const [informasiDesa, setInformasiDesa] = useState({
-    nama_desa: '',
-    deskripsi: '',
+    nama_desa: "",
+    deskripsi: "",
     luas_lahan_pertanian: 0,
     lahan_peternakan: 0,
   });
@@ -25,7 +26,7 @@ export default function InformasiDesaIndex() {
   useEffect(() => {
     const fetchInformasiDesa = async () => {
       try {
-        const response = await axiosInstance.get('/api/informasidesa');
+        const response = await axiosInstance.get("/api/informasidesa");
         const data = response.data.values[0];
         setInformasiDesa({
           nama_desa: data.nama_desa,
@@ -34,7 +35,7 @@ export default function InformasiDesaIndex() {
           lahan_peternakan: data.lahan_peternakan,
         });
       } catch (error) {
-        console.error('Error fetching Informasi Desa:', error);
+        console.error("Error fetching Informasi Desa:", error);
       }
     };
 
@@ -51,16 +52,19 @@ export default function InformasiDesaIndex() {
 
   const handleUpdate = async () => {
     try {
-      const response = await axiosInstance.put('/api/informasidesa/edit', informasiDesa);
-      console.log('Response from server:', response.data);
+      const response = await axiosInstance.put(
+        "/api/informasidesa/edit",
+        informasiDesa
+      );
+      console.log("Response from server:", response.data);
       // Reload the page
-      
+
       toast({
         title: "Update Data Berhasil",
         status: "success",
       });
     } catch (error) {
-      console.error('Error updating Informasi Desa:', error);
+      console.error("Error updating Informasi Desa:", error);
     }
   };
 
@@ -68,9 +72,12 @@ export default function InformasiDesaIndex() {
     <>
       {headAdmin()}
       {NavbarAdmin()}
-      <br /><br />
-      <Container maxW='1500px'>        
-        <Heading as="h1" my={6}>Informasi Desa</Heading>
+      <br />
+      <br />
+      <Container maxW="1500px">
+        <Heading as="h1" my={6}>
+          Informasi Desa
+        </Heading>
         <FormControl mt={4}>
           <FormLabel>Nama Desa</FormLabel>
           <Input
@@ -113,3 +120,5 @@ export default function InformasiDesaIndex() {
     </>
   );
 }
+
+export default withAuth(InformasiDesaIndex);

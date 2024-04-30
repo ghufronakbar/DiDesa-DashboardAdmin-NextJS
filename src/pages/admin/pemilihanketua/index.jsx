@@ -16,8 +16,9 @@ import {
 import { axiosInstance } from "@/lib/axios";
 import { headAdmin } from "@/component/headAdmin";
 import NavbarAdmin from "@/component/navbarAdmin";
+import { withAuth } from "@/lib/authorizationAdmin";
 
-export default function PemilihanKetuaDesa() {
+function PemilihanKetuaDesa() {
   const router = useRouter();
   const [pemilihanData, setPemilihanData] = useState(null);
   
@@ -101,3 +102,5 @@ useEffect(() => {
     </>
   );
 }
+
+export default withAuth(PemilihanKetuaDesa)

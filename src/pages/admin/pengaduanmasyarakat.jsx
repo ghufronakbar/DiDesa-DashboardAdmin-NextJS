@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 import {
   Container,
   Heading,
@@ -8,26 +8,30 @@ import {
   Th,
   Thead,
   Tr,
-  
-} from '@chakra-ui/react';
-import { axiosInstance } from '@/lib/axios';
-import { headAdmin } from '@/component/headAdmin';
+} from "@chakra-ui/react";
+import { axiosInstance } from "@/lib/axios";
+import { headAdmin } from "@/component/headAdmin";
 import NavbarAdmin from "@/component/navbarAdmin";
+import { withAuth } from "@/lib/authorizationAdmin";
 
-export default function PengaduanMasyarakat() {
+
+function PengaduanMasyarakat() {
   const [pengaduanData, setPengaduanData] = useState([]);
-  
 
   useEffect(() => {
     const fetchPengaduanData = async () => {
       try {
-        const response = await axiosInstance.get('/api/pengaduanmasyarakatwarga');
-        console.log('Data Pengaduan Masyarakat:', response.data);
+        const response = await axiosInstance.get(
+          "/api/pengaduanmasyarakatwarga"
+        );
+        console.log("Data Pengaduan Masyarakat:", response.data);
         // Sort the data by the 'tanggal' field in descending order (latest first)
-        const sortedData = response.data.values.sort((a, b) => new Date(b.tanggal) - new Date(a.tanggal));
+        const sortedData = response.data.values.sort(
+          (a, b) => new Date(b.tanggal) - new Date(a.tanggal)
+        );
         setPengaduanData(sortedData);
       } catch (error) {
-        console.error('Error fetching Pengaduan Masyarakat data:', error);
+        console.error("Error fetching Pengaduan Masyarakat data:", error);
       }
     };
 
@@ -38,9 +42,12 @@ export default function PengaduanMasyarakat() {
     <>
       {headAdmin()}
       {NavbarAdmin()}
-      <br /><br />
-      <Container maxW='1500px'>
-        <Heading as="h1" my={6}>Daftar Pengaduan Masyarakat</Heading>
+      <br />
+      <br />
+      <Container maxW="1500px">
+        <Heading as="h1" my={6}>
+          Daftar Pengaduan Masyarakat
+        </Heading>
         <Table variant="striped" colorScheme="blue">
           <Thead>
             <Tr>
@@ -67,3 +74,5 @@ export default function PengaduanMasyarakat() {
     </>
   );
 }
+
+export default withAuth(PengaduanMasyarakat);
