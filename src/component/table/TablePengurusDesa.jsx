@@ -56,6 +56,32 @@ export function TablePengurusDesa() {
     router.push(`/admin/pengurusdesa/${id}`);
   };
 
+  const handleNonAdmin = async (id) => {
+    try {
+      await axiosInstance.put(`/pengurusdesa/akses/${id}`, { akses_admin: 1,id });
+      toast({
+        title: "This user has been admin",
+        status: "success",
+      });
+      refetchData()
+    } catch (error) {
+      console.error("Error rejecting request:", error);
+    }
+  };
+
+  const handleAdmin = async (id) => {
+    try {
+      await axiosInstance.put(`/pengurusdesa/akses/${id}`, { akses_admin: 0,id });
+      toast({
+        title: "This user has not been admin",
+        status: "warning",
+      });
+      refetchData()
+    } catch (error) {
+      console.error("Error rejecting request:", error);
+    }
+  };
+
   return (
     <TableContainer>
       <Table>
@@ -100,6 +126,7 @@ export function TablePengurusDesa() {
                       color="white"
                       px={4}
                       h={8}
+                      onClick={()=>{handleAdmin(data.pengurus_desa_anggota_id)}}
                     >
                       Admin
                     </Box>
@@ -111,6 +138,7 @@ export function TablePengurusDesa() {
                       color="white"
                       px={4}
                       h={8}
+                      onClick={()=>{handleNonAdmin(data.pengurus_desa_anggota_id)}}
                     >
                       Not Admin
                     </Box>
