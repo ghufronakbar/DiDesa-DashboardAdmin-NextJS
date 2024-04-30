@@ -1,6 +1,6 @@
 import Head from "next/head"
 
-export const headAdmin = () => {
+export const HeadAdmin = () => {
         return (
             <Head>
                 <title>Admin - Konek</title>
