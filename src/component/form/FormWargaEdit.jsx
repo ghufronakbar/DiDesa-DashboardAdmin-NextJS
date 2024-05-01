@@ -21,24 +21,24 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useRef } from "react";
 
-export function FormBeritaEdit() {
+export function FormWargaEdit() {
   const router = useRouter();
   const { id } = router.query;
+  const [error, setError] = useState(null);
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const judulRef = useRef();
-  const subjudulRef = useRef();
-  const tanggalRef = useRef();
-  const isiRef = useRef();
-  const gambarRef = useRef();
+  const nik = useRef();
+  const kk = useRef();
+  const nama_lengkap = useRef();
+  const tanggal_lahir = useRef();
+  const foto = useRef();
   const toast = useToast();
 
   useEffect(() => {
     if (id) {
       const fetchData = async () => {
         try {
-          const reqDataResponse = await axiosInstance.get(`/berita/${id}`);
+          const reqDataResponse = await axiosInstance.get(`/warga/${id}`);
           setData(reqDataResponse.data.values[0]);
           setLoading(false);
         } catch (error) {
@@ -55,25 +55,25 @@ export function FormBeritaEdit() {
   const handleUpdate = async (id) => {
     try {
       const formData = {
-        judul: judulRef.current.value,
-        subjudul: subjudulRef.current.value,
-        tanggal: tanggalRef.current.value,
-        isi: isiRef.current.value,
+        nik: nik.current.value,
+        kk: kk.current.value,
+        nama_lengkap: nama_lengkap.current.value,
+        tanggal_lahir: tanggal_lahir.current.value,
       };
 
-      if (gambarRef.current.files.length > 0) {
-        formData.gambar = gambarRef.current.value;
+      if (foto.current.files.length > 0) {
+        formData.foto = foto.current.value;
       }
 
-      
+      console.log(foto.current.files.length)
 
-      await axiosInstance.put(`/berita/edit/${id}`, formData);
+      await axiosInstance.put(`/warga/edit/${id}`, formData);
 
       toast({
-        title: "Berita has been updated",
+        title: "Warga has been updated",
         status: "success",
       });
-      router.push(`/admin/berita`);
+      router.push(`/admin/warga`);
     } catch (error) {
       console.error("Error approving request:", error);
     }
@@ -97,25 +97,39 @@ export function FormBeritaEdit() {
               <Table flex={5}>
                 <Tbody>
                   <Tr>
-                    <Th>Judul</Th>
+                    <Th>NIK</Th>
                     <Td>
                       <FormControl>
                         <Input
-                          defaultValue={data.judul}
-                          ref={judulRef}
-                          name="judul"
+                          ref={nik}
+                          name="nik"
+                          defaultValue={data.nik}
                         ></Input>
                       </FormControl>
                     </Td>
                   </Tr>
                   <Tr>
-                    <Th>Sub Judul</Th>
+                    <Th>KK</Th>
                     <Td>
                       <FormControl>
                         <Input
-                          defaultValue={data.subjudul}
-                          ref={subjudulRef}
-                          name="subjudul"
+                          required
+                          ref={kk}
+                          name="kk"
+                          defaultValue={data.kk}
+                        ></Input>
+                      </FormControl>
+                    </Td>
+                  </Tr>
+                  <Tr>
+                    <Th>Nama Lengkap</Th>
+                    <Td>
+                      <FormControl>
+                        <Input
+                          required
+                          ref={nama_lengkap}
+                          name="nama_lengkap"
+                          defaultValue={data.nama_lengkap}
                         ></Input>
                       </FormControl>
                     </Td>
@@ -127,14 +141,14 @@ export function FormBeritaEdit() {
                         <Input
                           name="tanggal"
                           type="date"
+                          ref={tanggal_lahir}
                           defaultValue={
-                            data.tanggal == "0000-00-00"
+                            data.tanggal_lahir == "0000-00-00"
                               ? ""
-                              : new Date(data.tanggal)
+                              : new Date(data.tanggal_lahir)
                                   .toISOString()
                                   .split("T")[0]
                           }
-                          ref={tanggalRef}
                         />
                       </FormControl>
                     </Td>
@@ -156,26 +170,21 @@ export function FormBeritaEdit() {
                   <Image
                     borderRadius="18"
                     objectFit="cover"
-                    src={data.gambar}
-                    alt={data.gambar}
+                    src={data.foto}
+                    alt={data.foto}
                   />
                 </Center>
-                <Input mt={4} type="file" name="gambar" ref={gambarRef} />
+                <Input mt={4} type="file" name="gambar" ref={foto} />
               </Box>
             </Flex>
 
-            <Textarea
-              marginTop={4}
-              defaultValue={data.isi}
-              ref={isiRef}
-            ></Textarea>
             <Center mt={4}>
               <Button
                 variant="outline"
                 bg="#4FD1C5"
                 color="white"
                 onClick={() => {
-                  handleUpdate(data.berita_id);
+                  handleUpdate(data.warga_id);
                 }}
               >
                 Update
