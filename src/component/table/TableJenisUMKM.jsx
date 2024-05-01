@@ -31,23 +31,12 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { EditIcon } from "@chakra-ui/icons";
 
-export function TableJenisUMKM() {
+export function TableJenisUMKM({ refetchData: customRefetchData }) {
   const toast = useToast();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [namaJenisUMKM, setNamaJenisUMKM] = useState("");
   const [editedJenisUMKMId, setEditedJenisUMKMId] = useState(null);
 
-  function formatDate(dateString) {
-    const options = {
-      weekday: "long",
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    };
-    return new Date(dateString).toLocaleDateString("en-US", options);
-  }
-
-  let i = 1;
   const { data, refetch: refetchData } = useQuery({
     queryKey: ["jenisumkm"],
     queryFn: async () => {
@@ -56,6 +45,7 @@ export function TableJenisUMKM() {
     },
   });
 
+  let i = 1;
   const handleDelete = async (id) => {
     try {
       await axiosInstance.delete(`/jenisumkm/delete/${id}`);
@@ -71,7 +61,7 @@ export function TableJenisUMKM() {
   };
 
   const handleEdit = async (e) => {
-    e.preventDefault(); // Mencegah pengiriman form secara default
+    e.preventDefault();
 
     try {
       await axiosInstance.put(`/jenisumkm/edit/${editedJenisUMKMId}`, {
@@ -153,7 +143,7 @@ export function TableJenisUMKM() {
                   </FormControl>
                   <Center>
                     <Button
-                      mt={4}
+                      mt={8}
                       borderRadius="md"
                       bg="#48BB78"
                       color="white"

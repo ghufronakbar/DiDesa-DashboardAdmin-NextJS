@@ -187,17 +187,17 @@ export function DetailWarga() {
                   </TableContainer>
                   <Center>
                     {" "}
-                    <Button mt={4}
-                     variant="outline"
-                     bg="#4FD1C5"
-                     color="white"
-                    onClick={
-                        ()=>{
-                           
-                                router.push(`/admin/warga/edit/${id}`);
-                            
-                        }
-                    }>Edit</Button>
+                    <Button
+                      mt={4}
+                      variant="outline"
+                      bg="#4FD1C5"
+                      color="white"
+                      onClick={() => {
+                        router.push(`/admin/warga/edit/${id}`);
+                      }}
+                    >
+                      Edit
+                    </Button>
                   </Center>
                 </Box>
               </Box>
