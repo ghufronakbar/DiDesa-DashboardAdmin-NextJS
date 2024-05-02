@@ -2,18 +2,10 @@ import {
   Box,
   Button,
   Center,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
   Table,
   Flex,
   Text,
   useToast,
-  Divider,
   Spacer,
   Tbody,
   Tr,
@@ -63,36 +55,6 @@ export function DetailWarga() {
     return new Date(dateString).toLocaleDateString("en-US", options);
   }
 
-  const handleApprove = async () => {
-    try {
-      await axiosInstance.put(`/request/data/approve/${id}`, { approve: 2 });
-      setIsModalOpen(false);
-      // Refresh data after approval
-      const reqDataResponse = await axiosInstance.get(`/request/data/${id}`);
-      setRequestData(reqDataResponse.data.values[0]);
-      toast({
-        title: "Request has been approved",
-        status: "success",
-      });
-    } catch (error) {
-      console.error("Error approving request:", error);
-    }
-  };
-
-  const handleReject = async () => {
-    try {
-      await axiosInstance.put(`/request/data/approve/${id}`, { approve: 1 });
-      setIsModalOpen(false);
-      const reqDataResponse = await axiosInstance.get(`/request/data/${id}`);
-      setRequestData(reqDataResponse.data.values[0]);
-      toast({
-        title: "Request has been rejected",
-        status: "warning",
-      });
-    } catch (error) {
-      console.error("Error rejecting request:", error);
-    }
-  };
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error fetching data</div>;

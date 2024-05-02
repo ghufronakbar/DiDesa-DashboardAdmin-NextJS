@@ -29,7 +29,7 @@ import {
 } from "@chakra-ui/react";
 import { axiosInstance } from "../../lib/axios";
 import { useQuery } from "@tanstack/react-query";
-import { useRef } from "react"; 
+import { useRef } from "react";
 import { useRouter } from "next/router";
 
 export function FormInformasiDesa() {
@@ -43,6 +43,7 @@ export function FormInformasiDesa() {
   const { data, refetch: refetchData } = useQuery({
     queryFn: async () => {
       const dataResponse = await axiosInstance.get("/informasidesa");
+  
       return dataResponse;
     },
   });
@@ -94,11 +95,11 @@ export function FormInformasiDesa() {
                         <FormLabel>Luas Lahan Pertanian</FormLabel>
                       </Th>
                       <Td>
-                        <NumberInput
-                          defaultValue={data.luas_lahan_pertanian}
-                          min={0}
-                        >
-                          <NumberInputField ref={luasLahanPertanianRef} />
+                        <NumberInput min={0}   defaultValue={data.luas_lahan_pertanian}>
+                          <NumberInputField
+                            ref={luasLahanPertanianRef}
+                            defaultValue={data.luas_lahan_pertanian}
+                          />
                           <NumberInputStepper>
                             <NumberIncrementStepper />
                             <NumberDecrementStepper />
@@ -111,11 +112,11 @@ export function FormInformasiDesa() {
                         <FormLabel>Lahan Peternakan</FormLabel>
                       </Th>
                       <Td>
-                        <NumberInput
-                          defaultValue={data.lahan_peternakan}
-                          min={0}
-                        >
-                          <NumberInputField ref={lahanPeternakanRef} />
+                        <NumberInput min={0}   defaultValue={data.lahan_peternakan}>
+                          <NumberInputField
+                            ref={lahanPeternakanRef}
+                            defaultValue={data.lahan_peternakan}
+                          />
                           <NumberInputStepper>
                             <NumberIncrementStepper />
                             <NumberDecrementStepper />

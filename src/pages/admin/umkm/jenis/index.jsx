@@ -23,6 +23,7 @@ import {
 import { Navbar } from "../../../../component/NavbarAdmin";
 import { TableJenisUMKM } from "../../../../component/table/TableJenisUMKM";
 import { axiosInstance } from "../../../../lib/axios";
+import { HeadAdmin } from "../../../../component/HeadAdmin";
 
 export default function JenisUMKM() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -58,6 +59,7 @@ export default function JenisUMKM() {
 
   return (
     <>
+    {HeadAdmin()}
       <main>
         {Navbar()}
         <Container maxW="80%">
@@ -74,7 +76,7 @@ export default function JenisUMKM() {
               colorScheme="teal"
               onClick={onOpen}
             >
-              Jenis UMKM
+              Add Jenis UMKM
             </Box>
           </Flex>
           <TableJenisUMKM refetchData={refetchData} />

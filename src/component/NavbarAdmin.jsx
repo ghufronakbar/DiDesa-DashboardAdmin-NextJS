@@ -58,6 +58,7 @@ export function Navbar() {
             </List>
             <List>
               <ChakraLink href="/admin/komentar">
+                
                 <Button colorScheme="white" variant="ghost">
                   Komentar
                 </Button>
@@ -71,9 +72,9 @@ export function Navbar() {
               </ChakraLink>
             </List>   
             <List>
-              <ChakraLink href="/admin/pemilihanketua">
+              <ChakraLink href="/admin/pemilihankepaladesa">
                 <Button colorScheme="white" variant="ghost">
-                Pemilihan Ketua
+                Pemilihan Kepala Desa
                 </Button>
               </ChakraLink>
             </List>   

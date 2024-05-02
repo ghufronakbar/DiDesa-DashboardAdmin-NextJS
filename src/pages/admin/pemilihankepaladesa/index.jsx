@@ -1,14 +1,13 @@
-
+import { HeadAdmin } from "../../../component/HeadAdmin";
 import {
   Container,
   Heading,
 } from "@chakra-ui/react";
 import { Navbar } from "../../../component/NavbarAdmin";
-import { TableUMKM } from "../../../component/table/TableUMKM";
-import { HeadAdmin } from "../../../component/HeadAdmin";
+import { TablePemilihanKepalaDesa } from "../../../component/table/TablePemilihanKepalaDesa";
 
 
-export default function UMKM() {
+export default function PemilihanKepalaDesa() {
   return (
     <>
       {HeadAdmin()}
@@ -16,9 +15,9 @@ export default function UMKM() {
       {Navbar()}
         <Container maxW="80%">
           <Heading marginBottom="8" marginTop="8">
-            UMKM
+            Pemilihan Kepala Desa
           </Heading>
-          {TableUMKM()}
+          {TablePemilihanKepalaDesa()}
         </Container>
       </main>
     </>
