@@ -2,7 +2,9 @@ import {
   Box,
   Button,
   Center,
+  Flex,
   Image,
+  Spacer,
   Table,
   TableContainer,
   Tbody,
@@ -57,65 +59,85 @@ export function TableWarga() {
   };
 
   return (
-    <TableContainer>
-      <Table>
-        <Thead>
-          <Tr>
-            <Th>No</Th>
-            <Th></Th>
-            <Th>Nama Lengkap</Th>
-            <Th>NIK/KK</Th>
-            <Th>Tanggal Lahir</Th>
-            <Th></Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {data?.data.values.map((data) => (
-            <Tr key={data.berita_id}>
-              <Td>{i++}</Td>
-              <Td>
-                <Image
-                  borderRadius="18"
-                  boxSize="60px"
-                  objectFit="cover"
-                  src={data.foto}
-                  alt={data.foto}
-                />
-              </Td>
-              <Td>
-                <Text as="b">{data.nama_lengkap}</Text>
-              </Td>
-              <Td>
-                <Text as="b">{data.nik}</Text>
-                <Text>{data.kk}</Text>
-              </Td>
+    <>
+      {" "}
+      <Flex>
+        <Spacer flex={8} />
 
-              <Td>
-                <Text as="b">{formatDate(data.tanggal_lahir)}</Text>
-              </Td>
-              <Td>
-                <Center>
-                  <Button
-                    variant="outline"
-                    colorScheme="grey"
-                    onClick={() => handleDetail(data.warga_id)}
-                  >
-                    <Text as="b">Detail</Text>
-                  </Button>
-                </Center>
-                <Center marginTop={1}>
-                  <Button
-                    colorScheme="red"
-                    onClick={() => handleDelete(data.warga_id)}
-                  >
-                    Delete
-                  </Button>
-                </Center>
-              </Td>
+        <Box
+          as="button"
+          borderRadius="md"
+          bg="#48BB78"
+          color="white"
+          px={4}
+          h={10}
+          onClick={() => {
+            router.push("/admin/warga/add");
+          }}
+        >
+          Add Warga
+        </Box>
+      </Flex>
+      <TableContainer>
+        <Table>
+          <Thead>
+            <Tr>
+              <Th>No</Th>
+              <Th></Th>
+              <Th>Nama Lengkap</Th>
+              <Th>NIK/KK</Th>
+              <Th>Tanggal Lahir</Th>
+              <Th></Th>
             </Tr>
-          ))}
-        </Tbody>
-      </Table>
-    </TableContainer>
+          </Thead>
+          <Tbody>
+            {data?.data.values.map((data) => (
+              <Tr key={data.berita_id}>
+                <Td>{i++}</Td>
+                <Td>
+                  <Image
+                    borderRadius="18"
+                    boxSize="60px"
+                    objectFit="cover"
+                    src={data.foto}
+                    alt={data.foto}
+                  />
+                </Td>
+                <Td>
+                  <Text as="b">{data.nama_lengkap}</Text>
+                </Td>
+                <Td>
+                  <Text as="b">{data.nik}</Text>
+                  <Text>{data.kk}</Text>
+                </Td>
+
+                <Td>
+                  <Text as="b">{formatDate(data.tanggal_lahir)}</Text>
+                </Td>
+                <Td>
+                  <Center>
+                    <Button
+                      variant="outline"
+                      colorScheme="grey"
+                      onClick={() => handleDetail(data.warga_id)}
+                    >
+                      <Text as="b">Detail</Text>
+                    </Button>
+                  </Center>
+                  <Center marginTop={1}>
+                    <Button
+                      colorScheme="red"
+                      onClick={() => handleDelete(data.warga_id)}
+                    >
+                      Delete
+                    </Button>
+                  </Center>
+                </Td>
+              </Tr>
+            ))}
+          </Tbody>
+        </Table>
+      </TableContainer>
+    </>
   );
 }

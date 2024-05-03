@@ -29,6 +29,7 @@ import { axiosInstance } from "../../lib/axios";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useQuery } from "@tanstack/react-query";
+import { WarningIcon } from "@chakra-ui/icons";
 
 export function DetailPemilihanKepalaDesaID() {
   const router = useRouter();
@@ -92,10 +93,9 @@ export function DetailPemilihanKepalaDesaID() {
   const handleEditPemilihanKetua = async (e) => {
     e.preventDefault();
     try {
-        
       if (tanggalMulai > tanggalSelesai) {
         toast({
-          title: "Tanggal Mulai Harus Lebih Dulu Tanggal Selesai",
+          title: "Tanggal mulai harus lebih dulu tanggal selesai",
           status: "error",
         });
       } else if (tanggalMulai < tanggalSelesai) {
@@ -107,7 +107,7 @@ export function DetailPemilihanKepalaDesaID() {
             tanggal_mulai: tanggalMulai,
             tanggal_selesai: tanggalSelesai,
           }
-        );        
+        );
         toast({
           title: "Pemilihan Kepala Desa has been edited",
           status: "success",
@@ -120,7 +120,7 @@ export function DetailPemilihanKepalaDesaID() {
         // Penanganan kesalahan jika tanggal mulai dan tanggal selesai bertabrakan
         toast({
           title:
-            "Tanggal Mulai dan Tanggal Selesai Bertabrakan Dengan Pemilihan Lain",
+            "Tanggal mulai tidak boleh yang sudah lewat dan tidak boleh bertabrakan dengan pemilihan lain",
           status: "error",
         });
       } else {
@@ -215,22 +215,26 @@ export function DetailPemilihanKepalaDesaID() {
                     </Table>
                   </TableContainer>
                   <Center>
-                    <Button
-                      mt={4}
-                      variant="outline"
-                      bg="#4FD1C5"
-                      color="white"
-                      onClick={() => {
-                        setIsModalOpen(true);
-                        setEditedPemilihanKetuaId(item.pemilihan_ketua_id);
-                        setJudul(item.judul);
-                        setDeskripsi(item.deskripsi);
-                        setTanggalMulai(item.tanggal_mulai);
-                        setTanggalSelesai(item.tanggal_selesai);
-                      }}
-                    >
-                      Edit
-                    </Button>
+                    {item.status == 1 ? (
+                      <Button
+                        mt={4}
+                        variant="outline"
+                        bg="#4FD1C5"
+                        color="white"
+                        onClick={() => {
+                          setIsModalOpen(true);
+                          setEditedPemilihanKetuaId(item.pemilihan_ketua_id);
+                          setJudul(item.judul);
+                          setDeskripsi(item.deskripsi);
+                          setTanggalMulai(item.tanggal_mulai);
+                          setTanggalSelesai(item.tanggal_selesai);
+                        }}
+                      >
+                        Edit
+                      </Button>
+                    ) : (
+                      ""
+                    )}
                   </Center>
                 </Box>
               </Box>
@@ -240,18 +244,44 @@ export function DetailPemilihanKepalaDesaID() {
               <Box p={8} borderWidth="1px" borderRadius="lg" overflow="hidden">
                 <Flex>
                   <Spacer flex={4} />
-                  <Box
-                    as="button"
-                    borderRadius="md"
-                    bg="#48BB78"
-                    color="white"
-                    px={4}
-                    h={8}
-                    marginRight={4}
-                  >
-                    Add Calon Ketua
-                  </Box>
+                  {item.status == 1 ? (
+                    <Box
+                      as="button"
+                      borderRadius="md"
+                      bg="#48BB78"
+                      color="white"
+                      px={4}
+                      h={8}
+                      marginRight={4}
+                      onClick={() => {
+                        router.push(
+                          `/admin/pemilihankepaladesa/calon/add/${item.pemilihan_ketua_id}`
+                        );
+                      }}
+                    >
+                      Add Calon Ketua
+                    </Box>
+                  ) : (
+                    ""
+                  )}
                 </Flex>
+                {item.calon_ketua.length == 0 ? (
+                  
+                    <Box
+                      p={8}
+                      m={4}
+                      borderWidth="1px"
+                      borderRadius="lg"
+                      overflow="hidden"
+                    >
+                      <Text>
+                        <WarningIcon marginLeft={6} marginRight={6} /> Calon Ketua Belum Tersedia
+                      </Text>
+                    </Box>
+                  
+                ) : (
+                  ""
+                )}
 
                 {item.calon_ketua.map((calon) => (
                   <>
@@ -317,6 +347,11 @@ export function DetailPemilihanKepalaDesaID() {
                             color="white"
                             px={4}
                             h={8}
+                            onClick={() => {
+                              router.push(
+                                `/admin/pemilihankepaladesa/calon/${calon.calon_ketua_id}`
+                              );
+                            }}
                           >
                             Edit
                           </Box>
@@ -329,61 +364,61 @@ export function DetailPemilihanKepalaDesaID() {
             </Box>
           </Flex>
         ))}
-        <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <Modal
+          size="xl"
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+        >
           <ModalOverlay />
           <ModalContent>
             <ModalHeader>Edit Pemilihan Ketua</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-              <Flex>
-                <Center flex={1}>
-                  <form onSubmit={handleEditPemilihanKetua}>
-                    <FormControl m={2}>
-                      <Input
-                        name="judul"
-                        value={judul}
-                        onChange={(e) => setJudul(e.target.value)}
-                      />
-                    </FormControl>
-                    <FormControl m={2}>
-                      <Textarea
-                        name="deskripsi"
-                        value={deskripsi}
-                        onChange={(e) => setDeskripsi(e.target.value)}
-                      />
-                    </FormControl>
-                    <FormControl m={2}>
-                      <Input
-                        type="date"
-                        name="tanggal_mulai"
-                        value={formatDate2(tanggalMulai)}
-                        onChange={(e) => setTanggalMulai(e.target.value)}
-                      />
-                    </FormControl>
-                    <FormControl m={2}>
-                      <Input
-                        type="date"
-                        name="tanggal_selesai"
-                        value={formatDate2(tanggalSelesai)}
-                        onChange={(e) => setTanggalSelesai(e.target.value)}
-                      />
-                    </FormControl>
-                    <Center>
-                      <Button
-                        mt={8}
-                        borderRadius="md"
-                        bg="#48BB78"
-                        color="white"
-                        px={4}
-                        h={8}
-                        type="submit"
-                      >
-                        Update
-                      </Button>
-                    </Center>
-                  </form>
+              <form onSubmit={handleEditPemilihanKetua}>
+                <FormControl m={2}>
+                  <Input
+                    name="judul"
+                    value={judul}
+                    onChange={(e) => setJudul(e.target.value)}
+                  />
+                </FormControl>
+                <FormControl m={2}>
+                  <Textarea
+                    name="deskripsi"
+                    value={deskripsi}
+                    onChange={(e) => setDeskripsi(e.target.value)}
+                  />
+                </FormControl>
+                <FormControl m={2}>
+                  <Input
+                    type="date"
+                    name="tanggal_mulai"
+                    value={formatDate2(tanggalMulai)}
+                    onChange={(e) => setTanggalMulai(e.target.value)}
+                  />
+                </FormControl>
+                <FormControl m={2}>
+                  <Input
+                    type="date"
+                    name="tanggal_selesai"
+                    value={formatDate2(tanggalSelesai)}
+                    onChange={(e) => setTanggalSelesai(e.target.value)}
+                  />
+                </FormControl>
+                <Center>
+                  <Button
+                    mt={8}
+                    borderRadius="md"
+                    bg="#48BB78"
+                    color="white"
+                    px={4}
+                    h={8}
+                    type="submit"
+                  >
+                    Update
+                  </Button>
                 </Center>
-              </Flex>
+              </form>
             </ModalBody>
             <ModalFooter></ModalFooter>
           </ModalContent>

@@ -22,23 +22,8 @@ export default function Berita() {
       {HeadAdmin}
       <main>
         {Navbar()}
-        <Container maxW="80%">
-          <Flex marginBottom="8" marginTop="8">
-            <Heading flex={1}>Berita</Heading>
-            <Spacer flex={8} />
-
-            <Box
-              as="button"
-              borderRadius="md"
-              bg="#48BB78"
-              color="white"
-              px={4}
-              h={10}
-              onClick={()=>{router.push('/admin/berita/add')}}
-            >
-              Add Berita
-            </Box>
-          </Flex>
+        <Container maxW="80%"><Heading marginBottom="8" marginTop="8">Berita</Heading>
+          
 
           {TableBerita()}
         </Container>

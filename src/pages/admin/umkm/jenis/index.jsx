@@ -31,7 +31,7 @@ export default function JenisUMKM() {
   const toast = useToast();
 
   const { data, refetch: refetchData } = useQuery({
-    queryKey: ["jenisumkm"],
+    queryKey: ["jenisumkm/add"],
     queryFn: async () => {
       const dataResponse = await axiosInstance.get("/jenisumkm");
       return dataResponse;
