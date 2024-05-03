@@ -23,7 +23,8 @@ import {
 import { Navbar } from "../../../../component/NavbarAdmin";
 import { TableJenisUMKM } from "../../../../component/table/TableJenisUMKM";
 import { axiosInstance } from "../../../../lib/axios";
-import { HeadAdmin } from "../../../../component/HeadAdmin";
+import { HeadAdmin } from "../../../../component/headAdmin";
+
 
 export default function JenisUMKM() {
   const { isOpen, onOpen, onClose } = useDisclosure();

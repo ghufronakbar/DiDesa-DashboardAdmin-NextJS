@@ -72,7 +72,7 @@ export function TableUMKM() {
       setIsModalOpen(false);
       toast({
         title: "UMKM has been approved",
-        status: "warning",
+        status: "success",
       });
       refetchData();
     } catch (error) {
@@ -88,7 +88,7 @@ export function TableUMKM() {
       });
       setIsModalOpen(false);
       toast({
-        title: "UMKM has been approved",
+        title: "UMKM has been rejected",
         status: "warning",
       });
       refetchData();
