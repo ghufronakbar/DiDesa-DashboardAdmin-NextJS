@@ -42,14 +42,18 @@ export function FormWargaAdd() {
         tanggal_lahir: tanggal_lahir.current.value,
       };
 
-      await axiosInstance.post(`/warga/add`, formData);
+      const response = await axiosInstance.post(`/warga/add`, formData);
 
       toast({
-        title: "Warga has been inserted",
+        title: response.data.message,
         status: "success",
       });
       router.push(`/admin/warga`);
     } catch (error) {
+      toast({
+        title: error.response.data.message,
+        status: "error",
+      });
       console.error("Error approving request:", error);
     }
   };
@@ -112,7 +116,7 @@ export function FormWargaAdd() {
                 handleAdd();
               }}
             >
-              Add
+              Tambah
             </Button>
           </Center>
         </Box>

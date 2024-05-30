@@ -51,27 +51,31 @@ export function TableUMKM() {
 
   const handleDelete = async (id) => {
     try {
-      await axiosInstance.delete(`/umkm/delete/${id}`);
+      const response = await axiosInstance.delete(`/umkm/delete/${id}`);
 
       toast({
-        title: "UMKM has been deleted",
+        title: response.data.message,
         status: "warning",
       });
       refetchData();
     } catch (error) {
+      toast({
+        title: error.response.data.message,
+        status: "warning",
+      });
       console.error("Error rejecting request:", error);
     }
   };
 
   const handleApprove = async (id) => {
     try {
-      await axiosInstance.put(`/umkm/approve/${id}`, {
+      const response = await axiosInstance.put(`/umkm/approve/${id}`, {
         approve: 2,
         id,
       });
       setIsModalOpen(false);
       toast({
-        title: "UMKM has been approved",
+        title: response.data.message,
         status: "success",
       });
       refetchData();
@@ -82,13 +86,13 @@ export function TableUMKM() {
 
   const handleNotApprove = async (id) => {
     try {
-      await axiosInstance.put(`/umkm/approve/${id}`, {
+      const response = await axiosInstance.put(`/umkm/approve/${id}`, {
         approve: 1,
         id,
       });
       setIsModalOpen(false);
       toast({
-        title: "UMKM has been rejected",
+        title: response.data.message,
         status: "warning",
       });
       refetchData();
@@ -149,7 +153,7 @@ export function TableUMKM() {
                         setSelectedUmkmId(data.umkm_id);
                       }}
                     >
-                      Pending
+                      Menunggu
                     </Box>
                   )}
 
@@ -165,7 +169,7 @@ export function TableUMKM() {
                         handleApprove(data.umkm_id);
                       }}
                     >
-                      Not Approved
+                      Tidak Disetujui
                     </Box>
                   )}
 
@@ -181,7 +185,7 @@ export function TableUMKM() {
                         handleNotApprove(data.umkm_id);
                       }}
                     >
-                      Not Activated
+                      Tidak Aktif
                     </Box>
                   )}
                   {data.approve == 2 && data.status == 1 && (
@@ -196,7 +200,7 @@ export function TableUMKM() {
                         handleNotApprove(data.umkm_id);
                       }}
                     >
-                      Activated
+                      Aktif{" "}
                     </Box>
                   )}
                 </Center>
@@ -208,7 +212,7 @@ export function TableUMKM() {
                     colorScheme="red"
                     onClick={() => handleDelete(data.umkm_id)}
                   >
-                    Delete
+                    Hapus
                   </Button>
                 </Center>
               </Td>

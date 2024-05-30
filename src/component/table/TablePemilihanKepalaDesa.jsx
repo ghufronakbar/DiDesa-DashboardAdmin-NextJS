@@ -161,7 +161,7 @@ export function TablePemilihanKepalaDesa() {
                         px={4}
                         h={8}
                       >
-                        Not Started
+                        Mendatang
                       </Box>
                     )}
 
@@ -174,7 +174,7 @@ export function TablePemilihanKepalaDesa() {
                         px={4}
                         h={8}
                       >
-                        Ongoing
+                        Sedang Berjalan
                       </Box>
                     )}
                     {item.status == 3 && (
@@ -186,7 +186,7 @@ export function TablePemilihanKepalaDesa() {
                         px={4}
                         h={8}
                       >
-                        Finished
+                        Selesai
                       </Box>
                     )}
                   </VStack>
@@ -248,7 +248,7 @@ export function TablePemilihanKepalaDesa() {
                       colorScheme="red"
                       onClick={() => handleDelete(item.pemilihan_ketua_id)}
                     >
-                      Delete
+                      Hapus
                     </Button>
                   </Center>
                 </Td>

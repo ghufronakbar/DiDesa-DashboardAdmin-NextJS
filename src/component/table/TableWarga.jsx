@@ -42,10 +42,10 @@ export function TableWarga() {
 
   const handleDelete = async (id) => {
     try {
-      await axiosInstance.delete(`/warga/delete/${id}`);
+      const response = await axiosInstance.delete(`/warga/delete/${id}`);
 
       toast({
-        title: "Warga has been deleted",
+        title: response.data.message,
         status: "warning",
       });
       refetchData();
@@ -75,7 +75,7 @@ export function TableWarga() {
             router.push("/admin/warga/add");
           }}
         >
-          Add Warga
+          Tambah Warga
         </Box>
       </Flex>
       <TableContainer>
@@ -129,7 +129,7 @@ export function TableWarga() {
                       colorScheme="red"
                       onClick={() => handleDelete(data.warga_id)}
                     >
-                      Delete
+                      Hapus
                     </Button>
                   </Center>
                 </Td>

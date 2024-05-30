@@ -13,7 +13,7 @@ import {
   Tr,
   useToast,
   Flex,
-  Spacer
+  Spacer,
 } from "@chakra-ui/react";
 import { axiosInstance } from "../../lib/axios";
 import { useQuery } from "@tanstack/react-query";
@@ -42,10 +42,10 @@ export function TableBerita() {
 
   const handleDelete = async (id) => {
     try {
-      await axiosInstance.delete(`/berita/delete/${id}`);
+      const response = await axiosInstance.delete(`/berita/delete/${id}`);
 
       toast({
-        title: "Berita has been deleted",
+        title: response.data.message,
         status: "warning",
       });
       refetchData();
@@ -60,9 +60,12 @@ export function TableBerita() {
 
   const handleNonPublic = async (id) => {
     try {
-      await axiosInstance.put(`/berita/publikasi/${id}`, { publikasi: 1, id });
+      const response = await axiosInstance.put(`/berita/publikasi/${id}`, {
+        publikasi: 1,
+        id,
+      });
       toast({
-        title: "Berita has been published",
+        title: response.data.message,
         status: "success",
       });
       refetchData();
@@ -73,9 +76,12 @@ export function TableBerita() {
 
   const handlePublic = async (id) => {
     try {
-      await axiosInstance.put(`/berita/publikasi/${id}`, { publikasi: 0, id });
+      const response = await axiosInstance.put(`/berita/publikasi/${id}`, {
+        publikasi: 0,
+        id,
+      });
       toast({
-        title: "Berita has not been published",
+        title: response.data.message,
         status: "warning",
       });
       refetchData();
@@ -86,9 +92,12 @@ export function TableBerita() {
 
   const handleNonPriority = async (id) => {
     try {
-      await axiosInstance.put(`/berita/prioritas/${id}`, { prioritas: 1, id });
+      const response = await axiosInstance.put(`/berita/prioritas/${id}`, {
+        prioritas: 1,
+        id,
+      });
       toast({
-        title: "Berita has been prioritized",
+        title: response.data.message,
         status: "success",
       });
       refetchData();
@@ -99,9 +108,12 @@ export function TableBerita() {
 
   const handlePriority = async (id) => {
     try {
-      await axiosInstance.put(`/berita/prioritas/${id}`, { prioritas: 0, id });
+      const response = await axiosInstance.put(`/berita/prioritas/${id}`, {
+        prioritas: 0,
+        id,
+      });
       toast({
-        title: "Berita has not been prioritized",
+        title: response.data.message,
         status: "warning",
       });
       refetchData();
@@ -126,7 +138,7 @@ export function TableBerita() {
             router.push("/admin/berita/add");
           }}
         >
-          Add Berita
+          Tambah Berita
         </Box>
       </Flex>
       <TableContainer>
@@ -173,7 +185,7 @@ export function TableBerita() {
                           handleNonPublic(data.berita_id);
                         }}
                       >
-                        Not Published
+                        Disembunyikan
                       </Box>
                     )}
                     {data.publikasi == 1 && (
@@ -188,7 +200,7 @@ export function TableBerita() {
                           handlePublic(data.berita_id);
                         }}
                       >
-                        Published
+                        Dipublikasi
                       </Box>
                     )}
                   </Center>
@@ -207,7 +219,7 @@ export function TableBerita() {
                           handleNonPriority(data.berita_id);
                         }}
                       >
-                        Not Priority
+                        Berita Umum
                       </Box>
                     )}
                     {data.prioritas == 1 && (
@@ -222,7 +234,7 @@ export function TableBerita() {
                           handlePriority(data.berita_id);
                         }}
                       >
-                        Priority
+                        Berita Prioritas{" "}
                       </Box>
                     )}
                   </Center>
@@ -245,7 +257,7 @@ export function TableBerita() {
                       colorScheme="red"
                       onClick={() => handleDelete(data.berita_id)}
                     >
-                      Delete
+                      Hapus
                     </Button>
                   </Center>
                 </Td>

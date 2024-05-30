@@ -41,12 +41,12 @@ export default function JenisUMKM() {
 
   const handleAdd = async () => {
     try {
-      await axiosInstance.post(`/jenisumkm/add/`, {
+      const response = await axiosInstance.post(`/jenisumkm/add/`, {
         nama_jenis_umkm: namaJenisUMKM,
       });
 
       toast({
-        title: "Jenis UMKM has been inserted",
+        title: response.data.message,
         status: "success",
       });
 
@@ -77,7 +77,7 @@ export default function JenisUMKM() {
               colorScheme="teal"
               onClick={onOpen}
             >
-              Add Jenis UMKM
+              Tambah Jenis UMKM
             </Box>
           </Flex>
           <TableJenisUMKM refetchData={refetchData} />
@@ -114,7 +114,7 @@ export default function JenisUMKM() {
                       h={8}
                       type="submit"
                     >
-                      Add
+                      Tambah
                     </Button>
                   </Center>
                 </form>

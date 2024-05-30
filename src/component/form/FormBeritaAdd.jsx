@@ -24,11 +24,8 @@ import {
   export function FormBeritaAdd() {
     const router = useRouter();
  
-    const [loading] = useState(true);
-    const [error] = useState(null);
     const judulRef = useRef();
     const subjudulRef = useRef();
-    const tanggalRef = useRef();
     const isiRef = useRef();
     const gambarRef = useRef();
     const toast = useToast();
@@ -37,23 +34,29 @@ import {
   
     const handleAdd = async () => {
       try {
-        const formData = {
-          judul: judulRef.current.value,
-          subjudul: subjudulRef.current.value,
-          tanggal: tanggalRef.current.value,
-          isi: isiRef.current.value,
-          gambar: gambarRef.current.value
-        };
+        const formData = new FormData();
+        formData.append("judul", judulRef.current.value);
+        formData.append("subjudul", subjudulRef.current.value);
+        formData.append("isi", isiRef.current.value);
+        formData.append("gambar", gambarRef.current.files[0]);
   
-        await axiosInstance.post(`/berita/add`, formData);
+        const response = await axiosInstance.post(`/berita/add`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
   
         toast({
-          title: "Berita has been inserted",
+          title: response.data.message,
           status: "success",
         });
         router.push(`/admin/berita`);
       } catch (error) {
-        console.error("Error approving request:", error);
+        console.error("Error adding berita:", error);
+        toast({
+          title: error.response.data.message || "Failed to add berita",
+          status: "error",
+        });
       }
     };
   
@@ -95,19 +98,7 @@ import {
                         </FormControl>
                       </Td>
                     </Tr>
-                    <Tr>
-                      <Th>Tanggal</Th>
-                      <Td>
-                        <FormControl>
-                          <Input
-                            name="tanggal"
-                            type="date"
-                         
-                            ref={tanggalRef}
-                          />
-                        </FormControl>
-                      </Td>
-                    </Tr>
+                 
                   </Tbody>
                 </Table>
   
@@ -147,7 +138,7 @@ import {
                     handleAdd();
                   }}
                 >
-                  Update
+                  Tambah Berita
                 </Button>
               </Center>
             </Box>

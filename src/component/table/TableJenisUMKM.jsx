@@ -48,10 +48,10 @@ export function TableJenisUMKM({ refetchData: customRefetchData }) {
   let i = 1;
   const handleDelete = async (id) => {
     try {
-      await axiosInstance.delete(`/jenisumkm/delete/${id}`);
+      const response = await axiosInstance.delete(`/jenisumkm/delete/${id}`);
 
       toast({
-        title: "Jenis UMKM has been deleted",
+        title: response.data.message,
         status: "warning",
       });
       refetchData();
@@ -64,12 +64,12 @@ export function TableJenisUMKM({ refetchData: customRefetchData }) {
     e.preventDefault();
 
     try {
-      await axiosInstance.put(`/jenisumkm/edit/${editedJenisUMKMId}`, {
+      const response = await axiosInstance.put(`/jenisumkm/edit/${editedJenisUMKMId}`, {
         nama_jenis_umkm: namaJenisUMKM,
       });
 
       toast({
-        title: "Jenis UMKM has been edited",
+        title: response.data.message,
         status: "success",
       });
       refetchData();
@@ -116,7 +116,7 @@ export function TableJenisUMKM({ refetchData: customRefetchData }) {
                     colorScheme="red"
                     onClick={() => handleDelete(data.jenis_umkm_id)}
                   >
-                    <Text as="b">Delete</Text>
+                    <Text as="b">Hapus</Text>
                   </Button>
                 </Center>
               </Td>
@@ -151,7 +151,7 @@ export function TableJenisUMKM({ refetchData: customRefetchData }) {
                       h={8}
                       type="submit"
                     >
-                      Update
+                      Edit
                     </Button>
                   </Center>
                 </form>

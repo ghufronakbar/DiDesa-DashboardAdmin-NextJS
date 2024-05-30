@@ -61,20 +61,18 @@ export function FormWargaEdit() {
         tanggal_lahir: tanggal_lahir.current.value,
       };
 
-      if (foto.current.files.length > 0) {
-        formData.foto = foto.current.value;
-      }
-
-      console.log(foto.current.files.length)
-
-      await axiosInstance.put(`/warga/edit/${id}`, formData);
+      const response = await axiosInstance.put(`/warga/edit/${id}`, formData);
 
       toast({
-        title: "Warga has been updated",
+        title: response.data.message,
         status: "success",
       });
       router.push(`/admin/warga`);
     } catch (error) {
+      toast({
+        title: error.response.data.message,
+        status: "error",
+      });
       console.error("Error approving request:", error);
     }
   };
@@ -173,8 +171,7 @@ export function FormWargaEdit() {
                     src={data.foto}
                     alt={data.foto}
                   />
-                </Center>
-                <Input mt={4} type="file" name="gambar" ref={foto} />
+                </Center>               
               </Box>
             </Flex>
 
@@ -187,7 +184,7 @@ export function FormWargaEdit() {
                   handleUpdate(data.warga_id);
                 }}
               >
-                Update
+                Edit
               </Button>
             </Center>
           </Box>
