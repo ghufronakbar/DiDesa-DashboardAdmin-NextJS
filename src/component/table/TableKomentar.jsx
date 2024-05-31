@@ -1,6 +1,7 @@
 import {
   Button,
   Center,
+  Flex,
   Image,
   Table,
   TableContainer,
@@ -11,13 +12,18 @@ import {
   Thead,
   Tr,
   useToast,
+  Heading
 } from "@chakra-ui/react";
 import { axiosInstance } from "../../lib/axios";
 import { useQuery } from "@tanstack/react-query";
-import { useRouter } from "next/router";
+import { Loading } from "../Loading";
+import { useState } from "react";
 
-export function TableKomentar() {
+
+export const TableKomentar = ({ gap }) => {
   const toast = useToast();
+  const [isLoading, setIsloading] = useState(true)
+
   function formatDate(dateString) {
     const options = {
       weekday: "long",
@@ -32,6 +38,7 @@ export function TableKomentar() {
   const { data, refetch: refetchData } = useQuery({
     queryFn: async () => {
       const dataResponse = await axiosInstance.get("/komentar");
+      setIsloading(false)
       return dataResponse;
     },
   });
@@ -49,57 +56,63 @@ export function TableKomentar() {
       console.error("Error rejecting request:", error);
     }
   };
+  if(isLoading)return(<><Loading/></>)
 
   return (
-    <TableContainer>
-      <Table>
-        <Thead>
-          <Tr>
-            <Th>No</Th>
-            <Th></Th>
-            <Th>Berita</Th>
-            <Th>Komentar</Th>
-            <Th>Tanggal</Th>
-            <Th></Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {data?.data.values.map((data) => (
-            <Tr key={data.komentar_id}>
-              <Td>{i++}</Td>
-              <Td>
-                <Image
-                  borderRadius="18"
-                  boxSize="60px"
-                  objectFit="cover"
-                  src={data.foto}
-                  alt={data.foto}
-                />
-              </Td>
-              <Td>
-                <Text as="b">{data.nama_lengkap}</Text>
-                <Text noOfLines={[1, 2, 3]}>{data.judul}</Text>
-              </Td>
-              <Td>
-                <Text>{data.isi}</Text>
-              </Td>
-              <Td>
-                <Text as="b">{formatDate(data.tanggal)}</Text>
-              </Td>
-              <Td>
-                <Center marginTop={1}>
-                  <Button
-                    colorScheme="red"
-                    onClick={() => handleDelete(data.komentar_id)}
-                  >
-                    Delete
-                  </Button>
-                </Center>
-              </Td>
-            </Tr>
-          ))}
-        </Tbody>
-      </Table>
-    </TableContainer>
+    <>
+      <Flex direction="column" m={gap} w="100%">
+        <Heading mb={gap}>Komentar</Heading>
+        <TableContainer>
+          <Table size='sm'>
+            <Thead>
+              <Tr>
+                <Th>No</Th>
+                <Th></Th>
+                <Th>Berita</Th>
+                <Th>Komentar</Th>
+                <Th>Tanggal</Th>
+                <Th></Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {data?.data.values.map((data) => (
+                <Tr key={data.komentar_id}>
+                  <Td>{i++}</Td>
+                  <Td>
+                    <Image
+                      borderRadius="18"
+                      boxSize="60px"
+                      objectFit="cover"
+                      src={data.foto}
+                      alt={data.foto}
+                    />
+                  </Td>
+                  <Td>
+                    <Text as="b">{data.nama_lengkap}</Text>
+                    <Text noOfLines={[1, 2, 3]}>{data.judul}</Text>
+                  </Td>
+                  <Td>
+                    <Text>{data.isi}</Text>
+                  </Td>
+                  <Td>
+                    <Text as="b">{formatDate(data.tanggal)}</Text>
+                  </Td>
+                  <Td>
+                    <Center marginTop={1}>
+                      <Button
+                        colorScheme="red"
+                        onClick={() => handleDelete(data.komentar_id)}
+                      >
+                        Delete
+                      </Button>
+                    </Center>
+                  </Td>
+                </Tr>
+              ))}
+            </Tbody>
+          </Table>
+        </TableContainer>
+      </Flex>
+    </>
   );
 }

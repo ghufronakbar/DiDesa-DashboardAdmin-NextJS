@@ -2,10 +2,12 @@ import {
   Box,
   Button,
   Center,
+  Container,
   Flex,
   FormControl,
   FormLabel,
   HStack,
+  Heading,
   Image,
   Input,
   NumberDecrementStepper,
@@ -29,24 +31,29 @@ import {
 } from "@chakra-ui/react";
 import { axiosInstance } from "../../lib/axios";
 import { useQuery } from "@tanstack/react-query";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
+import { Loading } from "../Loading";
 
-export function FormInformasiDesa() {
-  const router = useRouter();
+export function FormInformasiDesa({ gap }) {  
   const toast = useToast();
   const namaDesaRef = useRef();
   const luasLahanPertanianRef = useRef();
   const lahanPeternakanRef = useRef();
   const deskripsiRef = useRef();
+  const [isLoading, setIsloading] = useState(true)
+
 
   const { data, refetch: refetchData } = useQuery({
     queryFn: async () => {
       const dataResponse = await axiosInstance.get("/informasidesa");
-  
+      setIsloading(false)
       return dataResponse;
     },
   });
+
+
+  if(isLoading)return(<><Loading/></>)
 
   const handleEdit = async () => {
     try {
@@ -56,108 +63,129 @@ export function FormInformasiDesa() {
         lahan_peternakan: lahanPeternakanRef.current.value,
         deskripsi: deskripsiRef.current.value,
       };
+      const response = await axiosInstance.put(`/informasidesa/edit`, requestData);
+
       toast({
-        title: "Pengurus Desa has been edited",
+        title: response.data.message,
         status: "success",
       });
-      await axiosInstance.put(`/informasidesa/edit`, requestData);
 
       refetchData();
-    } catch (error) {
+    } catch (error) {  
+      toast({
+        title: error.response.data.message,
+        status: "error",
+      });
       console.error("Error rejecting request:", error);
     }
   };
 
   return (
     <>
-      {data?.data.values.map((data) => (
-        <form key={data.id}>
-          <Box p={8} borderWidth="1px" borderRadius="lg" overflow="hidden">
-            <Stack spacing={4}>
-              <Flex>
-                <Table flex={1}>
-                  <Tbody>
-                    <Tr>
-                      <Th>
-                        <FormLabel>Nama Desa</FormLabel>
-                      </Th>
-                      <Td>
-                        <FormControl>
-                          <Input
-                            ref={namaDesaRef}
-                            defaultValue={data.nama_desa}
-                          ></Input>
-                        </FormControl>
-                      </Td>
-                    </Tr>
-                    <Tr>
-                      <Th>
-                        <FormLabel>Luas Lahan Pertanian</FormLabel>
-                      </Th>
-                      <Td>
-                        <NumberInput min={0}   defaultValue={data.luas_lahan_pertanian}>
-                          <NumberInputField
-                            ref={luasLahanPertanianRef}
-                            defaultValue={data.luas_lahan_pertanian}
-                          />
-                          <NumberInputStepper>
-                            <NumberIncrementStepper />
-                            <NumberDecrementStepper />
-                          </NumberInputStepper>
-                        </NumberInput>
-                      </Td>
-                    </Tr>
-                    <Tr>
-                      <Th>
-                        <FormLabel>Lahan Peternakan</FormLabel>
-                      </Th>
-                      <Td>
-                        <NumberInput min={0}   defaultValue={data.lahan_peternakan}>
-                          <NumberInputField
-                            ref={lahanPeternakanRef}
-                            defaultValue={data.lahan_peternakan}
-                          />
-                          <NumberInputStepper>
-                            <NumberIncrementStepper />
-                            <NumberDecrementStepper />
-                          </NumberInputStepper>
-                        </NumberInput>
-                      </Td>
-                    </Tr>
-                  </Tbody>
-                </Table>
-
-                <VStack flex={2}>
-                  <Table>
+      <Flex direction="column" m={gap} w="100%">
+        <Heading w="100%" mb={gap}>
+          Informasi Desa
+        </Heading>
+        {data?.data.values.map((data) => (
+          <form key={data.id} style={{ width: "100%" }}>
+            <Box
+              p={8}
+              borderWidth="1px"
+              borderRadius="lg"
+              overflow="hidden"
+              w="100%"
+            >
+              <Stack spacing={4} w="100%">
+                <Flex w="100%">
+                  <Table flex={1} w="100%">
                     <Tbody>
                       <Tr>
                         <Th>
-                          <FormLabel>Deskripsi</FormLabel>
+                          <FormLabel>Nama Desa</FormLabel>
                         </Th>
-                      </Tr>
-                      <Tr>
                         <Td>
                           <FormControl>
-                            <Textarea
-                              defaultValue={data.deskripsi}
-                              ref={deskripsiRef}
-                            ></Textarea>
+                            <Input
+                              ref={namaDesaRef}
+                              defaultValue={data.nama_desa}
+                            />
                           </FormControl>
+                        </Td>
+                      </Tr>
+                      <Tr>
+                        <Th>
+                          <FormLabel>Luas Lahan Pertanian</FormLabel>
+                        </Th>
+                        <Td>
+                          <NumberInput
+                            min={0}
+                            defaultValue={data.luas_lahan_pertanian}
+                          >
+                            <NumberInputField
+                              ref={luasLahanPertanianRef}
+                              defaultValue={data.luas_lahan_pertanian}
+                            />
+                            <NumberInputStepper>
+                              <NumberIncrementStepper />
+                              <NumberDecrementStepper />
+                            </NumberInputStepper>
+                          </NumberInput>
+                        </Td>
+                      </Tr>
+                      <Tr>
+                        <Th>
+                          <FormLabel>Lahan Peternakan</FormLabel>
+                        </Th>
+                        <Td>
+                          <NumberInput
+                            min={0}
+                            defaultValue={data.lahan_peternakan}
+                          >
+                            <NumberInputField
+                              ref={lahanPeternakanRef}
+                              defaultValue={data.lahan_peternakan}
+                            />
+                            <NumberInputStepper>
+                              <NumberIncrementStepper />
+                              <NumberDecrementStepper />
+                            </NumberInputStepper>
+                          </NumberInput>
                         </Td>
                       </Tr>
                     </Tbody>
                   </Table>
-                </VStack>
-              </Flex>
-            </Stack>
-            <Center>
-              <Button bg="#48BB78" color="white" mt={4} onClick={handleEdit}>
-                Update
-              </Button>
-            </Center>
-          </Box>
-        </form>
-      ))}
+                  <VStack flex={2} w="100%">
+                    <Table w="100%">
+                      <Tbody>
+                        <Tr>
+                          <Th>
+                            <FormLabel>Deskripsi</FormLabel>
+                          </Th>
+                        </Tr>
+                        <Tr>
+                          <Td>
+                            <FormControl>
+                              <Textarea
+                                defaultValue={data.deskripsi}
+                                ref={deskripsiRef}
+                              />
+                            </FormControl>
+                          </Td>
+                        </Tr>
+                      </Tbody>
+                    </Table>
+                  </VStack>
+                </Flex>
+              </Stack>
+              <Center>
+                <Button bg="#48BB78" color="white" mt={4} onClick={handleEdit}>
+                  Update
+                </Button>
+              </Center>
+            </Box>
+          </form>
+        ))}
+      </Flex>
     </>
   );
 }

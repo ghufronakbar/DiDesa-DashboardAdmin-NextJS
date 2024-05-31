@@ -7,11 +7,7 @@ import { FormBeritaEdit } from "../../../component/form/FormBeritaEdit";
 export default function BeritaID() {
   return (
     <>
-      {HeadAdmin()}
-      <main>
-        {Navbar()}
-        <Container maxW="80%">{FormBeritaEdit()}</Container>
-      </main>
+  <FormBeritaEdit gap={8}/>
     </>
   );
 }

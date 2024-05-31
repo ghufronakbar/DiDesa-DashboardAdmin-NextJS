@@ -24,13 +24,15 @@ import {
   Textarea,
   Spacer,
   Flex,
+  Heading,
 } from "@chakra-ui/react";
 import { axiosInstance } from "../../lib/axios";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { Loading } from "../Loading";
 
-export function TablePemilihanKepalaDesa() {
+export function TablePemilihanKepalaDesa({ gap }) {
   const router = useRouter();
   const toast = useToast();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -38,6 +40,7 @@ export function TablePemilihanKepalaDesa() {
   const [deskripsi, setDeskripsi] = useState("");
   const [tanggalMulai, setTanggalMulai] = useState("");
   const [tanggalSelesai, setTanggalSelesai] = useState("");
+  const [isLoading, setIsloading] = useState(true)
   function formatDate(dateString) {
     const options = {
       weekday: "long",
@@ -51,10 +54,12 @@ export function TablePemilihanKepalaDesa() {
   let i = 1;
   const { data, refetch: refetchData } = useQuery({
     queryFn: async () => {
-      const dataResponse = await axiosInstance.get("/pemilihankepaladesa");
+      const dataResponse = await axiosInstance.get("/pemilihankepaladesa")
+      setIsloading(false)
       return dataResponse;
     },
   });
+  if(isLoading)return<><Loading/></>
 
   const handleDelete = async (id) => {
     try {
@@ -73,31 +78,23 @@ export function TablePemilihanKepalaDesa() {
   const handleAddPemilihanKetua = async (e) => {
     e.preventDefault();
     try {
-      if (tanggalMulai > tanggalSelesai) {
-        toast({
-          title: "Tanggal mulai harus lebih dulu tanggal selesai",
-          status: "error",
-        });
-      } else if (tanggalMulai < tanggalSelesai) {
-        await axiosInstance.post(`/pemilihankepaladesa/add`, {
-          judul: judul,
-          deskripsi: deskripsi,
-          tanggal_mulai: tanggalMulai,
-          tanggal_selesai: tanggalSelesai,
-        });
-        toast({
-          title: "Pemilihan Kepala Desa has been inserted",
-          status: "success",
-        });
-        refetchData();
-        setIsModalOpen(false);
-      }
+      const response = await axiosInstance.post(`/pemilihankepaladesa/add`, {
+        judul: judul,
+        deskripsi: deskripsi,
+        tanggal_mulai: tanggalMulai,
+        tanggal_selesai: tanggalSelesai,
+      });
+      toast({
+        title: response.data.message,
+        status: "success",
+      });
+      refetchData();
+      setIsModalOpen(false);
     } catch (error) {
       if (error.response && error.response.status === 400) {
         // Penanganan kesalahan jika tanggal mulai dan tanggal selesai bertabrakan
         toast({
-          title:
-            "Tanggal mulai tidak boleh yang sudah lewat dan tidak boleh bertabrakan dengan pemilihan lain",
+          title: error.response.data.message,
           status: "error",
         });
       } else {
@@ -109,11 +106,12 @@ export function TablePemilihanKepalaDesa() {
   const handleDetail = (id) => {
     router.push(`/admin/pemilihankepaladesa/${id}`);
   };
-
   return (
     <>
-      <Flex>
-        <Spacer flex={4} />  
+      <Flex m={gap} direction="column" w="100%">
+        <Flex w="100%" mb={gap}>
+          <Heading>Pemilihan Kepala Desa</Heading>
+          <Spacer flex={4} />
           <Box
             as="button"
             borderRadius="md"
@@ -121,142 +119,140 @@ export function TablePemilihanKepalaDesa() {
             color="white"
             px={4}
             h={8}
-            marginRight={4}
             onClick={() => {
-             setIsModalOpen(true)
+              setIsModalOpen(true);
             }}
           >
             Add Pemilihan Ketua
           </Box>
-       
-      </Flex>
-      <TableContainer>
-        <Table>
-          <Thead>
-            <Tr>
-              <Th>No</Th>
-              <Th>Judul</Th>
-              <Th>Status</Th>
-              <Th>Tanggal Mulai</Th>
-              <Th>Tanggal Selesai</Th>
-              <Th>Calon Ketua</Th>
-              <Th></Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {data?.data.values.values.map((item) => (
-              <Tr key={item.pemilihan_ketua_id}>
-                <Td>{i++}</Td>
-                <Td>
-                  <Text as="b"> {item.judul}</Text>
-                </Td>
-                <Td>
-                  <VStack>
-                    {item.status == 1 && (
-                      <Box
-                        as="button"
-                        borderRadius="md"
-                        bg="#CBD5E0"
-                        color="white"
-                        px={4}
-                        h={8}
-                      >
-                        Mendatang
-                      </Box>
-                    )}
+        </Flex>
+        <TableContainer>
+          <Table size='sm'>
+            <Thead>
+              <Tr>
+                <Th>No</Th>
+                <Th>Judul</Th>
+                <Th>Status</Th>
+                <Th>Tanggal Mulai</Th>
+                <Th>Tanggal Selesai</Th>
+                <Th>Calon Ketua</Th>
+                <Th></Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {data?.data.values.map((item) => (
+                <Tr key={item.pemilihan_ketua_id}>
+                  <Td>{i++}</Td>
+                  <Td>
+                    <Text as="b"> {item.judul}</Text>
+                  </Td>
+                  <Td>
+                    <VStack>
+                      {item.status == 1 && (
+                        <Box
+                          as="button"
+                          borderRadius="md"
+                          bg="#CBD5E0"
+                          color="white"
+                          px={4}
+                          h={8}
+                        >
+                          Mendatang
+                        </Box>
+                      )}
 
-                    {item.status == 2 && (
-                      <Box
-                        as="button"
-                        borderRadius="md"
-                        bg="#0063d1"
-                        color="white"
-                        px={4}
-                        h={8}
-                      >
-                        Sedang Berjalan
-                      </Box>
-                    )}
-                    {item.status == 3 && (
-                      <Box
-                        as="button"
-                        borderRadius="md"
-                        bg="#48BB78"
-                        color="white"
-                        px={4}
-                        h={8}
-                      >
-                        Selesai
-                      </Box>
-                    )}
-                  </VStack>
-                </Td>
-                <Td>
-                  <Text as="b">{formatDate(item.tanggal_mulai)}</Text>
-                </Td>
-                <Td>
-                  <Text as="b">{formatDate(item.tanggal_selesai)}</Text>
-                </Td>
-
-                <Td>
-                  <Text>
-                    {item.calon_ketua.length > 0 ? (
-                      item.calon_ketua.map((calon) => (
+                      {item.status == 2 && (
+                        <Box
+                          as="button"
+                          borderRadius="md"
+                          bg="#0063d1"
+                          color="white"
+                          px={4}
+                          h={8}
+                        >
+                          Sedang Berjalan
+                        </Box>
+                      )}
+                      {item.status == 3 && (
+                        <Box
+                          as="button"
+                          borderRadius="md"
+                          bg="#48BB78"
+                          color="white"
+                          px={4}
+                          h={8}
+                        >
+                          Selesai
+                        </Box>
+                      )}
+                    </VStack>
+                  </Td>
+                  <Td>
+                    <Text as="b">{formatDate(item.tanggal_mulai)}</Text>
+                  </Td>
+                  <Td>
+                    <Text as="b">{formatDate(item.tanggal_selesai)}</Text>
+                  </Td>
+                  <Td>
+                    <Text>
+                      {item.calon_ketua.length > 0 ? (
+                        item.calon_ketua.map((calon) => (
+                          <VStack>
+                            <Box
+                              as="button"
+                              borderRadius="md"
+                              bg="#4FD1C5"
+                              color="white"
+                              px={4}
+                              h={8}
+                              m={2}
+                            >
+                              {calon.namalengkap}
+                            </Box>
+                          </VStack>
+                        ))
+                      ) : (
                         <VStack>
                           <Box
                             as="button"
                             borderRadius="md"
-                            bg="#4FD1C5"
+                            bg="#E53E3E"
                             color="white"
                             px={4}
                             h={8}
                             m={2}
                           >
-                            {calon.namalengkap}
+                            Tidak Ada Calon
                           </Box>
                         </VStack>
-                      ))
-                    ) : (
-                      <VStack>
-                        <Box
-                          as="button"
-                          borderRadius="md"
-                          bg="#E53E3E"
-                          color="white"
-                          px={4}
-                          h={8}
-                          m={2}
-                        >
-                          Tidak Ada Calon
-                        </Box>
-                      </VStack>
-                    )}
-                  </Text>
-                </Td>
-                <Td>
-                  <Center>
-                    <Button
-                      variant="outline"
-                      colorScheme="grey"
-                      onClick={() => handleDetail(item.pemilihan_ketua_id)}
-                    >
-                      <Text as="b">Detail</Text>
-                    </Button>
-                  </Center>
-                  <Center marginTop={1}>
-                    <Button
-                      colorScheme="red"
-                      onClick={() => handleDelete(item.pemilihan_ketua_id)}
-                    >
-                      Hapus
-                    </Button>
-                  </Center>
-                </Td>
-              </Tr>
-            ))}
-          </Tbody>
-        </Table>
-      </TableContainer>
+                      )}
+                    </Text>
+                  </Td>
+                  <Td>
+                    <Center>
+                      <Button
+                        variant="outline"
+                        colorScheme="grey"
+                        onClick={() => handleDetail(item.pemilihan_ketua_id)}
+                      >
+                        <Text as="b">Detail</Text>
+                      </Button>
+                    </Center>
+                    <Center marginTop={1}>
+                      <Button
+                        colorScheme="red"
+                        onClick={() => handleDelete(item.pemilihan_ketua_id)}
+                      >
+                        Hapus
+                      </Button>
+                    </Center>
+                  </Td>
+                </Tr>
+              ))}
+            </Tbody>
+          </Table>
+        </TableContainer>
+      </Flex>
       <Modal
         size="xl"
         isOpen={isModalOpen}

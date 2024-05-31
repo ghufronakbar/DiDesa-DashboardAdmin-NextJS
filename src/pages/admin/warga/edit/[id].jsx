@@ -6,11 +6,7 @@ import { FormWargaEdit } from "../../../../component/form/FormWargaEdit";
 export default function EditWargaID() {
   return (
     <>
-      {HeadAdmin()}
-      <main>
-        {Navbar()}
-        <Container maxW="80%">{FormWargaEdit()}</Container>
-      </main>
+      <FormWargaEdit gap={8}/>
     </>
   );
 }

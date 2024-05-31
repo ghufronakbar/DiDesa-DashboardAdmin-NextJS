@@ -17,17 +17,10 @@ import { useRouter } from "next/router";
 
 export default function Berita() {
   const router = useRouter();
+  
   return (
-    <>
-      {HeadAdmin}
-      <main>
-        {Navbar()}
-        <Container maxW="80%"><Heading marginBottom="8" marginTop="8">Berita</Heading>
-          
-
-          {TableBerita()}
-        </Container>
-      </main>
+    <>     
+      <TableBerita gap={8}/>
     </>
   );
 }

@@ -6,11 +6,7 @@ import { FormCalonKetuaEdit } from "../../../../component/form/FormCalonKetuaEdi
 export default function EditCalonKetuaID() {
   return (
     <>
-      {HeadAdmin()}
-      <main>
-        {Navbar()}
-        <Container maxW="80%">{FormCalonKetuaEdit()}</Container>
-      </main>
+      <FormCalonKetuaEdit gap={8} />
     </>
   );
 }

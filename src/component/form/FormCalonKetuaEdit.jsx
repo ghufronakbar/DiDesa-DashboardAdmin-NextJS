@@ -9,7 +9,6 @@ import {
   Table,
   Tbody,
   Td,
-  Text,
   Th,
   Tr,
   Textarea,
@@ -20,18 +19,15 @@ import { axiosInstance } from "../../lib/axios";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useRef } from "react";
+import { Loading } from "../Loading";
 
-export function FormCalonKetuaEdit() {
+export function FormCalonKetuaEdit({gap}) {
   const router = useRouter();
   const { id } = router.query;
   const [error, setError] = useState(null);
   const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const nik = useRef();
+  const [loading, setLoading] = useState(true);  
   const deskripsi = useRef();
-  const nama_lengkap = useRef();
-  const tanggal_lahir = useRef();
-  const foto = useRef();
   const toast = useToast();
 
   useEffect(() => {
@@ -70,23 +66,28 @@ export function FormCalonKetuaEdit() {
         deskripsi: deskripsi.current.value,
       };
 
-      await axiosInstance.put(`/calonketua/edit/${data.calon_ketua_id}`, formData);
+      const response = await axiosInstance.put(`/calonketua/edit/${data.calon_ketua_id}`, formData);
 
       toast({
-        title: "Calon Ketua has been updated",
+        title: response.data.message,
         status: "success",
       });
       router.push(`/admin/pemilihankepaladesa/${data.pemilihan_ketua_id}`);
     } catch (error) {
+      toast({
+        title: error.response.data.message,
+        status: "error",
+      });
       console.error("Error approving request:", error);
     }
   };
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <Loading/>;
   if (error) return <div>Error fetching data</div>;
 
   return (
     <>
+    <Flex direction="column" w="100%" m={gap}>
       {data && (
         <form>
           <Box
@@ -127,16 +128,14 @@ export function FormCalonKetuaEdit() {
                           required
                           ref={deskripsi}
                           name="kk"
-                          defaultValue={data.deskripsi}
+                          defaultValue={data.deskripsi_calon}                          
                         ></Input>
                       </FormControl>
                     </Td>
                   </Tr>
                 </Tbody>
               </Table>
-
               <Spacer flex={1} />
-
               <Box
                 p={8}
                 borderWidth="1px"
@@ -171,6 +170,7 @@ export function FormCalonKetuaEdit() {
           </Box>
         </form>
       )}
+    </Flex>
     </>
   );
 }

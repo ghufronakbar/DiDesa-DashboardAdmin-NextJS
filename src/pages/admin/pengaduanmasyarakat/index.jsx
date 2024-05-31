@@ -10,16 +10,9 @@ import { TablePengaduanMasyarakat } from "../../../component/table/TablePengadua
 export default function PengaduanMasyarakat() {
   return (
     <>
-      {HeadAdmin()}
-      <main>
-      {Navbar()}
-        <Container maxW="80%">
-          <Heading marginBottom="8" marginTop="8">
-            Pengaduan Masyarakat
-          </Heading>
-          {TablePengaduanMasyarakat()}
-        </Container>
-      </main>
+       
+          <TablePengaduanMasyarakat gap={8}/>
+        
     </>
   );
 }

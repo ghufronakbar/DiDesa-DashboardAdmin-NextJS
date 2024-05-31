@@ -1,26 +1,12 @@
 import { HeadAdmin } from "../../../component/headAdmin";
-import {
-  Container,
-  Heading,
-} from "@chakra-ui/react";
+import { Container, Heading } from "@chakra-ui/react";
 import { Navbar } from "../../../component/NavbarAdmin";
 import { TableKomentar } from "../../../component/table/TableKomentar";
-
 
 export default function Komentar() {
   return (
     <>
-      {HeadAdmin()}
-      <main>
-      {Navbar()}
-        <Container maxW="80%">
-          <Heading marginBottom="8" marginTop="8">
-            Komentar
-          </Heading>
-          {TableKomentar()}
-        </Container>
-      </main>
+      <TableKomentar gap={8} />
     </>
   );
 }
-

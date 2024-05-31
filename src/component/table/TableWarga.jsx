@@ -3,6 +3,7 @@ import {
   Button,
   Center,
   Flex,
+  Heading,
   Image,
   Spacer,
   Table,
@@ -18,10 +19,14 @@ import {
 import { axiosInstance } from "../../lib/axios";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
+import { Loading } from "../Loading";
+import { useState } from "react";
 
-export function TableWarga() {
+export function TableWarga({ gap }) {
   const router = useRouter();
   const toast = useToast();
+  const [isLoading, setIsloading] = useState(true)
+
   function formatDate(dateString) {
     const options = {
       weekday: "long",
@@ -33,9 +38,10 @@ export function TableWarga() {
   }
 
   let i = 1;
-  const { data, refetch: refetchData } = useQuery({
+  const { data: dataPemilihan, refetch: refetchDataPemilihan } = useQuery({
     queryFn: async () => {
       const dataResponse = await axiosInstance.get("/warga");
+      setIsloading(false)
       return dataResponse;
     },
   });
@@ -48,7 +54,7 @@ export function TableWarga() {
         title: response.data.message,
         status: "warning",
       });
-      refetchData();
+      refetchDataPemilihan();
     } catch (error) {
       console.error("Error rejecting request:", error);
     }
@@ -58,86 +64,89 @@ export function TableWarga() {
     router.push(`/admin/warga/${id}`);
   };
 
+  if(isLoading)return(<><Loading/></>)
+
   return (
     <>
-      {" "}
-      <Flex>
-        <Spacer flex={8} />
-
-        <Box
-          as="button"
-          borderRadius="md"
-          bg="#48BB78"
-          color="white"
-          px={4}
-          h={10}
-          onClick={() => {
-            router.push("/admin/warga/add");
-          }}
-        >
-          Tambah Warga
-        </Box>
-      </Flex>
-      <TableContainer>
-        <Table>
-          <Thead>
-            <Tr>
-              <Th>No</Th>
-              <Th></Th>
-              <Th>Nama Lengkap</Th>
-              <Th>NIK/KK</Th>
-              <Th>Tanggal Lahir</Th>
-              <Th></Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {data?.data.values.map((data) => (
-              <Tr key={data.berita_id}>
-                <Td>{i++}</Td>
-                <Td>
-                  <Image
-                    borderRadius="18"
-                    boxSize="60px"
-                    objectFit="cover"
-                    src={data.foto}
-                    alt={data.foto}
-                  />
-                </Td>
-                <Td>
-                  <Text as="b">{data.nama_lengkap}</Text>
-                </Td>
-                <Td>
-                  <Text as="b">{data.nik}</Text>
-                  <Text>{data.kk}</Text>
-                </Td>
-
-                <Td>
-                  <Text as="b">{formatDate(data.tanggal_lahir)}</Text>
-                </Td>
-                <Td>
-                  <Center>
-                    <Button
-                      variant="outline"
-                      colorScheme="grey"
-                      onClick={() => handleDetail(data.warga_id)}
-                    >
-                      <Text as="b">Detail</Text>
-                    </Button>
-                  </Center>
-                  <Center marginTop={1}>
-                    <Button
-                      colorScheme="red"
-                      onClick={() => handleDelete(data.warga_id)}
-                    >
-                      Hapus
-                    </Button>
-                  </Center>
-                </Td>
+      <Flex m={gap} w="100%" direction="column">
+        <Flex mb={gap}>
+          <Heading>Warga</Heading>
+          <Spacer/>
+          <Box
+            as="button"
+            borderRadius="md"
+            bg="#48BB78"
+            color="white"
+            px={4}
+            h={10}
+            onClick={() => {
+              router.push("/admin/warga/add");
+            }}
+          >
+            Tambah Warga
+          </Box>
+        </Flex>
+        <TableContainer>
+          <Table size='sm'>
+            <Thead>
+              <Tr>
+                <Th>No</Th>
+                <Th></Th>
+                <Th>Nama Lengkap</Th>
+                <Th>NIK/KK</Th>
+                <Th>Tanggal Lahir</Th>
+                <Th></Th>
               </Tr>
-            ))}
-          </Tbody>
-        </Table>
-      </TableContainer>
+            </Thead>
+            <Tbody>
+              {dataPemilihan?.data.values.map((data) => (
+                <Tr key={data.berita_id}>
+                  <Td>{i++}</Td>
+                  <Td>
+                    <Image
+                      borderRadius="18"
+                      boxSize="60px"
+                      objectFit="cover"
+                      src={data.foto}
+                      alt={data.foto}
+                    />
+                  </Td>
+                  <Td>
+                    <Text as="b">{data.nama_lengkap}</Text>
+                  </Td>
+                  <Td>
+                    <Text as="b">{data.nik}</Text>
+                    <Text>{data.kk}</Text>
+                  </Td>
+
+                  <Td>
+                    <Text as="b">{formatDate(data.tanggal_lahir)}</Text>
+                  </Td>
+                  <Td>
+                    <Center>
+                      <Button
+                        variant="outline"
+                        colorScheme="grey"
+                        onClick={() => handleDetail(data.warga_id)}
+                      >
+                        <Text as="b">Detail</Text>
+                      </Button>
+                    </Center>
+                    <Center marginTop={1}>
+                      <Button
+                        colorScheme="red"
+                        onClick={() => handleDelete(data.warga_id)}
+                      >
+                        Hapus
+                      </Button>
+                    </Center>
+                  </Td>
+                </Tr>
+              ))}
+            </Tbody>
+          </Table>
+        </TableContainer>
+      </Flex>
     </>
   );
 }

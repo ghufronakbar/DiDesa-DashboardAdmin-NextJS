@@ -8,17 +8,7 @@ export default function AddWarga() {
   const router = useRouter();
   return (
     <>
-      {HeadAdmin}
-      <main>
-        {Navbar()}
-        <Container maxW="80%">
-          <Heading marginBottom="8" marginTop="8">
-            Add Warga
-          </Heading>
-
-          {FormWargaAdd()}
-        </Container>
-      </main>
+      <FormWargaAdd  gap={8}/>
     </>
   );
 }

@@ -6,11 +6,7 @@ import { DetailWarga } from "../../../component/detail/DetailWarga";
 export default function WargaID() {
   return (
     <>
-      {HeadAdmin()}
-      <main>
-        {Navbar()}
-        <Container maxW="80%">{DetailWarga()}</Container>
-      </main>
+    <DetailWarga gap={8}/>
     </>
   );
 }

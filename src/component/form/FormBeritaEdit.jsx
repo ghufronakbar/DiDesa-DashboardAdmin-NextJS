@@ -9,7 +9,6 @@ import {
   Table,
   Tbody,
   Td,
-  Text,
   Th,
   Tr,
   Textarea,
@@ -17,19 +16,19 @@ import {
   Flex,
 } from "@chakra-ui/react";
 import { axiosInstance } from "../../lib/axios";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/router";
-import { useRef } from "react";
 
-export function FormBeritaEdit() {
+export function FormBeritaEdit({ gap }) {
   const router = useRouter();
   const { id } = router.query;
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [previewImage, setPreviewImage] = useState(null);
   const judulRef = useRef();
   const subjudulRef = useRef();
-  const tanggalRef = useRef();
   const isiRef = useRef();
   const gambarRef = useRef();
   const toast = useToast();
@@ -52,30 +51,42 @@ export function FormBeritaEdit() {
     }
   }, [id]);
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setSelectedImage(file);
+      setPreviewImage(URL.createObjectURL(file));
+    }
+  };
+
   const handleUpdate = async (id) => {
     try {
-      const formData = {
-        judul: judulRef.current.value,
-        subjudul: subjudulRef.current.value,
-        tanggal: tanggalRef.current.value,
-        isi: isiRef.current.value,
-      };
+      const formData = new FormData();
+      formData.append("judul", judulRef.current.value);
+      formData.append("subjudul", subjudulRef.current.value);
+      formData.append("isi", isiRef.current.value);
 
-      if (gambarRef.current.files.length > 0) {
-        formData.gambar = gambarRef.current.value;
+      if (selectedImage) {
+        formData.append("gambar", selectedImage);
       }
 
-      
-
-      await axiosInstance.put(`/berita/edit/${id}`, formData);
+      const response = await axiosInstance.put(`/berita/edit/${id}`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
       toast({
-        title: "Berita has been updated",
+        title: response.data.message,
         status: "success",
       });
       router.push(`/admin/berita`);
     } catch (error) {
-      console.error("Error approving request:", error);
+      toast({
+        title: error.response.data.message,
+        status: "error",
+      });
+      console.error("Error updating request:", error);
     }
   };
 
@@ -83,7 +94,7 @@ export function FormBeritaEdit() {
   if (error) return <div>Error fetching data</div>;
 
   return (
-    <>
+    <Flex m={gap} direction="column" w="100%">
       {data && (
         <form>
           <Box
@@ -104,7 +115,7 @@ export function FormBeritaEdit() {
                           defaultValue={data.judul}
                           ref={judulRef}
                           name="judul"
-                        ></Input>
+                        />
                       </FormControl>
                     </Td>
                   </Tr>
@@ -116,25 +127,6 @@ export function FormBeritaEdit() {
                           defaultValue={data.subjudul}
                           ref={subjudulRef}
                           name="subjudul"
-                        ></Input>
-                      </FormControl>
-                    </Td>
-                  </Tr>
-                  <Tr>
-                    <Th>Tanggal</Th>
-                    <Td>
-                      <FormControl>
-                        <Input
-                          name="tanggal"
-                          type="date"
-                          defaultValue={
-                            data.tanggal == "0000-00-00"
-                              ? ""
-                              : new Date(data.tanggal)
-                                  .toISOString()
-                                  .split("T")[0]
-                          }
-                          ref={tanggalRef}
                         />
                       </FormControl>
                     </Td>
@@ -156,11 +148,11 @@ export function FormBeritaEdit() {
                   <Image
                     borderRadius="18"
                     objectFit="cover"
-                    src={data.gambar}
-                    alt={data.gambar}
+                    src={previewImage || data.gambar}
+                    alt={data.judul}
                   />
                 </Center>
-                <Input mt={4} type="file" name="gambar" ref={gambarRef} />
+                <Input mt={4} type="file" name="gambar" ref={gambarRef} onChange={handleImageChange} />
               </Box>
             </Flex>
 
@@ -184,6 +176,6 @@ export function FormBeritaEdit() {
           </Box>
         </form>
       )}
-    </>
+    </Flex>
   );
 }

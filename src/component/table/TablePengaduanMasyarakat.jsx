@@ -19,18 +19,22 @@ import {
   ModalBody,
   ModalCloseButton,
   Flex,
+  Heading,
 } from "@chakra-ui/react";
 import { axiosInstance } from "../../lib/axios";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { Loading } from "../Loading";
 
-export function TablePengaduanMasyarakat() {
+export function TablePengaduanMasyarakat({ gap }) {
   const toast = useToast();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [pengaduanMasyarakatId,setPengaduanMasyarakatId] = useState(null);
-  const [subjekPengaduanMasyarakat,setSubjekPengaduanMasyarakat] = useState(null);
-  const [isiPengaduanMasyarakat,setIsiPengaduanMasyarakat] = useState(null);
+  const [pengaduanMasyarakatId, setPengaduanMasyarakatId] = useState(null);
+  const [subjekPengaduanMasyarakat, setSubjekPengaduanMasyarakat] =
+    useState(null);
+  const [isiPengaduanMasyarakat, setIsiPengaduanMasyarakat] = useState(null);
+  const [isLoading, setIsloading] = useState(true)
 
   function formatDate(dateString) {
     const options = {
@@ -46,6 +50,7 @@ export function TablePengaduanMasyarakat() {
   const { data, refetch: refetchData } = useQuery({
     queryFn: async () => {
       const dataResponse = await axiosInstance.get("/pengaduanmasyarakat");
+      setIsloading(false)
       return dataResponse;
     },
   });
@@ -53,7 +58,6 @@ export function TablePengaduanMasyarakat() {
   const handleDelete = async (id) => {
     try {
       await axiosInstance.delete(`/pengaduanmasyarakat/delete/${id}`);
-
       toast({
         title: "Pengaduan Masyarakat has been deleted",
         status: "warning",
@@ -64,78 +68,86 @@ export function TablePengaduanMasyarakat() {
     }
   };
 
+  if(isLoading)return(<><Loading/></>)
+
   return (
-    <TableContainer>
-      <Table>
-        <Thead>
-          <Tr>
-            <Th>No</Th>
+    <>
+      <Flex direction="column" m={gap} w="100%">
+        <Heading mb={gap}>Pengaduan Masyarakat</Heading>
+        <TableContainer>
+          <Table size="sm">
+            <Thead>
+              <Tr>
+                <Th>No</Th>
+                <Th>Warga</Th>
+                <Th>Isi Aduan</Th>
+                <Th>Tanggal</Th>
+                <Th></Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {data?.data.values.map((data) => (
+                <Tr key={data.pengaduan_masyarkat_id}>
+                  <Td>{i++}</Td>
 
-            <Th>Warga</Th>
-            <Th>Isi Aduan</Th>
-            <Th>Tanggal</Th>
-            <Th></Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {data?.data.values.map((data) => (
-            <Tr key={data.pengaduan_masyarkat_id}>
-              <Td>{i++}</Td>
-
-              <Td>
-                <Text as="b">{data.nama_lengkap}</Text>
-                <Text>{data.nik}</Text>
-              </Td>
-              <Td maxW={40}>
-                <Text as="b">{data.subjek}</Text>
-                <Text noOfLines={1}>{data.isi}</Text>
-              </Td>
-              <Td>
-                <Text as="b">{formatDate(data.tanggal)}</Text>
-              </Td>
-              <Td>
-                <Center marginTop={1}>
-                  <Button
-                    colorScheme="grey"
-                    variant="outline"
-                    onClick={() => {
-                      setIsModalOpen(true)
-                      setPengaduanMasyarakatId(data.pengaduan_masyarkat_id)
-                      setSubjekPengaduanMasyarakat(data.subjek)
-                      setIsiPengaduanMasyarakat(data.isi)
-                    }}
-                  >
-                    Detail
-                  </Button>
-                </Center>
-                <Center marginTop={1}>
-                  <Button
-                    colorScheme="red"
-                    onClick={() => handleDelete(data.pengaduan_masyarakat_id)}
-                  >
-                    Delete
-                  </Button>
-                </Center>
-              </Td>
-            </Tr>
-          ))}
-        </Tbody>
-      </Table>
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>{subjekPengaduanMasyarakat}</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <Flex>
-              <Center flex={1}>
-                <Text>{isiPengaduanMasyarakat}</Text>
-              </Center>
-            </Flex>
-          </ModalBody>
-          <ModalFooter></ModalFooter>
-        </ModalContent>
-      </Modal>
-    </TableContainer>
+                  <Td>
+                    <Text as="b">{data.nama_lengkap}</Text>
+                    <Text>{data.nik}</Text>
+                  </Td>
+                  <Td maxW={40}>
+                    <Text as="b">{data.subjek}</Text>
+                    <Text noOfLines={1}>{data.isi}</Text>
+                  </Td>
+                  <Td>
+                    <Text as="b">{formatDate(data.tanggal)}</Text>
+                  </Td>
+                  <Td>
+                    <Center marginTop={1}>
+                      <Button
+                        colorScheme="grey"
+                        variant="outline"
+                        onClick={() => {
+                          setIsModalOpen(true);
+                          setPengaduanMasyarakatId(data.pengaduan_masyarkat_id);
+                          setSubjekPengaduanMasyarakat(data.subjek);
+                          setIsiPengaduanMasyarakat(data.isi);
+                        }}
+                      >
+                        Detail
+                      </Button>
+                    </Center>
+                    <Center marginTop={1}>
+                      <Button
+                        colorScheme="red"
+                        onClick={() =>
+                          handleDelete(data.pengaduan_masyarakat_id)
+                        }
+                      >
+                        Delete
+                      </Button>
+                    </Center>
+                  </Td>
+                </Tr>
+              ))}
+            </Tbody>
+          </Table>
+          <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+            <ModalOverlay />
+            <ModalContent>
+              <ModalHeader>{subjekPengaduanMasyarakat}</ModalHeader>
+              <ModalCloseButton />
+              <ModalBody>
+                <Flex>
+                  <Center flex={1}>
+                    <Text>{isiPengaduanMasyarakat}</Text>
+                  </Center>
+                </Flex>
+              </ModalBody>
+              <ModalFooter></ModalFooter>
+            </ModalContent>
+          </Modal>
+        </TableContainer>
+      </Flex>
+    </>
   );
 }

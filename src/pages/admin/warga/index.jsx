@@ -8,15 +8,9 @@ export default function Warga() {
   const router = useRouter();
   return (
     <>
-      {HeadAdmin()}
-      <main>
-        {Navbar()}
-        <Container maxW="80%">
-          {" "}
-          <Heading  marginBottom="8" marginTop="8">Warga</Heading>
-          {TableWarga()}
-        </Container>
-      </main>
+     
+          <TableWarga gap={8}/>
+     
     </>
   );
 }

@@ -14,14 +14,20 @@ import {
   useToast,
   Flex,
   Spacer,
+  Heading,
 } from "@chakra-ui/react";
 import { axiosInstance } from "../../lib/axios";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
+import { useState } from "react";
+import { Loading } from "../Loading";
 
-export function TableBerita() {
+
+export function TableBerita({ gap }) {
   const router = useRouter();
   const toast = useToast();
+  const [isLoading, setIsloading] = useState(true)
+
   function formatDate(dateString) {
     const options = {
       weekday: "long",
@@ -36,6 +42,7 @@ export function TableBerita() {
   const { data, refetch: refetchData } = useQuery({
     queryFn: async () => {
       const dataResponse = await axiosInstance.get("/berita");
+      setIsloading(false)
       return dataResponse;
     },
   });
@@ -122,11 +129,14 @@ export function TableBerita() {
     }
   };
 
+  if(isLoading)return(<><Loading/></>)
+
   return (
     <>
-      <Flex>
-        <Spacer flex={8} />
-
+      <Flex m={gap} direction="column" w="100%">
+        <Flex mb={8}>
+        <Heading>Berita</Heading>
+        <Spacer flex={8}  />
         <Box
           as="button"
           borderRadius="md"
@@ -140,132 +150,132 @@ export function TableBerita() {
         >
           Tambah Berita
         </Box>
-      </Flex>
-      <TableContainer>
-        <Table>
-          <Thead>
-            <Tr>
-              <Th>No</Th>
-              <Th></Th>
-              <Th>Judul</Th>
-              <Th>Publikasi</Th>
-              <Th>Prioritas</Th>
-              <Th>Tanggal</Th>
-              <Th></Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {data?.data.values.map((data) => (
-              <Tr key={data.berita_id}>
-                <Td>{i++}</Td>
-                <Td>
-                  <Image
-                    borderRadius="18"
-                    boxSize="60px"
-                    objectFit="cover"
-                    src={data.gambar}
-                    alt={data.gambar}
-                  />
-                </Td>
-                <Td>
-                  <Text as="b">{data.judul}</Text>
-                  <Text>{data.subjudul}</Text>
-                </Td>
-                <Td>
-                  <Center>
-                    {data.publikasi == 0 && (
-                      <Box
-                        as="button"
-                        borderRadius="md"
-                        bg="#E53E3E"
-                        color="white"
-                        px={4}
-                        h={8}
-                        onClick={() => {
-                          handleNonPublic(data.berita_id);
-                        }}
-                      >
-                        Disembunyikan
-                      </Box>
-                    )}
-                    {data.publikasi == 1 && (
-                      <Box
-                        as="button"
-                        borderRadius="md"
-                        bg="#48BB78"
-                        color="white"
-                        px={4}
-                        h={8}
-                        onClick={() => {
-                          handlePublic(data.berita_id);
-                        }}
-                      >
-                        Dipublikasi
-                      </Box>
-                    )}
-                  </Center>
-                </Td>
-                <Td>
-                  <Center>
-                    {data.prioritas == 0 && (
-                      <Box
-                        as="button"
-                        borderRadius="md"
-                        bg="#E53E3E"
-                        color="white"
-                        px={4}
-                        h={8}
-                        onClick={() => {
-                          handleNonPriority(data.berita_id);
-                        }}
-                      >
-                        Berita Umum
-                      </Box>
-                    )}
-                    {data.prioritas == 1 && (
-                      <Box
-                        as="button"
-                        borderRadius="md"
-                        bg="#48BB78"
-                        color="white"
-                        px={4}
-                        h={8}
-                        onClick={() => {
-                          handlePriority(data.berita_id);
-                        }}
-                      >
-                        Berita Prioritas{" "}
-                      </Box>
-                    )}
-                  </Center>
-                </Td>
-                <Td>
-                  <Text as="b">{formatDate(data.tanggal)}</Text>
-                </Td>
-                <Td>
-                  <Center>
-                    <Button
-                      variant="outline"
-                      colorScheme="grey"
-                      onClick={() => handleDetail(data.berita_id)}
-                    >
-                      <Text as="b">Detail</Text>
-                    </Button>
-                  </Center>
-                  <Center marginTop={1}>
-                    <Button
-                      colorScheme="red"
-                      onClick={() => handleDelete(data.berita_id)}
-                    >
-                      Hapus
-                    </Button>
-                  </Center>
-                </Td>
+        </Flex>
+        <TableContainer>
+          <Table size="sm">
+            <Thead>
+              <Tr>
+                <Th>No</Th>
+                <Th></Th>
+                <Th>Judul</Th>
+                <Th>Publikasi</Th>
+                <Th>Prioritas</Th>
+                <Th>Tanggal</Th>
+                <Th></Th>
               </Tr>
-            ))}
-          </Tbody>
-        </Table>
-      </TableContainer>
+            </Thead>
+            <Tbody>
+              {data?.data.values.map((data) => (
+                <Tr key={data.berita_id}>
+                  <Td>{i++}</Td>
+                  <Td>
+                    <Image
+                      borderRadius="18"
+                      boxSize="60px"
+                      objectFit="cover"
+                      src={data.gambar}
+                      alt={data.gambar}
+                    />
+                  </Td>
+                  <Td>
+                    <Text as="b">{data.judul}</Text>
+                  </Td>
+                  <Td>
+                    <Center>
+                      {data.publikasi == 0 && (
+                        <Box
+                          as="button"
+                          borderRadius="md"
+                          bg="#E53E3E"
+                          color="white"
+                          px={4}
+                          h={8}
+                          onClick={() => {
+                            handleNonPublic(data.berita_id);
+                          }}
+                        >
+                          Disembunyikan
+                        </Box>
+                      )}
+                      {data.publikasi == 1 && (
+                        <Box
+                          as="button"
+                          borderRadius="md"
+                          bg="#48BB78"
+                          color="white"
+                          px={4}
+                          h={8}
+                          onClick={() => {
+                            handlePublic(data.berita_id);
+                          }}
+                        >
+                          Dipublikasi
+                        </Box>
+                      )}
+                    </Center>
+                  </Td>
+                  <Td>
+                    <Center>
+                      {data.prioritas == 0 && (
+                        <Box
+                          as="button"
+                          borderRadius="md"
+                          bg="#E53E3E"
+                          color="white"
+                          px={4}
+                          h={8}
+                          onClick={() => {
+                            handleNonPriority(data.berita_id);
+                          }}
+                        >
+                          Berita Umum
+                        </Box>
+                      )}
+                      {data.prioritas == 1 && (
+                        <Box
+                          as="button"
+                          borderRadius="md"
+                          bg="#48BB78"
+                          color="white"
+                          px={4}
+                          h={8}
+                          onClick={() => {
+                            handlePriority(data.berita_id);
+                          }}
+                        >
+                          Berita Prioritas{" "}
+                        </Box>
+                      )}
+                    </Center>
+                  </Td>
+                  <Td>
+                    <Text as="b">{formatDate(data.tanggal)}</Text>
+                  </Td>
+                  <Td>
+                    <Center>
+                      <Button
+                        variant="outline"
+                        colorScheme="grey"
+                        onClick={() => handleDetail(data.berita_id)}
+                      >
+                        <Text as="b">Detail</Text>
+                      </Button>
+                    </Center>
+                    <Center marginTop={1}>
+                      <Button
+                        colorScheme="red"
+                        onClick={() => handleDelete(data.berita_id)}
+                      >
+                        Hapus
+                      </Button>
+                    </Center>
+                  </Td>
+                </Tr>
+              ))}
+            </Tbody>
+          </Table>
+        </TableContainer>
+      </Flex>
     </>
   );
 }

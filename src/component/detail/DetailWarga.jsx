@@ -17,8 +17,9 @@ import {
 import { axiosInstance } from "../../lib/axios";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { Loading } from "../Loading";
 
-export function DetailWarga() {
+export function DetailWarga({gap}) {
   const router = useRouter();
   const { id } = router.query;
   const [data, setRequestData] = useState(null);
@@ -56,11 +57,12 @@ export function DetailWarga() {
   }
 
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <Loading/>;
   if (error) return <div>Error fetching data</div>;
 
   return (
     <>
+    <Flex direction='column' m={gap} w='100%'>
       {data && (
         <Box>
           <Flex>
@@ -105,7 +107,7 @@ export function DetailWarga() {
                                 h={8}
                                 margin={1}
                               >
-                                False
+                                Tidak
                               </Box>
                             )}
                             {data.hak_pilih == 1 && (
@@ -118,7 +120,7 @@ export function DetailWarga() {
                                 h={8}
                                 margin={1}
                               >
-                                True
+                                Iya
                               </Box>
                             )}
                           </Td>
@@ -168,6 +170,8 @@ export function DetailWarga() {
           </Flex>
         </Box>
       )}
+
+    </Flex>
     </>
   );
 }

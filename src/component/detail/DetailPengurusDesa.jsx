@@ -27,8 +27,9 @@ import { axiosInstance } from "../../lib/axios";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { EditIcon } from "@chakra-ui/icons";
+import { Loading } from "../Loading";
 
-export function DetailPengurusDesa() {
+export function DetailPengurusDesa({ gap }) {
   const router = useRouter();
   const { id } = router.query;
   const [data, setData] = useState(null);
@@ -73,32 +74,40 @@ export function DetailPengurusDesa() {
 
   const handleNonAdmin = async (id) => {
     try {
-      await axiosInstance.put(`/pengurusdesa/akses/${id}`, {
+      const response = await axiosInstance.put(`/pengurusdesa/akses/${id}`, {
         akses_admin: 1,
         id,
       });
       toast({
-        title: "This user has been admin",
+        title: response.data.message,
         status: "success",
       });
       refetchData();
     } catch (error) {
+      toast({
+        title: error.response.data.message,
+        status: "error",
+      });
       console.error("Error rejecting request:", error);
     }
   };
 
   const handleAdmin = async (id) => {
     try {
-      await axiosInstance.put(`/pengurusdesa/akses/${id}`, {
+      const response = await axiosInstance.put(`/pengurusdesa/akses/${id}`, {
         akses_admin: 0,
         id,
       });
       toast({
-        title: "This user has not been admin",
+        title: response.data.message,
         status: "warning",
       });
       refetchData();
     } catch (error) {
+      toast({
+        title: error.response.data.message,
+        status: "error",
+      });
       console.error("Error rejecting request:", error);
     }
   };
@@ -107,135 +116,151 @@ export function DetailPengurusDesa() {
     e.preventDefault();
 
     try {
-      await axiosInstance.put(`/pengurusdesa/edit/${editedPengurusDesaId}`, {
-        jabatan: editedJabatanPengurusDesa,
-      });
+      const response = await axiosInstance.put(
+        `/pengurusdesa/edit/${editedPengurusDesaId}`,
+        {
+          jabatan: editedJabatanPengurusDesa,
+        }
+      );
       setIsModalOpen(false);
       toast({
-        title: "Jabatan Pengurus Desa has been edited",
+        title: response.data.message,
         status: "success",
       });
       refetchData();
     } catch (error) {
+      toast({
+        title: error.response.data.message,
+        status: "error",
+      });
       console.error("Error rejecting request:", error);
     }
   };
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <Loading/>;
   if (error) return <div>Error fetching data</div>;
 
   return (
     <>
-      {data && (
-        <Box>
-          <Flex marginTop={8}>
-            <Spacer />
-            <Box flex={4} mt={4}>
-              <Box p={8} borderWidth="1px" borderRadius="lg" overflow="hidden">
-                {" "}
-                <Center>
+      <Flex w="100%" m={gap} direction="column">
+        {data && (
+          <Box>
+            <Flex marginTop={8}>
+              <Spacer />
+              <Box flex={4} mt={4}>
+                <Box
+                  p={8}
+                  borderWidth="1px"
+                  borderRadius="lg"
+                  overflow="hidden"
+                >
                   {" "}
-                  <Text as="b" mb={4}>
-                    PENGURUS DESA
-                  </Text>
-                </Center>
-                <Box>
-                  <Box
-                    p={8}
-                    borderWidth="1px"
-                    borderRadius="lg"
-                    overflow="hidden"
-                  >
-                    <Center>
-                      <Image
-                        borderRadius="18"
-                        boxSize="120px"
-                        objectFit="cover"
-                        src={data.foto}
-                        alt={data.foto}
-                      />
-                    </Center>
+                  <Center>
+                    {" "}
+                    <Text as="b" mb={4}>
+                      PENGURUS DESA
+                    </Text>
+                  </Center>
+                  <Box>
+                    <Box
+                      p={8}
+                      borderWidth="1px"
+                      borderRadius="lg"
+                      overflow="hidden"
+                    >
+                      <Center>
+                        <Image
+                          borderRadius="18"
+                          boxSize="120px"
+                          objectFit="cover"
+                          src={data.foto}
+                          alt={data.foto}
+                        />
+                      </Center>
 
-                    <Flex mt={4}>
+                      <Flex mt={4}>
+                        <Table>
+                          <Tr>
+                            <Th>Jabatan</Th>
+                            <Td>
+                              {data.jabatan}{" "}
+                              <EditIcon
+                                onClick={() => {
+                                  setIsModalOpen(true);
+                                  setEditedPengurusDesaId(
+                                    data.pengurus_desa_anggota_id
+                                  );
+                                  setJabatanPengurusDesa(data.jabatan);
+                                }}
+                              />
+                            </Td>
+                          </Tr>
+                          <Tr>
+                            <Th>Akses Admin</Th>
+                            <Td>
+                              {data.akses_admin == 1 ? (
+                                <Box
+                                  as="button"
+                                  borderRadius="md"
+                                  bg="#48BB78"
+                                  color="white"
+                                  px={4}
+                                  h={8}
+                                  onClick={() => {
+                                    handleAdmin(data.pengurus_desa_anggota_id);
+                                  }}
+                                >
+                                  Admin
+                                </Box>
+                              ) : (
+                                <Box
+                                  as="button"
+                                  borderRadius="md"
+                                  bg="#E53E3E"
+                                  color="white"
+                                  px={4}
+                                  h={8}
+                                  onClick={() => {
+                                    handleNonAdmin(
+                                      data.pengurus_desa_anggota_id
+                                    );
+                                  }}
+                                >
+                                  Not Admin
+                                </Box>
+                              )}
+                            </Td>
+                          </Tr>
+                        </Table>
+                      </Flex>
+                    </Box>
+                    <TableContainer p={8}>
                       <Table>
-                        <Tr>
-                          <Th>Jabatan</Th>
-                          <Td>
-                            {data.jabatan}{" "}
-                            <EditIcon
-                              onClick={() => {
-                                setIsModalOpen(true);
-                                setEditedPengurusDesaId(
-                                  data.pengurus_desa_anggota_id
-                                );
-                                setJabatanPengurusDesa(data.jabatan);
-                              }}
-                            />
-                          </Td>
-                        </Tr>
-                        <Tr>
-                          <Th>Akses Admin</Th>
-                          <Td>
-                            {data.akses_admin == 1 ? (
-                              <Box
-                                as="button"
-                                borderRadius="md"
-                                bg="#48BB78"
-                                color="white"
-                                px={4}
-                                h={8}
-                                onClick={() => {
-                                  handleAdmin(data.pengurus_desa_anggota_id);
-                                }}
-                              >
-                                Admin
-                              </Box>
-                            ) : (
-                              <Box
-                                as="button"
-                                borderRadius="md"
-                                bg="#E53E3E"
-                                color="white"
-                                px={4}
-                                h={8}
-                                onClick={() => {
-                                  handleNonAdmin(data.pengurus_desa_anggota_id);
-                                }}
-                              >
-                                Not Admin
-                              </Box>
-                            )}
-                          </Td>
-                        </Tr>
-                      </Table>
-                    </Flex>
-                  </Box>
-                  <TableContainer p={8}>
-                    <Table>
-                      <Tbody>
-                        <Tr>
-                          <Th>Nama Lengkap</Th>
-                          <Td>{data.nama_lengkap}</Td>
-                        </Tr>
-                        <Tr>
-                          <Th>NIK</Th>
-                          <Td>{data.nik}</Td>
-                        </Tr>
+                        <Tbody>
+                          <Tr>
+                            <Th>Nama Lengkap</Th>
+                            <Td>{data.nama_lengkap}</Td>
+                          </Tr>
+                          <Tr>
+                            <Th>NIK</Th>
+                            <Td>{data.nik}</Td>
+                          </Tr>
 
-                        <Tr>
-                          <Th>Tanggal Lahir</Th>
-                          <Td>{formatDate(data.tanggal_lahir)}</Td>
-                        </Tr>
-                      </Tbody>
-                    </Table>
-                  </TableContainer>
+                          <Tr>
+                            <Th>Tanggal Lahir</Th>
+                            <Td>{formatDate(data.tanggal_lahir)}</Td>
+                          </Tr>
+                        </Tbody>
+                      </Table>
+                    </TableContainer>
+                  </Box>
                 </Box>
               </Box>
-            </Box>
-            <Spacer />
-          </Flex>
-        </Box>
-      )}
+              <Spacer />
+            </Flex>
+          </Box>
+        )}
+      </Flex>
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <ModalOverlay />
         <ModalContent>
@@ -262,7 +287,7 @@ export function DetailPengurusDesa() {
                       h={8}
                       type="submit"
                     >
-                      Update
+                      Perbarui
                     </Button>
                   </Center>
                 </form>

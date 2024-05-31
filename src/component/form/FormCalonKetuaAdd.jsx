@@ -21,8 +21,9 @@ import { axiosInstance } from "../../lib/axios";
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import { useQuery } from "@tanstack/react-query";
+import { Loading } from "../Loading";
 
-export function FormCalonKetuaAdd() {
+export function FormCalonKetuaAdd({ gap }) {
   const router = useRouter();
   const { id } = router.query;
   const [error, setError] = useState(null);
@@ -35,14 +36,13 @@ export function FormCalonKetuaAdd() {
 
   const toast = useToast();
   const { data, refetch: refetchData } = useQuery({
-    queryKey:["warga"],
+    queryKey: ["warga"],
     queryFn: async () => {
       const dataResponse = await axiosInstance.get("/warga");
+      setLoading(false);
       return dataResponse;
     },
   });
-
-  
 
   const handleAdd = async () => {
     try {
@@ -52,75 +52,89 @@ export function FormCalonKetuaAdd() {
         deskripsi: deskripsi.current.value,
       };
 
-      await axiosInstance.post(`/calonketua/add`, formData);
+      const response = await axiosInstance.post(`/calonketua/add`, formData);
 
       toast({
-        title: "Calon Ketua has been inserted",
+        title: response.data.message,
         status: "success",
       });
       router.push(`/admin/pemilihankepaladesa/${id}`);
     } catch (error) {
-      if (error.response && error.response.status === 400) {
-        // Penanganan kesalahan jika tanggal mulai dan tanggal selesai bertabrakan
-        toast({
-          title:
-            "Warga sudah terdaftar sebagai calon di pemilihan ini",
-          status: "error",
-        });
-      } else {
-        console.error("Error rejecting request:", error);
-      }
+      toast({
+        title: error.response.data.message,
+        status: "error",
+      });
+      console.error("Error rejecting request:", error);
     }
   };
 
+  if (loading)
+    return (
+      <>
+        <Loading />
+      </>
+    );
+
   return (
     <>
-      <form>
-        <Box p={8} borderWidth="1px" borderRadius="lg" overflow="hidden" mt={4}>
-          <Flex>
-            <Table flex={5}>
-              <Tbody>
-                <Tr>
-                  <Th>Warga</Th>
-                  <Td>
-                    <FormControl>
-                      <Select name="warga_id" placeholder="Pilih Warga" ref={warga_id}>
-                        {data?.data.values.map((warga) => (
-                          <option key={warga.warga_id} value={warga.warga_id}>
-                            {warga.nama_lengkap}
-                          </option>
-                        ))}
-                      </Select>
-                    </FormControl>
-                  </Td>
-                </Tr>
+      <Flex direction="column" w="100%" m={gap}>
+        <form>
+          <Box
+            p={8}
+            borderWidth="1px"
+            borderRadius="lg"
+            overflow="hidden"
+            mt={4}
+          >
+            <Flex>
+              <Table flex={5}>
+                <Tbody>
+                  <Tr>
+                    <Th>Warga</Th>
+                    <Td>
+                      <FormControl>
+                        <Select
+                          name="warga_id"
+                          placeholder="Pilih Warga"
+                          ref={warga_id}
+                        >
+                          {data?.data.values.map((warga) => (
+                            <option key={warga.warga_id} value={warga.warga_id}>
+                              {warga.nama_lengkap}
+                            </option>
+                          ))}
+                        </Select>
+                      </FormControl>
+                    </Td>
+                  </Tr>
 
-                <Tr>
-                  <Th>Deskripsi</Th>
-                  <Td>
-                    <FormControl>
-                      <Textarea required name="deskripsi" ref={deskripsi} />
-                    </FormControl>
-                  </Td>
-                </Tr>
-              </Tbody>
-            </Table>
-          </Flex>
+                  <Tr>
+                    <Th>Deskripsi</Th>
+                    <Td>
+                      <FormControl>
+                        <Textarea required name="deskripsi" ref={deskripsi} />
+                      </FormControl>
+                    </Td>
+                  </Tr>
+                </Tbody>
+              </Table>
+            </Flex>
 
-          <Center mt={4}>
-            <Button
-              variant="outline"
-              bg="#4FD1C5"
-              color="white"
-              onClick={() => {
-                handleAdd();
-              }}
-            >
-              Submit
-            </Button>
-          </Center>
-        </Box>
-      </form>
+            <Center mt={4}>
+              <Button
+                variant="outline"
+                bg="#4FD1C5"
+                color="white"
+                onClick={() => {
+                  handleAdd();
+                }}
+              >
+                Submit
+              </Button>
+            </Center>
+          </Box>
+        </form>
+      </Flex>
     </>
   );
 }

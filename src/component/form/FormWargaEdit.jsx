@@ -20,8 +20,9 @@ import { axiosInstance } from "../../lib/axios";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useRef } from "react";
+import { Loading } from "../Loading";
 
-export function FormWargaEdit() {
+export function FormWargaEdit({ gap }) {
   const router = useRouter();
   const { id } = router.query;
   const [error, setError] = useState(null);
@@ -77,119 +78,121 @@ export function FormWargaEdit() {
     }
   };
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <Loading />;
   if (error) return <div>Error fetching data</div>;
 
   return (
     <>
-      {data && (
-        <form>
-          <Box
-            p={8}
-            borderWidth="1px"
-            borderRadius="lg"
-            overflow="hidden"
-            mt={4}
-          >
-            <Flex>
-              <Table flex={5}>
-                <Tbody>
-                  <Tr>
-                    <Th>NIK</Th>
-                    <Td>
-                      <FormControl>
-                        <Input
-                          ref={nik}
-                          name="nik"
-                          defaultValue={data.nik}
-                        ></Input>
-                      </FormControl>
-                    </Td>
-                  </Tr>
-                  <Tr>
-                    <Th>KK</Th>
-                    <Td>
-                      <FormControl>
-                        <Input
-                          required
-                          ref={kk}
-                          name="kk"
-                          defaultValue={data.kk}
-                        ></Input>
-                      </FormControl>
-                    </Td>
-                  </Tr>
-                  <Tr>
-                    <Th>Nama Lengkap</Th>
-                    <Td>
-                      <FormControl>
-                        <Input
-                          required
-                          ref={nama_lengkap}
-                          name="nama_lengkap"
-                          defaultValue={data.nama_lengkap}
-                        ></Input>
-                      </FormControl>
-                    </Td>
-                  </Tr>
-                  <Tr>
-                    <Th>Tanggal</Th>
-                    <Td>
-                      <FormControl>
-                        <Input
-                          name="tanggal"
-                          type="date"
-                          ref={tanggal_lahir}
-                          defaultValue={
-                            data.tanggal_lahir == "0000-00-00"
-                              ? ""
-                              : new Date(data.tanggal_lahir)
-                                  .toISOString()
-                                  .split("T")[0]
-                          }
-                        />
-                      </FormControl>
-                    </Td>
-                  </Tr>
-                </Tbody>
-              </Table>
+      <Flex direction="column" w="100%" m={gap}>
+        {data && (
+          <form>
+            <Box
+              p={8}
+              borderWidth="1px"
+              borderRadius="lg"
+              overflow="hidden"
+              mt={4}
+            >
+              <Flex>
+                <Table flex={5}>
+                  <Tbody>
+                    <Tr>
+                      <Th>NIK</Th>
+                      <Td>
+                        <FormControl>
+                          <Input
+                            ref={nik}
+                            name="nik"
+                            defaultValue={data.nik}
+                          ></Input>
+                        </FormControl>
+                      </Td>
+                    </Tr>
+                    <Tr>
+                      <Th>KK</Th>
+                      <Td>
+                        <FormControl>
+                          <Input
+                            required
+                            ref={kk}
+                            name="kk"
+                            defaultValue={data.kk}
+                          ></Input>
+                        </FormControl>
+                      </Td>
+                    </Tr>
+                    <Tr>
+                      <Th>Nama Lengkap</Th>
+                      <Td>
+                        <FormControl>
+                          <Input
+                            required
+                            ref={nama_lengkap}
+                            name="nama_lengkap"
+                            defaultValue={data.nama_lengkap}
+                          ></Input>
+                        </FormControl>
+                      </Td>
+                    </Tr>
+                    <Tr>
+                      <Th>Tanggal</Th>
+                      <Td>
+                        <FormControl>
+                          <Input
+                            name="tanggal"
+                            type="date"
+                            ref={tanggal_lahir}
+                            defaultValue={
+                              data.tanggal_lahir == "0000-00-00"
+                                ? ""
+                                : new Date(data.tanggal_lahir)
+                                    .toISOString()
+                                    .split("T")[0]
+                            }
+                          />
+                        </FormControl>
+                      </Td>
+                    </Tr>
+                  </Tbody>
+                </Table>
 
-              <Spacer flex={1} />
+                <Spacer flex={1} />
 
-              <Box
-                p={8}
-                borderWidth="1px"
-                borderRadius="lg"
-                overflow="hidden"
-                mt={4}
-                flex={4}
-              >
-                <Center>
-                  <Image
-                    borderRadius="18"
-                    objectFit="cover"
-                    src={data.foto}
-                    alt={data.foto}
-                  />
-                </Center>               
-              </Box>
-            </Flex>
+                <Box
+                  p={8}
+                  borderWidth="1px"
+                  borderRadius="lg"
+                  overflow="hidden"
+                  mt={4}
+                  flex={4}
+                >
+                  <Center>
+                    <Image
+                      borderRadius="18"
+                      objectFit="cover"
+                      src={data.foto}
+                      alt={data.foto}
+                    />
+                  </Center>
+                </Box>
+              </Flex>
 
-            <Center mt={4}>
-              <Button
-                variant="outline"
-                bg="#4FD1C5"
-                color="white"
-                onClick={() => {
-                  handleUpdate(data.warga_id);
-                }}
-              >
-                Edit
-              </Button>
-            </Center>
-          </Box>
-        </form>
-      )}
+              <Center mt={4}>
+                <Button
+                  variant="outline"
+                  bg="#4FD1C5"
+                  color="white"
+                  onClick={() => {
+                    handleUpdate(data.warga_id);
+                  }}
+                >
+                  Edit
+                </Button>
+              </Center>
+            </Box>
+          </form>
+        )}
+      </Flex>
     </>
   );
 }
