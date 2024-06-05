@@ -1,16 +1,12 @@
-import { Box, Container, Flex, Heading, Spacer } from "@chakra-ui/react";
-import { HeadAdmin } from "../../../component/headAdmin";
-import { Navbar } from "../../../component/NavbarAdmin";
 import { TableWarga } from "../../../component/table/TableWarga";
-import { useRouter } from "next/router";
+import { withAuth } from "../../../lib/authorizationAdmin";
 
-export default function Warga() {
-  const router = useRouter();
+const Warga = () => {
   return (
     <>
-     
-          <TableWarga gap={8}/>
-     
+      <TableWarga gap={8} />
     </>
   );
-}
+};
+
+export default withAuth(Warga);

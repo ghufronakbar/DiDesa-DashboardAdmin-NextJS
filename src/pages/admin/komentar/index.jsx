@@ -1,12 +1,11 @@
-import { HeadAdmin } from "../../../component/headAdmin";
-import { Container, Heading } from "@chakra-ui/react";
-import { Navbar } from "../../../component/NavbarAdmin";
 import { TableKomentar } from "../../../component/table/TableKomentar";
+import { withAuth } from "../../../lib/authorizationAdmin";
 
-export default function Komentar() {
+const Komentar = ()=> {
   return (
     <>
       <TableKomentar gap={8} />
     </>
   );
 }
+export default withAuth(Komentar);

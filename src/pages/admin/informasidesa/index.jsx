@@ -1,7 +1,5 @@
-import { HeadAdmin } from "../../../component/headAdmin";
-import { Box, Container, Heading } from "@chakra-ui/react";
-import { Navbar } from "../../../component/NavbarAdmin";
 import { FormInformasiDesa } from "../../../component/form/FormInformasiDesa";
+import { withAuth } from "../../../lib/authorizationAdmin";
 
 const InformasiDesa = () => {
   return (
@@ -11,4 +9,4 @@ const InformasiDesa = () => {
   );
 };
 
-export default InformasiDesa;
+export default withAuth(InformasiDesa);

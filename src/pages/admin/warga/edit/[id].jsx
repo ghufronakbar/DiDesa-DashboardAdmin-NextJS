@@ -1,12 +1,12 @@
-import { HeadAdmin } from "../../../../component/headAdmin";
-import { Container } from "@chakra-ui/react";
-import { Navbar } from "../../../../component/NavbarAdmin";
 import { FormWargaEdit } from "../../../../component/form/FormWargaEdit";
+import { withAuth } from "../../../../lib/authorizationAdmin";
 
-export default function EditWargaID() {
+const EditWargaID = () => {
   return (
     <>
-      <FormWargaEdit gap={8}/>
+      <FormWargaEdit gap={8} />
     </>
   );
-}
+};
+
+export default withAuth(EditWargaID);

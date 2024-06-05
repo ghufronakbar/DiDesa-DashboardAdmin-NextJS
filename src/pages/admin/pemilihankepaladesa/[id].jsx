@@ -1,10 +1,12 @@
-
 import { DetailPemilihanKepalaDesaID } from "../../../component/detail/DetailPemilihanKepalaDesa";
+import { withAuth } from "../../../lib/authorizationAdmin";
 
-export default function PemilihanKepalaDesaID() {
+const PemilihanKepalaDesaID = () => {
   return (
     <>
-      <DetailPemilihanKepalaDesaID gap={8}/>
+      <DetailPemilihanKepalaDesaID gap={8} />
     </>
   );
-}
+};
+
+export default withAuth(PemilihanKepalaDesaID);

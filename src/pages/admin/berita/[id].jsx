@@ -1,13 +1,11 @@
-import { HeadAdmin } from "../../../component/headAdmin";
 
-import { Container } from "@chakra-ui/react";
-import { Navbar } from "../../../component/NavbarAdmin";
 import { FormBeritaEdit } from "../../../component/form/FormBeritaEdit";
-
-export default function BeritaID() {
+import { withAuth } from "../../../lib/authorizationAdmin";
+const BeritaID=() => {
   return (
     <>
   <FormBeritaEdit gap={8}/>
     </>
   );
 }
+export default withAuth(BeritaID);

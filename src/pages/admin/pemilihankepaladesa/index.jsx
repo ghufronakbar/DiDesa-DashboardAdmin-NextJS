@@ -1,7 +1,12 @@
-import { Container, Heading } from "@chakra-ui/react";
-import { Navbar } from "../../../component/NavbarAdmin";
 import { TablePemilihanKepalaDesa } from "../../../component/table/TablePemilihanKepalaDesa";
+import { withAuth } from "../../../lib/authorizationAdmin";
 
-export default function PemilihanKepalaDesa() {
-  return <><TablePemilihanKepalaDesa gap={8}/></>;
-}
+const PemilihanKepalaDesa = () => {
+  return (
+    <>
+      <TablePemilihanKepalaDesa gap={8} />
+    </>
+  );
+};
+
+export default withAuth(PemilihanKepalaDesa);

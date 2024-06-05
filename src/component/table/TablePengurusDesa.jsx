@@ -134,8 +134,8 @@ export function TablePengurusDesa({ gap }) {
         status: "success",
       });
       setIsModalOpen(false);
-      setPengurusDesaJabatan(null)
-      setPengurusDesaWargaId(null)
+      setPengurusDesaJabatan(null);
+      setPengurusDesaWargaId(null);
       refetchData();
     } catch (error) {
       toast({
@@ -233,7 +233,7 @@ export function TablePengurusDesa({ gap }) {
                             handleNonAdmin(data.pengurus_desa_anggota_id);
                           }}
                         >
-                          Not Admin
+                          Bukan Admin
                         </Box>
                       )}
                     </Center>
@@ -268,10 +268,14 @@ export function TablePengurusDesa({ gap }) {
           </Table>
         </TableContainer>
       </Flex>
-      <Modal isOpen={isModalOpen} onClose={() => {setIsModalOpen(false)
-        setPengurusDesaWargaId(null)
-        setPengurusDesaJabatan(null)
-      }}>
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => {
+          setIsModalOpen(false);
+          setPengurusDesaWargaId(null);
+          setPengurusDesaJabatan(null);
+        }}
+      >
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Tambah Pengurus</ModalHeader>

@@ -1,19 +1,12 @@
-import { HeadAdmin } from "../../../component/headAdmin";
-import {
-  Container,
-  Heading,
-} from "@chakra-ui/react";
-import { Navbar } from "../../../component/NavbarAdmin";
 import { TablePengaduanMasyarakat } from "../../../component/table/TablePengaduanMasyarakat";
+import { withAuth } from "../../../lib/authorizationAdmin";
 
-
-export default function PengaduanMasyarakat() {
+const PengaduanMasyarakat = () => {
   return (
     <>
-       
-          <TablePengaduanMasyarakat gap={8}/>
-        
+      <TablePengaduanMasyarakat gap={8} />
     </>
   );
-}
+};
 
+export default withAuth(PengaduanMasyarakat);

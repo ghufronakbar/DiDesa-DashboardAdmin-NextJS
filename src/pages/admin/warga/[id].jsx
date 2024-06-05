@@ -1,12 +1,12 @@
-import { HeadAdmin } from "../../../component/headAdmin";
-import { Container } from "@chakra-ui/react";
-import { Navbar } from "../../../component/NavbarAdmin";
 import { DetailWarga } from "../../../component/detail/DetailWarga";
+import { withAuth } from "../../../lib/authorizationAdmin";
 
-export default function WargaID() {
+const WargaID = () => {
   return (
     <>
-    <DetailWarga gap={8}/>
+      <DetailWarga gap={8} />
     </>
   );
-}
+};
+
+export default withAuth(WargaID);
