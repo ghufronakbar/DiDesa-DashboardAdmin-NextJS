@@ -21,24 +21,15 @@ import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { Loading } from "../Loading";
 import { useState } from "react";
+import formatDate from "../../lib/formatDate";
 
 export function TableWarga({ gap }) {
   const router = useRouter();
   const toast = useToast();
   const [isLoading, setIsloading] = useState(true)
 
-  function formatDate(dateString) {
-    const options = {
-      weekday: "long",
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    };
-    return new Date(dateString).toLocaleDateString("en-US", options);
-  }
-
   let i = 1;
-  const { data: dataPemilihan, refetch: refetchDataPemilihan } = useQuery({
+  const { data: dataWarga, refetch: refetchDataWarga } = useQuery({
     queryFn: async () => {
       const dataResponse = await axiosInstance.get("/warga");
       setIsloading(false)
@@ -48,14 +39,17 @@ export function TableWarga({ gap }) {
 
   const handleDelete = async (id) => {
     try {
-      const response = await axiosInstance.delete(`/warga/delete/${id}`);
-
+      const response = await axiosInstance.delete(`/warga/delete/${id}`);      
       toast({
         title: response.data.message,
-        status: "warning",
+        status: "info",
       });
-      refetchDataPemilihan();
+      refetchDataWarga();
     } catch (error) {
+      toast({
+        title: error.response.data.message,
+        status: "info",
+      });
       console.error("Error rejecting request:", error);
     }
   };
@@ -99,7 +93,7 @@ export function TableWarga({ gap }) {
               </Tr>
             </Thead>
             <Tbody>
-              {dataPemilihan?.data.values.map((data) => (
+              {dataWarga?.data.values.map((data) => (
                 <Tr key={data.berita_id}>
                   <Td>{i++}</Td>
                   <Td>

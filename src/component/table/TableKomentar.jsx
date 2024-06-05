@@ -12,43 +12,35 @@ import {
   Thead,
   Tr,
   useToast,
-  Heading
+  Heading,
+  Tooltip,
 } from "@chakra-ui/react";
 import { axiosInstance } from "../../lib/axios";
 import { useQuery } from "@tanstack/react-query";
 import { Loading } from "../Loading";
 import { useState } from "react";
-
+import formatString from "../../lib/formatString";
+import formatDate from "../../lib/formatDate";
 
 export const TableKomentar = ({ gap }) => {
   const toast = useToast();
-  const [isLoading, setIsloading] = useState(true)
-
-  function formatDate(dateString) {
-    const options = {
-      weekday: "long",
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    };
-    return new Date(dateString).toLocaleDateString("en-US", options);
-  }
+  const [isLoading, setIsloading] = useState(true);
 
   let i = 1;
   const { data, refetch: refetchData } = useQuery({
     queryFn: async () => {
       const dataResponse = await axiosInstance.get("/komentar");
-      setIsloading(false)
+      setIsloading(false);
       return dataResponse;
     },
   });
 
   const handleDelete = async (id) => {
     try {
-      await axiosInstance.delete(`/komentar/delete/${id}`);
+      const response = await axiosInstance.delete(`/komentar/delete/${id}`);
 
       toast({
-        title: "Komentar has been deleted",
+        title: response.data.message,
         status: "warning",
       });
       refetchData();
@@ -56,14 +48,19 @@ export const TableKomentar = ({ gap }) => {
       console.error("Error rejecting request:", error);
     }
   };
-  if(isLoading)return(<><Loading/></>)
+  if (isLoading)
+    return (
+      <>
+        <Loading />
+      </>
+    );
 
   return (
     <>
       <Flex direction="column" m={gap} w="100%">
         <Heading mb={gap}>Komentar</Heading>
         <TableContainer>
-          <Table size='sm'>
+          <Table size="sm">
             <Thead>
               <Tr>
                 <Th>No</Th>
@@ -89,10 +86,24 @@ export const TableKomentar = ({ gap }) => {
                   </Td>
                   <Td>
                     <Text as="b">{data.nama_lengkap}</Text>
-                    <Text noOfLines={[1, 2, 3]}>{data.judul}</Text>
+                    <Tooltip
+                      hasArrow
+                      label={data.judul}
+                      bg="gray.300"
+                      color="black"
+                    >
+                      <Text>{formatString(data.judul,30)}</Text>
+                    </Tooltip>
                   </Td>
                   <Td>
-                    <Text>{data.isi}</Text>
+                  <Tooltip
+                      hasArrow
+                      label={data.isi}
+                      bg="gray.300"
+                      color="black"
+                    >
+                      <Text>{formatString(data.isi,30)}</Text>
+                    </Tooltip>
                   </Td>
                   <Td>
                     <Text as="b">{formatDate(data.tanggal)}</Text>
@@ -115,4 +126,4 @@ export const TableKomentar = ({ gap }) => {
       </Flex>
     </>
   );
-}
+};

@@ -20,7 +20,7 @@ import {
 } from "@chakra-ui/react";
 import { LockIcon } from "@chakra-ui/icons";
 import { primaryColor, white } from "../../lib/color";
-import {axiosInstance} from "../../lib/axios";
+import { axiosInstance } from "../../lib/axios";
 
 function Copyright(props) {
   return (
@@ -35,7 +35,7 @@ function Copyright(props) {
   );
 }
 
-export default function SignInSide() {
+const Login = () => {
   const [nik, setNik] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -126,16 +126,6 @@ export default function SignInSide() {
                   Login
                 </Button>
               </VStack>
-              <Flex justify="space-between" mt={4}>
-                <HStack
-                  onClick={() => {
-                    router.push(`/admin/register`);
-                  }}
-                >
-                  <Text>Don't have an account?</Text>
-                  <Text color={primaryColor}>Register</Text>
-                </HStack>
-              </Flex>
               <Copyright mt={8} />
             </Box>
           </Flex>
@@ -143,4 +133,6 @@ export default function SignInSide() {
       </Grid>
     </Box>
   );
-}
+};
+
+export default Login

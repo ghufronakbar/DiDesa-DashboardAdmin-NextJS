@@ -31,6 +31,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { Loading } from "../Loading";
+import formatDate from "../../lib/formatDate";
 
 export function TablePemilihanKepalaDesa({ gap }) {
   const router = useRouter();
@@ -41,15 +42,6 @@ export function TablePemilihanKepalaDesa({ gap }) {
   const [tanggalMulai, setTanggalMulai] = useState("");
   const [tanggalSelesai, setTanggalSelesai] = useState("");
   const [isLoading, setIsloading] = useState(true)
-  function formatDate(dateString) {
-    const options = {
-      weekday: "long",
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    };
-    return new Date(dateString).toLocaleDateString("en-US", options);
-  }
 
   let i = 1;
   const { data, refetch: refetchData } = useQuery({

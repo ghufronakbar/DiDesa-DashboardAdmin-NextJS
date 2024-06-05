@@ -31,12 +31,12 @@ import { useRouter } from "next/router";
 import { useQuery } from "@tanstack/react-query";
 import { WarningIcon } from "@chakra-ui/icons";
 import { Loading } from "../Loading";
+import formatDate from "../../lib/formatDate";
 
 export function DetailPemilihanKepalaDesaID({ gap }) {
   const router = useRouter();
   const { id } = router.query;
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);  
   const toast = useToast();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [judul, setJudul] = useState("");
@@ -56,25 +56,6 @@ export function DetailPemilihanKepalaDesaID({ gap }) {
     },
   });
 
-  function formatDate(dateString) {
-    const options = {
-      weekday: "long",
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    };
-    return new Date(dateString).toLocaleDateString("en-US", options);
-  }
-
-  const formatDate2 = (isoDateString) => {
-    const date = new Date(isoDateString);
-    const year = date.getFullYear();
-    let month = date.getMonth() + 1;
-    if (month < 10) month = "0" + month;
-    let day = date.getDate();
-    if (day < 10) day = "0" + day;
-    return `${year}-${month}-${day}`;
-  };
 
   const handleDeleteCalonKetua = async (id) => {
     try {
@@ -391,7 +372,7 @@ export function DetailPemilihanKepalaDesaID({ gap }) {
                     <Input
                       type="date"
                       name="tanggal_mulai"
-                      value={formatDate2(tanggalMulai)}
+                      value={formatDate(tanggalMulai)}
                       onChange={(e) => setTanggalMulai(e.target.value)}
                     />
                   </FormControl>
@@ -399,7 +380,7 @@ export function DetailPemilihanKepalaDesaID({ gap }) {
                     <Input
                       type="date"
                       name="tanggal_selesai"
-                      value={formatDate2(tanggalSelesai)}
+                      value={formatDate(tanggalSelesai)}
                       onChange={(e) => setTanggalSelesai(e.target.value)}
                     />
                   </FormControl>

@@ -20,6 +20,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useRef } from "react";
 import { Loading } from "../Loading";
+import formatDate from "../../lib/formatDate";
 
 export function FormCalonKetuaEdit({gap}) {
   const router = useRouter();
@@ -49,16 +50,6 @@ export function FormCalonKetuaEdit({gap}) {
       fetchData();
     }
   }, [id]);
-
-  function formatDate(dateString) {
-    const options = {
-      weekday: "long",
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    };
-    return new Date(dateString).toLocaleDateString("en-US", options);
-  }
 
   const handleUpdate = async (id) => {
     try {

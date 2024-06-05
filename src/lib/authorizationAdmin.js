@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { useEffect, useState, createContext } from "react";
-import {jwtDecode} from "jwt-decode"; // Perhatikan bahwa tidak ada kurung kurawal
+import { jwtDecode } from "jwt-decode"; // Perhatikan bahwa tidak ada kurung kurawal
 import { useToast } from "@chakra-ui/react";
 
 export const AuthContext = createContext();

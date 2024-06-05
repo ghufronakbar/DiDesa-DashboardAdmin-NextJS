@@ -1,4 +1,4 @@
-function formatString(str, maxLength = 30) {
+function formatString(str, maxLength) {
     if (str.length > maxLength) {
       return str.slice(0, maxLength) + '...';
     }

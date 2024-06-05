@@ -20,12 +20,14 @@ import {
   ModalCloseButton,
   Flex,
   Heading,
+  Tooltip,
 } from "@chakra-ui/react";
 import { axiosInstance } from "../../lib/axios";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { Loading } from "../Loading";
+import formatString from "../../lib/formatString";
 
 export function TablePengaduanMasyarakat({ gap }) {
   const toast = useToast();
@@ -96,7 +98,14 @@ export function TablePengaduanMasyarakat({ gap }) {
                   </Td>
                   <Td maxW={40}>
                     <Text as="b">{data.subjek}</Text>
-                    <Text noOfLines={1}>{data.isi}</Text>
+                    <Tooltip
+                      hasArrow
+                      label={data.isi}
+                      bg="gray.300"
+                      color="black"
+                    >                      
+                    <Text>{formatString(data.isi,30)}</Text>
+                    </Tooltip>
                   </Td>
                   <Td>
                     <Text as="b">{formatDate(data.tanggal)}</Text>

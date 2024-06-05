@@ -25,7 +25,7 @@ export function SidebarMenu() {
           mt={8}
         >
           <Text as="b" fontSize="3xl">
-            Konek
+            DiDesa
           </Text>
         </Box>
         <br />

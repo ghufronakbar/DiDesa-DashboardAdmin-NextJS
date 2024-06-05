@@ -63,7 +63,7 @@ export function TableJenisUMKM({ refetchData: customRefetchData, gap }) {
       });
 
       setIsAddOpen(false);
-
+      setNamaJenisUMKM("");
       refetchData();
     } catch (error) {
       console.error("Error rejecting request:", error);
@@ -94,12 +94,12 @@ export function TableJenisUMKM({ refetchData: customRefetchData, gap }) {
           nama_jenis_umkm: namaJenisUMKM,
         }
       );
-
       toast({
         title: response.data.message,
         status: "success",
       });
       refetchData();
+      setNamaJenisUMKM("");
       setIsEditOpen(false);
     } catch (error) {
       console.error("Error rejecting request:", error);
@@ -109,7 +109,13 @@ export function TableJenisUMKM({ refetchData: customRefetchData, gap }) {
   const ModalAdd = () => {
     return (
       <>
-        <Modal isOpen={isAddOpen} onClose={() => setIsAddOpen(false)}>
+        <Modal
+          isOpen={isAddOpen}
+          onClose={() => {
+            setIsAddOpen(false);
+            setNamaJenisUMKM("");
+          }}
+        >
           <ModalOverlay />
           <ModalContent>
             <ModalHeader>Nama Jenis UMKM</ModalHeader>
@@ -119,8 +125,8 @@ export function TableJenisUMKM({ refetchData: customRefetchData, gap }) {
                 <Center flex={1}>
                   <form
                     onSubmit={(e) => {
-                      e.preventDefault(); // Prevent default form submission
-                      handleAdd(); // Call handleAdd function
+                      e.preventDefault();
+                      handleAdd();
                     }}
                   >
                     <FormControl>
@@ -164,7 +170,13 @@ export function TableJenisUMKM({ refetchData: customRefetchData, gap }) {
   const ModalEdit = () => {
     return (
       <>
-        <Modal isOpen={isEditOpen} onClose={() => setIsEditOpen(false)}>
+        <Modal
+          isOpen={isEditOpen}
+          onClose={() => {
+            setIsEditOpen(false);
+            setNamaJenisUMKM("");
+          }}
+        >
           <ModalOverlay />
           <ModalContent>
             <ModalHeader>Edit Nama</ModalHeader>
@@ -270,8 +282,8 @@ export function TableJenisUMKM({ refetchData: customRefetchData, gap }) {
           </Table>
         </TableContainer>
       </Flex>
-      <ModalEdit />
-      <ModalAdd />
+      {ModalEdit()}
+      {ModalAdd()}
     </>
   );
 }

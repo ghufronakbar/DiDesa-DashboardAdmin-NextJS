@@ -28,6 +28,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { EditIcon } from "@chakra-ui/icons";
 import { Loading } from "../Loading";
+import formatDate from "../../lib/formatDate";
 
 export function DetailPengurusDesa({ gap }) {
   const router = useRouter();
@@ -61,16 +62,6 @@ export function DetailPengurusDesa({ gap }) {
   const refetchData = async () => {
     await fetchData();
   };
-
-  function formatDate(dateString) {
-    const options = {
-      weekday: "long",
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    };
-    return new Date(dateString).toLocaleDateString("en-US", options);
-  }
 
   const handleNonAdmin = async (id) => {
     try {

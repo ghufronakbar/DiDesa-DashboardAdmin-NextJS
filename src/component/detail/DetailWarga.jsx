@@ -18,6 +18,7 @@ import { axiosInstance } from "../../lib/axios";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { Loading } from "../Loading";
+import formatDate from "../../lib/formatDate";
 
 export function DetailWarga({gap}) {
   const router = useRouter();
@@ -45,17 +46,6 @@ export function DetailWarga({gap}) {
       fetchData();
     }
   }, [id]);
-
-  function formatDate(dateString) {
-    const options = {
-      weekday: "long",
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    };
-    return new Date(dateString).toLocaleDateString("en-US", options);
-  }
-
 
   if (loading) return <Loading/>;
   if (error) return <div>Error fetching data</div>;
