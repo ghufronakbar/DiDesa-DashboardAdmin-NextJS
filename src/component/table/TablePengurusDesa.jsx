@@ -65,7 +65,7 @@ export function TablePengurusDesa({ gap }) {
       const response = await axiosInstance.delete(`/pengurusdesa/delete/${id}`);
       toast({
         title: response.data.message,
-        status: "warning",
+        status: "info",
       });
       refetchData();
     } catch (error) {

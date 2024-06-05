@@ -50,13 +50,13 @@ export function TableUMKM({ gap }) {
 
       toast({
         title: response.data.message,
-        status: "warning",
+        status: "info",
       });
       refetchData();
     } catch (error) {
       toast({
         title: error.response.data.message,
-        status: "warning",
+        status: "error",
       });
       console.error("Error rejecting request:", error);
     }
@@ -88,7 +88,7 @@ export function TableUMKM({ gap }) {
       setIsModalOpen(false);
       toast({
         title: response.data.message,
-        status: "warning",
+        status: "info",
       });
       refetchData();
     } catch (error) {
