@@ -18,6 +18,7 @@ import {
 import { axiosInstance } from "../../lib/axios";
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/router";
+import { primaryColor, white } from "../../lib/color";
 
 export function FormBeritaEdit({ gap }) {
   const router = useRouter();
@@ -164,8 +165,8 @@ export function FormBeritaEdit({ gap }) {
             <Center mt={4}>
               <Button
                 variant="outline"
-                bg="#4FD1C5"
-                color="white"
+                bg={primaryColor}
+                color={white}
                 onClick={() => {
                   handleUpdate(data.berita_id);
                 }}

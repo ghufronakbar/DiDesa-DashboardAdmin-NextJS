@@ -22,6 +22,7 @@ import { useRouter } from "next/router";
 import { Loading } from "../Loading";
 import { useState } from "react";
 import formatDate from "../../lib/formatDate";
+import { primaryColor, white } from "../../lib/color";
 
 export function TableWarga({ gap }) {
   const router = useRouter();
@@ -48,7 +49,7 @@ export function TableWarga({ gap }) {
     } catch (error) {
       toast({
         title: error.response.data.message,
-        status: "info",
+        status: "error",
       });
       console.error("Error rejecting request:", error);
     }
@@ -69,8 +70,8 @@ export function TableWarga({ gap }) {
           <Box
             as="button"
             borderRadius="md"
-            bg="#48BB78"
-            color="white"
+            bg={primaryColor}
+            color={white}
             px={4}
             h={10}
             onClick={() => {

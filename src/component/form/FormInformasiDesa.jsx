@@ -34,6 +34,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import { Loading } from "../Loading";
+import { primaryColor, white } from "../../lib/color";
 
 export function FormInformasiDesa({ gap }) {  
   const toast = useToast();
@@ -178,7 +179,7 @@ export function FormInformasiDesa({ gap }) {
                 </Flex>
               </Stack>
               <Center>
-                <Button bg="#48BB78" color="white" mt={4} onClick={handleEdit}>
+                <Button bg={primaryColor} color={white} mt={4} onClick={handleEdit}>
                   Update
                 </Button>
               </Center>

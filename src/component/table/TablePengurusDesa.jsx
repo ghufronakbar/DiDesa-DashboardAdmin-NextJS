@@ -31,6 +31,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { Loading } from "../Loading";
+import { primaryColor, secondaryColor, white } from "../../lib/color";
 
 export function TablePengurusDesa({ gap }) {
   const router = useRouter();
@@ -162,8 +163,8 @@ export function TablePengurusDesa({ gap }) {
           <Box
             as="button"
             borderRadius="md"
-            bg="#48BB78"
-            color="white"
+            bg={primaryColor}
+            color={white}
             px={4}
             h={8}
             onClick={() => {
@@ -211,8 +212,8 @@ export function TablePengurusDesa({ gap }) {
                         <Box
                           as="button"
                           borderRadius="md"
-                          bg="#48BB78"
-                          color="white"
+                          bg={primaryColor}
+                          color={white}
                           px={4}
                           h={8}
                           onClick={() => {
@@ -225,8 +226,8 @@ export function TablePengurusDesa({ gap }) {
                         <Box
                           as="button"
                           borderRadius="md"
-                          bg="#E53E3E"
-                          color="white"
+                          bg={secondaryColor}
+                          color={white}
                           px={4}
                           h={8}
                           onClick={() => {
@@ -309,13 +310,13 @@ export function TablePengurusDesa({ gap }) {
                     <Button
                       mt={4}
                       borderRadius="md"
-                      bg="#48BB78"
-                      color="white"
+                      bg={primaryColor}
+                      color={white}
                       px={4}
                       h={8}
                       type="submit"
                     >
-                      Add
+                      Tambah
                     </Button>
                   </Center>
                 </form>

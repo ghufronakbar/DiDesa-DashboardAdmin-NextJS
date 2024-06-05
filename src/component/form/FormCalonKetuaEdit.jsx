@@ -21,6 +21,7 @@ import { useRouter } from "next/router";
 import { useRef } from "react";
 import { Loading } from "../Loading";
 import formatDate from "../../lib/formatDate";
+import { primaryColor, white } from "../../lib/color";
 
 export function FormCalonKetuaEdit({gap}) {
   const router = useRouter();
@@ -149,8 +150,8 @@ export function FormCalonKetuaEdit({gap}) {
             <Center mt={4}>
               <Button
                 variant="outline"
-                bg="#4FD1C5"
-                color="white"
+                bg={primaryColor}
+                color={white}
                 onClick={() => {
                   handleUpdate(data.warga_id);
                 }}

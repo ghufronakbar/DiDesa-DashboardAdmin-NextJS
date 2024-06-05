@@ -21,6 +21,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useRef } from "react";
 import { Loading } from "../Loading";
+import { primaryColor, white } from "../../lib/color";
 
 export function FormWargaEdit({ gap }) {
   const router = useRouter();
@@ -180,8 +181,8 @@ export function FormWargaEdit({ gap }) {
               <Center mt={4}>
                 <Button
                   variant="outline"
-                  bg="#4FD1C5"
-                  color="white"
+                  bg={primaryColor}
+                  color={white}
                   onClick={() => {
                     handleUpdate(data.warga_id);
                   }}

@@ -21,6 +21,7 @@ import { axiosInstance } from "../../lib/axios";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useRef } from "react";
+import { primaryColor, white } from "../../lib/color";
 
 export function FormWargaAdd({ gap }) {
   const router = useRouter();
@@ -103,7 +104,7 @@ export function FormWargaAdd({ gap }) {
                     </Td>
                   </Tr>
                   <Tr>
-                    <Th>Tanggal</Th>
+                    <Th>Tanggal Lahir</Th>
                     <Td>
                       <FormControl>
                         <Input name="tanggal" type="date" ref={tanggal_lahir} />
@@ -119,8 +120,8 @@ export function FormWargaAdd({ gap }) {
             <Center mt={4}>
               <Button
                 variant="outline"
-                bg="#4FD1C5"
-                color="white"
+                bg={primaryColor}
+                color={white}
                 onClick={() => {
                   handleAdd();
                 }}

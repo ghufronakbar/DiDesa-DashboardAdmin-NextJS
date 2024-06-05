@@ -33,6 +33,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { EditIcon } from "@chakra-ui/icons";
 import { Loading } from "../Loading";
+import { primaryColor, white } from "../../lib/color";
 
 export function TableJenisUMKM({ refetchData: customRefetchData, gap }) {
   const toast = useToast();
@@ -140,8 +141,8 @@ export function TableJenisUMKM({ refetchData: customRefetchData, gap }) {
                       <Button
                         mt={8}
                         borderRadius="md"
-                        bg="#48BB78"
-                        color="white"
+                        bg={primaryColor}
+                        color={white}
                         px={4}
                         h={8}
                         type="submit"
@@ -196,8 +197,8 @@ export function TableJenisUMKM({ refetchData: customRefetchData, gap }) {
                       <Button
                         mt={8}
                         borderRadius="md"
-                        bg="#48BB78"
-                        color="white"
+                        bg={primaryColor}
+                        color={white}
                         px={4}
                         h={8}
                         type="submit"
@@ -224,11 +225,10 @@ export function TableJenisUMKM({ refetchData: customRefetchData, gap }) {
           <Box
             as="button"
             borderRadius="md"
-            bg="#48BB78"
-            color="white"
+            bg={primaryColor}
+            color={white}
             px={4}
-            h={10}
-            colorScheme="teal"
+            h={10}            
             onClick={() => {
               setIsAddOpen(true);
             }}

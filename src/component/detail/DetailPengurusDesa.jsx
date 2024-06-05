@@ -29,6 +29,7 @@ import { useRouter } from "next/router";
 import { EditIcon } from "@chakra-ui/icons";
 import { Loading } from "../Loading";
 import formatDate from "../../lib/formatDate";
+import { primaryColor, secondaryColor, white } from "../../lib/color";
 
 export function DetailPengurusDesa({ gap }) {
   const router = useRouter();
@@ -193,8 +194,8 @@ export function DetailPengurusDesa({ gap }) {
                                 <Box
                                   as="button"
                                   borderRadius="md"
-                                  bg="#48BB78"
-                                  color="white"
+                                  bg={primaryColor}
+                                  color={white}
                                   px={4}
                                   h={8}
                                   onClick={() => {
@@ -207,8 +208,8 @@ export function DetailPengurusDesa({ gap }) {
                                 <Box
                                   as="button"
                                   borderRadius="md"
-                                  bg="#E53E3E"
-                                  color="white"
+                                  bg={secondaryColor}
+                                  color={white}
                                   px={4}
                                   h={8}
                                   onClick={() => {
@@ -217,7 +218,7 @@ export function DetailPengurusDesa({ gap }) {
                                     );
                                   }}
                                 >
-                                  Not Admin
+                                  Bukan Admin
                                 </Box>
                               )}
                             </Td>
@@ -272,8 +273,8 @@ export function DetailPengurusDesa({ gap }) {
                     <Button
                       mt={4}
                       borderRadius="md"
-                      bg="#48BB78"
-                      color="white"
+                      bg={primaryColor}
+                      color={white}
                       px={4}
                       h={8}
                       type="submit"

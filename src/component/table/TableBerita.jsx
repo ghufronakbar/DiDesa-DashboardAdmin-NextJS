@@ -22,6 +22,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { Loading } from "../Loading";
 import formatDate from "../../lib/formatDate";
+import { primaryColor, secondaryColor, tersierColor, white } from "../../lib/color";
 
 export function TableBerita({ gap }) {
   const router = useRouter();
@@ -130,8 +131,8 @@ export function TableBerita({ gap }) {
         <Box
           as="button"
           borderRadius="md"
-          bg="#48BB78"
-          color="white"
+          bg={primaryColor}
+          color={white}
           px={4}
           h={10}
           onClick={() => {
@@ -176,8 +177,8 @@ export function TableBerita({ gap }) {
                         <Box
                           as="button"
                           borderRadius="md"
-                          bg="#E53E3E"
-                          color="white"
+                          bg={secondaryColor}
+                          color={white}
                           px={4}
                           h={8}
                           onClick={() => {
@@ -191,8 +192,8 @@ export function TableBerita({ gap }) {
                         <Box
                           as="button"
                           borderRadius="md"
-                          bg="#48BB78"
-                          color="white"
+                          bg={primaryColor}
+                          color={white}
                           px={4}
                           h={8}
                           onClick={() => {
@@ -210,8 +211,8 @@ export function TableBerita({ gap }) {
                         <Box
                           as="button"
                           borderRadius="md"
-                          bg="#E53E3E"
-                          color="white"
+                          bg={tersierColor}
+                          color={white}
                           px={4}
                           h={8}
                           onClick={() => {
@@ -225,8 +226,8 @@ export function TableBerita({ gap }) {
                         <Box
                           as="button"
                           borderRadius="md"
-                          bg="#48BB78"
-                          color="white"
+                          bg={primaryColor}
+                          color={white}
                           px={4}
                           h={8}
                           onClick={() => {

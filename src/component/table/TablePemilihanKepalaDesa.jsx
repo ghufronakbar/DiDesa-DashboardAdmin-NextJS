@@ -32,6 +32,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { Loading } from "../Loading";
 import formatDate from "../../lib/formatDate";
+import { primaryColor, secondaryColor, tersierColor, white } from "../../lib/color";
 
 export function TablePemilihanKepalaDesa({ gap }) {
   const router = useRouter();
@@ -107,15 +108,15 @@ export function TablePemilihanKepalaDesa({ gap }) {
           <Box
             as="button"
             borderRadius="md"
-            bg="#48BB78"
-            color="white"
+            bg={primaryColor}
+            color={white}
             px={4}
             h={8}
             onClick={() => {
               setIsModalOpen(true);
             }}
           >
-            Add Pemilihan Ketua
+            Buat Acara Pemilihan Ketua
           </Box>
         </Flex>
         <TableContainer>
@@ -144,8 +145,8 @@ export function TablePemilihanKepalaDesa({ gap }) {
                         <Box
                           as="button"
                           borderRadius="md"
-                          bg="#CBD5E0"
-                          color="white"
+                          bg={tersierColor}
+                          color={white}
                           px={4}
                           h={8}
                         >
@@ -157,8 +158,8 @@ export function TablePemilihanKepalaDesa({ gap }) {
                         <Box
                           as="button"
                           borderRadius="md"
-                          bg="#0063d1"
-                          color="white"
+                          bg={primaryColor}
+                          color={white}
                           px={4}
                           h={8}
                         >
@@ -169,8 +170,8 @@ export function TablePemilihanKepalaDesa({ gap }) {
                         <Box
                           as="button"
                           borderRadius="md"
-                          bg="#48BB78"
-                          color="white"
+                          bg={secondaryColor}
+                          color={white}
                           px={4}
                           h={8}
                         >
@@ -193,8 +194,8 @@ export function TablePemilihanKepalaDesa({ gap }) {
                             <Box
                               as="button"
                               borderRadius="md"
-                              bg="#4FD1C5"
-                              color="white"
+                              bg={primaryColor}
+                              color={white}
                               px={4}
                               h={8}
                               m={2}

@@ -32,6 +32,7 @@ import { useQuery } from "@tanstack/react-query";
 import { WarningIcon } from "@chakra-ui/icons";
 import { Loading } from "../Loading";
 import formatDate from "../../lib/formatDate";
+import { primaryColor, red, secondaryColor, tersierColor, white } from "../../lib/color";
 
 export function DetailPemilihanKepalaDesaID({ gap }) {
   const router = useRouter();
@@ -138,36 +139,36 @@ export function DetailPemilihanKepalaDesaID({ gap }) {
                                   <Box
                                     as="button"
                                     borderRadius="md"
-                                    bg="#CBD5E0"
-                                    color="white"
+                                    bg={tersierColor}
+                                    color={white}
                                     px={4}
                                     h={8}
                                   >
-                                    Not Started
+                                    Mendatang
                                   </Box>
                                 )}
                                 {item.status == 2 && (
                                   <Box
                                     as="button"
                                     borderRadius="md"
-                                    bg="#0063d1"
-                                    color="white"
+                                    bg={primaryColor}
+                                    color={white}
                                     px={4}
                                     h={8}
                                   >
-                                    Ongoing
+                                    Sedang Berjalan
                                   </Box>
                                 )}
                                 {item.status == 3 && (
                                   <Box
                                     as="button"
                                     borderRadius="md"
-                                    bg="#48BB78"
-                                    color="white"
+                                    bg={secondaryColor}
+                                    color={white}
                                     px={4}
                                     h={8}
                                   >
-                                    Finished
+                                    Selesai
                                   </Box>
                                 )}
                               </Center>
@@ -194,8 +195,8 @@ export function DetailPemilihanKepalaDesaID({ gap }) {
                         <Button
                           mt={4}
                           variant="outline"
-                          bg="#4FD1C5"
-                          color="white"
+                          bg={primaryColor}
+                          color={white}
                           onClick={() => {
                             setIsModalOpen(true);
                             setEditedPemilihanKetuaId(item.pemilihan_ketua_id);
@@ -228,8 +229,8 @@ export function DetailPemilihanKepalaDesaID({ gap }) {
                       <Box
                         as="button"
                         borderRadius="md"
-                        bg="#48BB78"
-                        color="white"
+                        bg={primaryColor}
+                        color={white}
                         px={4}
                         h={8}
                         marginRight={4}
@@ -239,7 +240,7 @@ export function DetailPemilihanKepalaDesaID({ gap }) {
                           );
                         }}
                       >
-                        Add Calon Ketua
+                        Tambah Calon Ketua
                       </Box>
                     ) : (
                       ""
@@ -308,22 +309,22 @@ export function DetailPemilihanKepalaDesaID({ gap }) {
                             <Box
                               as="button"
                               borderRadius="md"
-                              bg="#E53E3E"
-                              color="white"
+                              bg={red}
+                              color={white}
                               px={4}
                               h={8}
                               onClick={() => {
                                 handleDeleteCalonKetua(calon.calon_ketua_id);
                               }}
                             >
-                              Delete
+                              Hapus
                             </Box>
 
                             <Box
                               as="button"
                               borderRadius="md"
-                              bg="#0063d1"
-                              color="white"
+                              bg={primaryColor}
+                              color={white}
                               px={4}
                               h={8}
                               onClick={() => {

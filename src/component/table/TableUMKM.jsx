@@ -27,6 +27,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { Loading } from "../Loading";
+import { primaryColor, red, secondaryColor, tersierColor, white } from "../../lib/color";
 
 export function TableUMKM({ gap }) {
   const [selectedUmkmId, setSelectedUmkmId] = useState(null);
@@ -145,8 +146,8 @@ export function TableUMKM({ gap }) {
                         <Box
                           as="button"
                           borderRadius="md"
-                          bg="#CBD5E0"
-                          color="white"
+                          bg={tersierColor}
+                          color={white}
                           px={4}
                           h={8}
                           onClick={() => {
@@ -162,8 +163,8 @@ export function TableUMKM({ gap }) {
                         <Box
                           as="button"
                           borderRadius="md"
-                          bg="#E53E3E"
-                          color="white"
+                          bg={red}
+                          color={white}
                           px={4}
                           h={8}
                           onClick={() => {
@@ -178,8 +179,8 @@ export function TableUMKM({ gap }) {
                         <Box
                           as="button"
                           borderRadius="md"
-                          bg="#0063d1"
-                          color="white"
+                          bg={secondaryColor}
+                          color={white}
                           px={4}
                           h={8}
                           onClick={() => {
@@ -193,15 +194,15 @@ export function TableUMKM({ gap }) {
                         <Box
                           as="button"
                           borderRadius="md"
-                          bg="#48BB78"
-                          color="white"
+                          bg={primaryColor}
+                          color={white}
                           px={4}
                           h={8}
                           onClick={() => {
                             handleNotApprove(data.umkm_id);
                           }}
                         >
-                          Aktif{" "}
+                          Aktif
                         </Box>
                       )}
                     </Center>
@@ -231,8 +232,8 @@ export function TableUMKM({ gap }) {
                   <Center flex={1}>
                     <Button
                       borderRadius="md"
-                      bg="#E53E3E"
-                      color="white"
+                      bg={secondaryColor}
+                      color={white}
                       px={4}
                       h={8}
                       onClick={() => handleNotApprove(selectedUmkmId)}
@@ -243,8 +244,8 @@ export function TableUMKM({ gap }) {
                   <Center flex={1}>
                     <Button
                       borderRadius="md"
-                      bg="#48BB78"
-                      color="white"
+                      bg={primaryColor}
+                      color={white}
                       px={4}
                       h={8}
                       onClick={() => handleApprove(selectedUmkmId)}

@@ -36,7 +36,7 @@ export function TablePengaduanMasyarakat({ gap }) {
   const [subjekPengaduanMasyarakat, setSubjekPengaduanMasyarakat] =
     useState(null);
   const [isiPengaduanMasyarakat, setIsiPengaduanMasyarakat] = useState(null);
-  const [isLoading, setIsloading] = useState(true)
+  const [isLoading, setIsloading] = useState(true);
 
   function formatDate(dateString) {
     const options = {
@@ -52,7 +52,7 @@ export function TablePengaduanMasyarakat({ gap }) {
   const { data, refetch: refetchData } = useQuery({
     queryFn: async () => {
       const dataResponse = await axiosInstance.get("/pengaduanmasyarakat");
-      setIsloading(false)
+      setIsloading(false);
       return dataResponse;
     },
   });
@@ -70,7 +70,47 @@ export function TablePengaduanMasyarakat({ gap }) {
     }
   };
 
-  if(isLoading)return(<><Loading/></>)
+  const ModalDetail = () => {
+    return (
+      <>
+        <Modal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          size="full"
+        >
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>{subjekPengaduanMasyarakat}</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <Flex>
+                <Center flex={1}>
+                  <Table>
+                    <Tr>
+                      <Th>Isi Aduan</Th>
+                    </Tr>
+                    <Tr>
+                      <Td>
+                        <Text>{isiPengaduanMasyarakat}</Text>
+                      </Td>
+                    </Tr>
+                  </Table>
+                </Center>
+              </Flex>
+            </ModalBody>
+            <ModalFooter></ModalFooter>
+          </ModalContent>
+        </Modal>
+      </>
+    );
+  };
+
+  if (isLoading)
+    return (
+      <>
+        <Loading />
+      </>
+    );
 
   return (
     <>
@@ -103,8 +143,8 @@ export function TablePengaduanMasyarakat({ gap }) {
                       label={data.isi}
                       bg="gray.300"
                       color="black"
-                    >                      
-                    <Text>{formatString(data.isi,30)}</Text>
+                    >
+                      <Text>{formatString(data.isi, 30)}</Text>
                     </Tooltip>
                   </Td>
                   <Td>
@@ -140,21 +180,7 @@ export function TablePengaduanMasyarakat({ gap }) {
               ))}
             </Tbody>
           </Table>
-          <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-            <ModalOverlay />
-            <ModalContent>
-              <ModalHeader>{subjekPengaduanMasyarakat}</ModalHeader>
-              <ModalCloseButton />
-              <ModalBody>
-                <Flex>
-                  <Center flex={1}>
-                    <Text>{isiPengaduanMasyarakat}</Text>
-                  </Center>
-                </Flex>
-              </ModalBody>
-              <ModalFooter></ModalFooter>
-            </ModalContent>
-          </Modal>
+          {ModalDetail()}
         </TableContainer>
       </Flex>
     </>
