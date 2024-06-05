@@ -43,6 +43,7 @@ export function TablePemilihanKepalaDesa({ gap }) {
   const [tanggalMulai, setTanggalMulai] = useState("");
   const [tanggalSelesai, setTanggalSelesai] = useState("");
   const [isLoading, setIsloading] = useState(true)
+  const [isHakPilih, setIsHakPilih] = useState(false)
 
   let i = 1;
   const { data, refetch: refetchData } = useQuery({
@@ -56,14 +57,36 @@ export function TablePemilihanKepalaDesa({ gap }) {
 
   const handleDelete = async (id) => {
     try {
-      await axiosInstance.delete(`/pemilihankepaladesa/delete/${id}`);
+      const response = await axiosInstance.delete(`/pemilihankepaladesa/delete/${id}`);
 
       toast({
-        title: "Warga has been deleted",
-        status: "warning",
+        title: response.data.message,
+        status: "info",
       });
       refetchData();
     } catch (error) {
+      toast({
+        title: error.response.data.message,
+        status: "error",
+      });
+      console.error("Error rejecting request:", error);
+    }
+  };
+
+  const handleHakPilih = async () => {
+    try {
+      const response = await axiosInstance.put(`/set-hak-pilih`);
+      toast({
+        title: response.data.message,
+        status: "info",
+      });
+      setIsHakPilih(false)
+    } catch (error) {
+      setIsHakPilih(false)
+      toast({
+        title: error.response.data.message,
+        status: "error",
+      });
       console.error("Error rejecting request:", error);
     }
   };
@@ -112,6 +135,21 @@ export function TablePemilihanKepalaDesa({ gap }) {
             color={white}
             px={4}
             h={8}
+            m={4}
+            onClick={() => {
+              setIsHakPilih(true);
+            }}
+          >
+            Beri Hak Pilih
+          </Box>
+          <Box
+            as="button"
+            borderRadius="md"
+            bg={primaryColor}
+            color={white}
+            px={4}
+            h={8}
+            m={4}
             onClick={() => {
               setIsModalOpen(true);
             }}
@@ -303,6 +341,24 @@ export function TablePemilihanKepalaDesa({ gap }) {
             </form>
           </ModalBody>
           <ModalFooter></ModalFooter>
+        </ModalContent>
+      </Modal>
+      <Modal        
+        isOpen={isHakPilih}
+        onClose={() => setIsHakPilih(false)}
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Beri Hak Pilih ke Warga dengan Usia Legal</ModalHeader>
+          <ModalCloseButton />          
+          <ModalFooter>
+            <Button
+            bg={primaryColor}
+            color={white}
+            onClick={()=>{handleHakPilih()}}>
+              Konfirmasi
+            </Button>
+          </ModalFooter>
         </ModalContent>
       </Modal>
     </>

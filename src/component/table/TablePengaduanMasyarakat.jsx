@@ -28,6 +28,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { Loading } from "../Loading";
 import formatString from "../../lib/formatString";
+import formatDate from "../../lib/formatDate";
 
 export function TablePengaduanMasyarakat({ gap }) {
   const toast = useToast();
@@ -38,15 +39,6 @@ export function TablePengaduanMasyarakat({ gap }) {
   const [isiPengaduanMasyarakat, setIsiPengaduanMasyarakat] = useState(null);
   const [isLoading, setIsloading] = useState(true);
 
-  function formatDate(dateString) {
-    const options = {
-      weekday: "long",
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    };
-    return new Date(dateString).toLocaleDateString("en-US", options);
-  }
 
   let i = 1;
   const { data, refetch: refetchData } = useQuery({
