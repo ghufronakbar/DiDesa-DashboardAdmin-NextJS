@@ -15,6 +15,7 @@ import {
   Flex,
   Spacer,
   Heading,
+  Tooltip,
 } from "@chakra-ui/react";
 import { axiosInstance } from "../../lib/axios";
 import { useQuery } from "@tanstack/react-query";
@@ -22,18 +23,24 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { Loading } from "../Loading";
 import formatDate from "../../lib/formatDate";
-import { primaryColor, secondaryColor, tersierColor, white } from "../../lib/color";
+import {
+  primaryColor,
+  secondaryColor,
+  tersierColor,
+  white,
+} from "../../lib/color";
+import formatString from '../../lib/formatString'
 
 export function TableBerita({ gap }) {
   const router = useRouter();
   const toast = useToast();
-  const [isLoading, setIsloading] = useState(true)
+  const [isLoading, setIsloading] = useState(true);
 
   let i = 1;
   const { data, refetch: refetchData } = useQuery({
     queryFn: async () => {
       const dataResponse = await axiosInstance.get("/berita");
-      setIsloading(false)
+      setIsloading(false);
       return dataResponse;
     },
   });
@@ -120,27 +127,32 @@ export function TableBerita({ gap }) {
     }
   };
 
-  if(isLoading)return(<><Loading/></>)
+  if (isLoading)
+    return (
+      <>
+        <Loading />
+      </>
+    );
 
   return (
     <>
       <Flex m={gap} direction="column" w="100%">
         <Flex mb={8}>
-        <Heading>Berita</Heading>
-        <Spacer flex={8}  />
-        <Box
-          as="button"
-          borderRadius="md"
-          bg={primaryColor}
-          color={white}
-          px={4}
-          h={10}
-          onClick={() => {
-            router.push("/admin/berita/add");
-          }}
-        >
-          Tambah Berita
-        </Box>
+          <Heading>Berita</Heading>
+          <Spacer flex={8} />
+          <Box
+            as="button"
+            borderRadius="md"
+            bg={primaryColor}
+            color={white}
+            px={4}
+            h={10}
+            onClick={() => {
+              router.push("/admin/berita/add");
+            }}
+          >
+            Tambah Berita
+          </Box>
         </Flex>
         <TableContainer>
           <Table size="sm">
@@ -169,7 +181,14 @@ export function TableBerita({ gap }) {
                     />
                   </Td>
                   <Td>
-                    <Text as="b">{data.judul}</Text>
+                    <Tooltip
+                      hasArrow
+                      label={data.judul}
+                      bg="gray.300"
+                      color="black"
+                    >
+                      <Text as="b">{formatString(data.judul,40)}</Text>
+                    </Tooltip>
                   </Td>
                   <Td>
                     <Center>
