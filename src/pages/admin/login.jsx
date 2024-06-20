@@ -91,7 +91,7 @@ const Login = () => {
       <Grid templateColumns={{ base: "1fr", md: "1fr 1fr" }} flex="1">
         <Box
           display={{ base: "none", md: "block" }}
-          bgImage="url(https://source.unsplash.com/random?wallpapers)"
+          bgImage="url(https://images.unsplash.com/photo-1521109464564-2fa2faa95858?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)"
           bgSize="cover"
           bgPosition="center"
         />

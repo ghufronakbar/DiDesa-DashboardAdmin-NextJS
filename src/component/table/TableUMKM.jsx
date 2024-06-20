@@ -50,13 +50,13 @@ export function TableUMKM({ gap }) {
       const response = await axiosInstance.delete(`/umkm/delete/${id}`);
 
       toast({
-        title: response.data.message,
+        title: response?.data?.message,
         status: "info",
       });
       refetchData();
     } catch (error) {
       toast({
-        title: error.response.data.message,
+        title: error?.response?.data?.message,
         status: "error",
       });
       console.error("Error rejecting request:", error);
@@ -118,31 +118,31 @@ export function TableUMKM({ gap }) {
               </Tr>
             </Thead>
             <Tbody>
-              {data?.data.values.map((data) => (
-                <Tr key={data.berita_id}>
+              {data?.data.values.map((item) => (
+                <Tr key={item.umkm_id}>
                   <Td>{i++}</Td>
                   <Td>
                     <Image
                       borderRadius="18"
                       boxSize="60px"
                       objectFit="cover"
-                      src={data.gambar}
-                      alt={data.gambar}
+                      src={item.gambar}
+                      alt={item.gambar}
                     />
                   </Td>
                   <Td>
-                    <Text as="b">{data.nama}</Text>
-                    <Text>{data.nama_jenis_umkm}</Text>
+                    <Text as="b">{item.nama}</Text>
+                    <Text>{item.nama_jenis_umkm}</Text>
                   </Td>
                   <Td>
-                    <Text>{data.lokasi}</Text>
+                    <Text>{item.lokasi}</Text>
                   </Td>
                   <Td>
-                    <Text>{data.nama_lengkap}</Text>
+                    <Text>{item.nama_lengkap}</Text>
                   </Td>
                   <Td>
                     <Center>
-                      {data.approve == 0 && (
+                      {item.approve == 0 && (
                         <Box
                           as="button"
                           borderRadius="md"
@@ -152,14 +152,14 @@ export function TableUMKM({ gap }) {
                           h={8}
                           onClick={() => {
                             setIsModalOpen(true);
-                            setSelectedUmkmId(data.umkm_id);
+                            setSelectedUmkmId(item.umkm_id);
                           }}
                         >
                           Menunggu
                         </Box>
                       )}
 
-                      {data.approve == 1 && data.status == 0 && (
+                      {item.approve == 1 && item.status == 0 && (
                         <Box
                           as="button"
                           borderRadius="md"
@@ -168,14 +168,14 @@ export function TableUMKM({ gap }) {
                           px={4}
                           h={8}
                           onClick={() => {
-                            handleApprove(data.umkm_id);
+                            handleApprove(item.umkm_id);
                           }}
                         >
                           Tidak Disetujui
                         </Box>
                       )}
 
-                      {data.approve == 2 && data.status == 0 && (
+                      {item.approve == 2 && item.status == 0 && (
                         <Box
                           as="button"
                           borderRadius="md"
@@ -184,13 +184,13 @@ export function TableUMKM({ gap }) {
                           px={4}
                           h={8}
                           onClick={() => {
-                            handleNotApprove(data.umkm_id);
+                            handleNotApprove(item.umkm_id);
                           }}
                         >
                           Tidak Aktif
                         </Box>
                       )}
-                      {data.approve == 2 && data.status == 1 && (
+                      {item.approve == 2 && item.status == 1 && (
                         <Box
                           as="button"
                           borderRadius="md"
@@ -199,7 +199,7 @@ export function TableUMKM({ gap }) {
                           px={4}
                           h={8}
                           onClick={() => {
-                            handleNotApprove(data.umkm_id);
+                            handleNotApprove(item.umkm_id);
                           }}
                         >
                           Aktif
@@ -212,7 +212,7 @@ export function TableUMKM({ gap }) {
                     <Center>
                       <Button
                         colorScheme="red"
-                        onClick={() => handleDelete(data.umkm_id)}
+                        onClick={() => handleDelete(item.umkm_id)}
                       >
                         Hapus
                       </Button>

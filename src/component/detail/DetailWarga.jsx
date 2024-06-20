@@ -125,12 +125,12 @@ export function DetailWarga({ gap }) {
                           <Tr>
                             <Th>UMKM</Th>
                             <Td>
-                              {data.umkm[0].umkm_id == null
+                              {data.umkm.length == 0
                                 ? "Tidak Memiliki UMKM"
                                 : data.umkm.length}
                             </Td>
                           </Tr>
-                          {data.umkm[0].umkm_id == null
+                          {data.umkm.length == 0
                             ? null
                             : data.umkm.map((umkm) => (
                                 <Tr>

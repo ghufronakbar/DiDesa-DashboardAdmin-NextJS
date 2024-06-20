@@ -32,12 +32,20 @@ import { useQuery } from "@tanstack/react-query";
 import { WarningIcon } from "@chakra-ui/icons";
 import { Loading } from "../Loading";
 import formatDate from "../../lib/formatDate";
-import { primaryColor, red, secondaryColor, tersierColor, white } from "../../lib/color";
+import toISODateString from "../../lib/formatISOString";
+import toInputDateString from "../../lib/formatToInputDateString";
+import {
+  primaryColor,
+  red,
+  secondaryColor,
+  tersierColor,
+  white,
+} from "../../lib/color";
 
 export function DetailPemilihanKepalaDesaID({ gap }) {
   const router = useRouter();
   const { id } = router.query;
-  const [loading, setLoading] = useState(true);  
+  const [loading, setLoading] = useState(true);
   const toast = useToast();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [judul, setJudul] = useState("");
@@ -52,11 +60,10 @@ export function DetailPemilihanKepalaDesaID({ gap }) {
       const dataResponse = await axiosInstance.get(
         `/pemilihankepaladesa/detail/${id}`
       );
-      setLoading(false)
+      setLoading(false);
       return dataResponse;
     },
   });
-
 
   const handleDeleteCalonKetua = async (id) => {
     try {
@@ -64,7 +71,7 @@ export function DetailPemilihanKepalaDesaID({ gap }) {
 
       toast({
         title: response.data.message,
-        status: "warning",
+        status: "info",
       });
       refetchData();
     } catch (error) {
@@ -80,8 +87,8 @@ export function DetailPemilihanKepalaDesaID({ gap }) {
         {
           judul: judul,
           deskripsi: deskripsi,
-          tanggal_mulai: tanggalMulai,
-          tanggal_selesai: tanggalSelesai,
+          tanggal_mulai: toISODateString(tanggalMulai),
+          tanggal_selesai: toISODateString(tanggalSelesai),
         }
       );
       toast({
@@ -99,8 +106,7 @@ export function DetailPemilihanKepalaDesaID({ gap }) {
     }
   };
 
-    if (loading) return <Loading/>
-  // if (error) return <div>Error fetching data: {error.message}</div>;
+  if (loading) return <Loading />;
 
   return (
     <>
@@ -204,6 +210,7 @@ export function DetailPemilihanKepalaDesaID({ gap }) {
                             setDeskripsi(item.deskripsi);
                             setTanggalMulai(item.tanggal_mulai);
                             setTanggalSelesai(item.tanggal_selesai);
+                            console.log(item.tanggal_mulai);
                           }}
                         >
                           Edit
@@ -373,7 +380,7 @@ export function DetailPemilihanKepalaDesaID({ gap }) {
                     <Input
                       type="date"
                       name="tanggal_mulai"
-                      value={formatDate(tanggalMulai)}
+                      value={toInputDateString(tanggalMulai)}
                       onChange={(e) => setTanggalMulai(e.target.value)}
                     />
                   </FormControl>
@@ -381,7 +388,7 @@ export function DetailPemilihanKepalaDesaID({ gap }) {
                     <Input
                       type="date"
                       name="tanggal_selesai"
-                      value={formatDate(tanggalSelesai)}
+                      value={toInputDateString(tanggalSelesai)}
                       onChange={(e) => setTanggalSelesai(e.target.value)}
                     />
                   </FormControl>

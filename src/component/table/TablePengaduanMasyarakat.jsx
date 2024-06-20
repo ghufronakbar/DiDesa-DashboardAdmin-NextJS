@@ -51,13 +51,17 @@ export function TablePengaduanMasyarakat({ gap }) {
 
   const handleDelete = async (id) => {
     try {
-      await axiosInstance.delete(`/pengaduanmasyarakat/delete/${id}`);
+      const response = await axiosInstance.delete(`/pengaduanmasyarakat/delete/${id}`);
       toast({
-        title: "Pengaduan Masyarakat has been deleted",
-        status: "warning",
+        title: response?.data?.message,
+        status: "info",
       });
       refetchData();
     } catch (error) {
+      toast({
+        title: error?.response?.data?.message,
+        status: "info",
+      });
       console.error("Error rejecting request:", error);
     }
   };
@@ -120,27 +124,27 @@ export function TablePengaduanMasyarakat({ gap }) {
               </Tr>
             </Thead>
             <Tbody>
-              {data?.data.values.map((data) => (
-                <Tr key={data.pengaduan_masyarkat_id}>
+              {data?.data?.values?.map((item) => (
+                <Tr key={item.pengaduan_masyarkat_id}>
                   <Td>{i++}</Td>
 
                   <Td>
-                    <Text as="b">{data.nama_lengkap}</Text>
-                    <Text>{data.nik}</Text>
+                    <Text as="b">{item.nama_lengkap}</Text>
+                    <Text>{item.nik}</Text>
                   </Td>
                   <Td maxW={40}>
-                    <Text as="b">{data.subjek}</Text>
+                    <Text as="b">{item.subjek}</Text>
                     <Tooltip
                       hasArrow
-                      label={data.isi}
+                      label={item.isi}
                       bg="gray.300"
                       color="black"
                     >
-                      <Text>{formatString(data.isi, 30)}</Text>
+                      <Text>{formatString(item.isi, 30)}</Text>
                     </Tooltip>
                   </Td>
                   <Td>
-                    <Text as="b">{formatDate(data.tanggal)}</Text>
+                    <Text as="b">{formatDate(item.tanggal)}</Text>
                   </Td>
                   <Td>
                     <Center marginTop={1}>
@@ -149,9 +153,9 @@ export function TablePengaduanMasyarakat({ gap }) {
                         variant="outline"
                         onClick={() => {
                           setIsModalOpen(true);
-                          setPengaduanMasyarakatId(data.pengaduan_masyarkat_id);
-                          setSubjekPengaduanMasyarakat(data.subjek);
-                          setIsiPengaduanMasyarakat(data.isi);
+                          setPengaduanMasyarakatId(item.pengaduan_masyarkat_id);
+                          setSubjekPengaduanMasyarakat(item.subjek);
+                          setIsiPengaduanMasyarakat(item.isi);
                         }}
                       >
                         Detail
@@ -161,7 +165,7 @@ export function TablePengaduanMasyarakat({ gap }) {
                       <Button
                         colorScheme="red"
                         onClick={() =>
-                          handleDelete(data.pengaduan_masyarakat_id)
+                          handleDelete(item.pengaduan_masyarakat_id)
                         }
                       >
                         Delete

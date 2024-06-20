@@ -22,6 +22,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useRef } from "react";
 import { primaryColor, white } from "../../lib/color";
+import toISODateString from "../../lib/formatISOString";
 
 export function FormWargaAdd({ gap }) {
   const router = useRouter();
@@ -41,7 +42,7 @@ export function FormWargaAdd({ gap }) {
         nik: nik.current.value,
         kk: kk.current.value,
         nama_lengkap: nama_lengkap.current.value,
-        tanggal_lahir: tanggal_lahir.current.value,
+        tanggal_lahir: toISODateString(tanggal_lahir.current.value),
       };
 
       const response = await axiosInstance.post(`/warga/add`, formData);

@@ -51,7 +51,7 @@ export function TableBerita({ gap }) {
 
       toast({
         title: response.data.message,
-        status: "warning",
+        status: "info",
       });
       refetchData();
     } catch (error) {
